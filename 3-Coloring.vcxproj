@@ -21,9 +21,13 @@
   <ItemGroup>
     <ClInclude Include="src\color.hpp" />
     <ClInclude Include="src\graph.hpp" />
+    <ClInclude Include="src\graph_representation\color.hpp" />
+    <ClInclude Include="src\graph_representation\graph.hpp" />
+    <ClInclude Include="src\graph_representation\vertex.hpp" />
     <ClInclude Include="src\vertex.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\graph_representation\main.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

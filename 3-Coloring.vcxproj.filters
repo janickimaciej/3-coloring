@@ -4,8 +4,12 @@
     <ClInclude Include="src\color.hpp" />
     <ClInclude Include="src\graph.hpp" />
     <ClInclude Include="src\vertex.hpp" />
+    <ClInclude Include="src\graph_representation\color.hpp" />
+    <ClInclude Include="src\graph_representation\graph.hpp" />
+    <ClInclude Include="src\graph_representation\vertex.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\graph_representation\main.cpp" />
   </ItemGroup>
 </Project>
