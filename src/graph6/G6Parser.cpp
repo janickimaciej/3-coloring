@@ -1,13 +1,11 @@
 #include "G6Parser.hpp"
 #include <iostream>
-#include "G6Parser.hpp"
 
 using namespace std;
 
-
-void G6Parser::OpenFile()
+void G6Parser::openFile()
 {
-	cout << "Input path to graph6 fie:\n";
+	cout << "Input path to graph6 file:\n";
 	cin >> path;
 	file.open(path, ios::in);
 	while (!file)
@@ -18,14 +16,21 @@ void G6Parser::OpenFile()
 	}
 }
 
-Graph* G6Parser::Parse()
+void G6Parser::openFile(string path) {
+	file.open(path, ios::in);
+	if(!file) {
+		cout << "Incorrect file path" << endl;
+	}
+}
+
+Graph* G6Parser::parse()
 {
-	CreateGraph();
-	FillEdges();
+	createGraph();
+	fillEdges();
 	return graph;
 }
 
-void G6Parser::CreateGraph()
+void G6Parser::createGraph()
 {
 	int n;
 
@@ -46,7 +51,7 @@ void G6Parser::CreateGraph()
 				n += curr - 63;
 				if (i != 2)
 				{
-					n << 8;
+					n <<= 8;
 					file >> curr;
 				}
 			}
@@ -57,15 +62,15 @@ void G6Parser::CreateGraph()
 			{
 				file >> curr;
 				n += curr - 63;
-				if (i != 5) n << 8;
+				if (i != 5) n <<= 8;
 			}
 		}
 	}
 
-	graph = Graph::CreateGraph(n);
+	graph = Graph::createGraph(n);
 }
 
-void G6Parser::FillEdges()
+void G6Parser::fillEdges()
 {
 	int bits;
 	int i = 0;
@@ -78,7 +83,7 @@ void G6Parser::FillEdges()
 		bits = (curr - 63) << 2;
 		for (int k = 0; k < 6; k++)
 		{
-			if (bits & mask) graph->AddEdge(i, j);
+			if (bits & mask) graph->addEdge(i, j);
 			bits <<= 1;
 			i++;
 			if (i == j)

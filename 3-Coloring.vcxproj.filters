@@ -6,6 +6,7 @@
     <ClInclude Include="src\instance_representation\graph.hpp" />
     <ClInclude Include="src\instance_representation\inner_csp_instance.hpp" />
     <ClInclude Include="src\instance_representation\variable.hpp" />
+    <ClInclude Include="src\graph6\G6Parser.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\instance_representation\graph.cpp" />
@@ -13,5 +14,6 @@
     <ClCompile Include="src\instance_representation\variable.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\instance_representation\color.cpp" />
+    <ClCompile Include="src\graph6\G6Parser.cpp" />
   </ItemGroup>
 </Project>

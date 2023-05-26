@@ -10,7 +10,7 @@ InnerCSPInstance::InnerCSPInstance(int variableCount) {
 	tail = &variables[variableCount - 1];
 }
 
-int InnerCSPInstance::GetVertexCount() {
+int InnerCSPInstance::getVertexCount() {
 	return variableCount;
 }
 
@@ -21,7 +21,7 @@ bool InnerCSPInstance::hasEdge(int start, int end) {
 	return variables[start].hasEdge(variables[end]);
 }
 
-void InnerCSPInstance::AddEdge(int start, int end) {
+void InnerCSPInstance::addEdge(int start, int end) {
 	if(start < 0 || start >= variableCount || end < 0 || end >= variableCount) {
 		throw "InnerCSPInstance::addEdge: Vertex index out of bounds";
 	}

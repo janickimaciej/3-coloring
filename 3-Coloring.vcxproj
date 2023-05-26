@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\graph6\G6Parser.hpp" />
     <ClInclude Include="src\instance_representation\color.hpp" />
     <ClInclude Include="src\instance_representation\csp_instance.hpp" />
     <ClInclude Include="src\instance_representation\graph.hpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="src\instance_representation\variable.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\graph6\G6Parser.cpp" />
     <ClCompile Include="src\instance_representation\color.cpp" />
     <ClCompile Include="src\instance_representation\graph.cpp" />
     <ClCompile Include="src\instance_representation\inner_csp_instance.cpp" />

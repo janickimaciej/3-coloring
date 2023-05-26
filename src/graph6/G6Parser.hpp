@@ -1,7 +1,7 @@
 #ifndef PARSER
 #define PARSER
 
-#include<fstream>
+#include <fstream>
 #include "../instance_representation/graph.hpp"
 
 class G6Parser
@@ -12,12 +12,12 @@ private:
 	std::fstream file;
 	Graph* graph;
 	const int mask = 0b10000000;
-	void CreateGraph();
-	void FillEdges();
+	void createGraph();
+	void fillEdges();
 public:
-	G6Parser() {};
-	void OpenFile();
-	Graph* Parse();
+	void openFile();
+	void openFile(std::string path);
+	Graph* parse();
 };
 
 #endif

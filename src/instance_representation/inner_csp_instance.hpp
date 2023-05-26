@@ -12,10 +12,10 @@ class InnerCSPInstance : public Graph, public CSPInstance {
 	Variable* tail;
 public:
 	InnerCSPInstance(int vertices);
-	virtual int GetVertexCount();
+	virtual int getVertexCount();
 	
 	virtual bool hasEdge(int start, int end);
-	virtual void AddEdge(int start, int end);
+	virtual void addEdge(int start, int end);
 	virtual void removeEdge(int start, int end);
 };
 

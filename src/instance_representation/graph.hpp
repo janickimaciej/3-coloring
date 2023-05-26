@@ -3,11 +3,11 @@
 
 class Graph {
 public:
-	static Graph* CreateGraph(int vertices);
-	virtual int GetVertexCount() = 0;
+	static Graph* createGraph(int vertices);
+	virtual int getVertexCount() = 0;
 	
 	virtual bool hasEdge(int start, int end) = 0;
-	virtual void AddEdge(int start, int end) = 0;
+	virtual void addEdge(int start, int end) = 0;
 	virtual void removeEdge(int start, int end) = 0;
 };
 
