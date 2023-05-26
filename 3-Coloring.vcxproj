@@ -21,13 +21,17 @@
   <ItemGroup>
     <ClInclude Include="src\color.hpp" />
     <ClInclude Include="src\graph.hpp" />
-    <ClInclude Include="src\graph_representation\color.hpp" />
-    <ClInclude Include="src\graph_representation\graph.hpp" />
-    <ClInclude Include="src\graph_representation\vertex.hpp" />
+    <ClInclude Include="src\instance_representation\color.hpp" />
+    <ClInclude Include="src\instance_representation\graph.hpp" />
+    <ClInclude Include="src\instance_representation\inner_csp_instance.hpp" />
+    <ClInclude Include="src\instance_representation\vertex.hpp" />
     <ClInclude Include="src\vertex.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\graph_representation\main.cpp" />
+    <ClCompile Include="src\instance_representation\csp_instance.hpp" />
+    <ClCompile Include="src\instance_representation\graph.cpp" />
+    <ClCompile Include="src\instance_representation\inner_csp_instance.cpp" />
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

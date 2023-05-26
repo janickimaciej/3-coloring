@@ -3,7 +3,7 @@
 
 class Graph {
 public:
-	virtual Graph CreateGraph(int vertices) = 0;
+	static Graph* CreateGraph(int vertices);
 	virtual void AddEdge(int start, int end) = 0;
 };
 
