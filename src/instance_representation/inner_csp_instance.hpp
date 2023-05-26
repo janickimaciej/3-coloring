@@ -3,12 +3,20 @@
 
 #include "csp_instance.hpp"
 #include "graph.hpp"
+#include "variable.hpp"
 
 class InnerCSPInstance : public Graph, public CSPInstance {
-	int vertices;
+	int variableCount;
+	Variable* variables;
+	Variable* head;
+	Variable* tail;
 public:
 	InnerCSPInstance(int vertices);
-	virtual void AddEdge(int start, int end) override;
+	virtual int GetVertexCount();
+	
+	virtual bool HasEdge(int start, int end);
+	virtual void AddEdge(int start, int end);
+	virtual void RemoveEdge(int start, int end);
 };
 
 #endif

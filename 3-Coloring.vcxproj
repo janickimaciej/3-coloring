@@ -18,27 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\color.hpp" />
-    <ClInclude Include="src\graph.hpp" />
-    <ClInclude Include="src\instance_representation\color.hpp" />
-    <ClInclude Include="src\instance_representation\graph.hpp" />
-    <ClInclude Include="src\instance_representation\inner_csp_instance.hpp" />
-    <ClInclude Include="src\instance_representation\vertex.hpp" />
-    <ClInclude Include="src\vertex.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\instance_representation\csp_instance.hpp" />
-    <ClCompile Include="src\instance_representation\graph.cpp" />
-    <ClCompile Include="src\instance_representation\inner_csp_instance.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\main.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{5bdba940-b58a-4d7a-be47-923e2e1daff0}</ProjectGuid>
-    <RootNamespace>My3Coloring</RootNamespace>
+    <ProjectGuid>{c6aeb028-b8c7-4114-809d-5ec15ea4b0d5}</ProjectGuid>
+    <RootNamespace>My3coloring</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -142,6 +126,19 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\instance_representation\color.hpp" />
+    <ClInclude Include="src\instance_representation\csp_instance.hpp" />
+    <ClInclude Include="src\instance_representation\graph.hpp" />
+    <ClInclude Include="src\instance_representation\inner_csp_instance.hpp" />
+    <ClInclude Include="src\instance_representation\variable.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\instance_representation\graph.cpp" />
+    <ClCompile Include="src\instance_representation\inner_csp_instance.cpp" />
+    <ClCompile Include="src\instance_representation\variable.cpp" />
+    <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
