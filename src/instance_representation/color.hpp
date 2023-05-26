@@ -1,12 +1,15 @@
 #ifndef COLOR
 #define COLOR
 
-#include <vector>
+#include <set>
 
 class Color {
-	std::vector<Color*> constaints;
+	std::set<Color*> constraints;
 public:
 	bool isAvailable = true;
+	bool hasConstraint(const Color* color) const;
+	void addConstraint(Color* color);
+	void removeConstraint(Color* color);
 };
 
 #endif

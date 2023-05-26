@@ -9,6 +9,10 @@ class Variable {
 public:
 	bool exists = true;
 	void setNext(Variable* next);
+
+	bool hasEdge(const Variable& end) const;
+	void addEdge(Variable& end);
+	void removeEdge(Variable& end);
 };
 
 #endif

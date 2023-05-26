@@ -134,6 +134,7 @@
     <ClInclude Include="src\instance_representation\variable.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\instance_representation\color.cpp" />
     <ClCompile Include="src\instance_representation\graph.cpp" />
     <ClCompile Include="src\instance_representation\inner_csp_instance.cpp" />
     <ClCompile Include="src\instance_representation\variable.cpp" />

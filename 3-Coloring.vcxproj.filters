@@ -12,5 +12,6 @@
     <ClCompile Include="src\instance_representation\inner_csp_instance.cpp" />
     <ClCompile Include="src\instance_representation\variable.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\instance_representation\color.cpp" />
   </ItemGroup>
 </Project>

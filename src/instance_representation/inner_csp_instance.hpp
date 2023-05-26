@@ -14,9 +14,9 @@ public:
 	InnerCSPInstance(int vertices);
 	virtual int GetVertexCount();
 	
-	virtual bool HasEdge(int start, int end);
+	virtual bool hasEdge(int start, int end);
 	virtual void AddEdge(int start, int end);
-	virtual void RemoveEdge(int start, int end);
+	virtual void removeEdge(int start, int end);
 };
 
 #endif
