@@ -1,0 +1,8 @@
+/.vs/
+*.user
+/x64/
+*.exe
+
+/dep/*
+!/dep/stb_image.cpp
+/res/
