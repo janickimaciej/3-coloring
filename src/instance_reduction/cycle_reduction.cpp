@@ -55,6 +55,6 @@ void CycleReduction::deleteCycle(int start, int end)
 CycleReduction::~CycleReduction()
 {
 	delete visited;
-	//delete neighbours;
+	delete [] neighbours;
 	delete parents;
 }
