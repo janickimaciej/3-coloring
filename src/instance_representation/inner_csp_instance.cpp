@@ -2,7 +2,7 @@
 
 InnerCSPInstance::InnerCSPInstance(int variableCount) : variables(variableCount) {
 	for(int i = 0; i < variables.size(); i++) {
-		variables[i].index = i;
+		variables[i].setIndex(i);
 	}
 }
 
@@ -36,7 +36,7 @@ void InnerCSPInstance::removeVertex(int vertex) {
 	}
 	variables.erase(variables.begin() + vertex);
 	for(int i = vertex; i < variables.size(); i++) {
-		variables[i].index = i;
+		variables[i].setIndex(i);
 	}
 }
 

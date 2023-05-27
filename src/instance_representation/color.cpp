@@ -2,7 +2,11 @@
 #include "variable.hpp"
 #include <iostream>
 
-Color::Color(Variable& parent) : parent(parent) { }
+Color::Color(Variable* parent) : parent(parent) { }
+
+void Color::setParent(Variable* parent) {
+	this->parent = parent;
+}
 
 bool Color::hasConstraint(const Color* color) const {
 	return constraints.find((Color*)color) != constraints.end();
@@ -12,7 +16,7 @@ std::vector<int> Color::getNeighbors() const {
 	std::vector<int> neighbors;
 	std::set<Color*>::iterator iter = constraints.begin();
 	while(iter != constraints.end()) {
-		neighbors.push_back((*iter)->parent.index);
+		neighbors.push_back((*iter)->parent->getIndex());
 		iter++;
 	}
 	return neighbors;

@@ -7,12 +7,14 @@
 class Variable;
 
 class Color {
-	Variable& parent;
+	Variable* parent;
 	std::set<Color*> constraints;
 public:
 	bool isAvailable = true;
 
-	Color(Variable& parent);
+	Color(Variable* parent);
+	void setParent(Variable* parent);
+
 	bool hasConstraint(const Color* color) const;
 	std::vector<int> getNeighbors() const;
 	void addConstraint(Color* color);

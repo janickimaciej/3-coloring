@@ -8,7 +8,8 @@ int main() {
 	Graph* G = Graph::createGraph(5);
 	G->addEdge(2, 4);
 	G->addEdge(2, 1);
-	std::vector<int> neighbors = G->getNeighbors(2);
+	G->removeVertex(0);
+	std::vector<int> neighbors = G->getNeighbors(1);
 	for(int i = 0; i < neighbors.size(); i++) {
 		cout << neighbors[i] << endl;
 	}
