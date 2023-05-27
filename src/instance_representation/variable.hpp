@@ -5,9 +5,11 @@
 #include <vector>
 
 class Variable {
-	std::vector<Color> colors = std::vector<Color>(4, Color(this));
+	Color colors[4];
 	int index;
 public:
+	Variable(int index);
+
 	int getIndex();
 	void setIndex(int index);
 

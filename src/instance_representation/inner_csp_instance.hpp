@@ -7,7 +7,7 @@
 #include <vector>
 
 class InnerCSPInstance : public Graph, public CSPInstance {
-	std::vector<Variable> variables;
+	std::vector<Variable*> variables;
 public:
 	InnerCSPInstance(int vertices);
 	InnerCSPInstance(const InnerCSPInstance& cspInstance);
@@ -23,6 +23,8 @@ public:
 	virtual bool hasEdge(int start, int end) override;
 	virtual void addEdge(int start, int end) override;
 	virtual void removeEdge(int start, int end) override;
+
+	~InnerCSPInstance();
 };
 
 #endif

@@ -12,7 +12,6 @@ class Color {
 public:
 	bool isAvailable = true;
 
-	Color(Variable* parent);
 	void setParent(Variable* parent);
 
 	bool hasConstraint(const Color* color) const;

@@ -1,14 +1,17 @@
 #include "variable.hpp"
 
+Variable::Variable(int index) : index(index) {
+	for(int i = 0; i < 4; i++) {
+		colors[i].setParent(this);
+	}
+}
+
 int Variable::getIndex() {
 	return index;
 }
 
 void Variable::setIndex(int index) {
 	this->index = index;
-	for(int i = 0; i < 4; i++) {
-		colors[i].setParent(this);
-	}
 }
 
 bool Variable::hasEdge(const Variable& end) const {

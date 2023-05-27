@@ -2,8 +2,6 @@
 #include "variable.hpp"
 #include <iostream>
 
-Color::Color(Variable* parent) : parent(parent) { }
-
 void Color::setParent(Variable* parent) {
 	this->parent = parent;
 }
