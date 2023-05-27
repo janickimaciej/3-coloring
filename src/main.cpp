@@ -5,7 +5,7 @@
 using namespace std;
 
 int main() {
-	Graph* G1 = Graph::createGraph(5);
+	Graph* G1 = Graph::create(5);
 	G1->addEdge(2, 4);
 	G1->addEdge(2, 1);
 	Graph* G2 = Graph::copy(G1);

@@ -31,9 +31,6 @@ std::vector<int> Color::getNeighbors() const {
 }
 
 void Color::addConstraint(Color* color) {
-	if(color == nullptr) {
-		throw "Color::addConstraint: Color can't be null";
-	}
 	if(hasConstraint(color)) {
 		return;
 	}
@@ -42,9 +39,6 @@ void Color::addConstraint(Color* color) {
 }
 
 void Color::removeConstraint(Color* color) {
-	if(!hasConstraint(color)) {
-		throw "Color::removeConstraint: Constraint doesn't exist";
-	}
 	color->constraints.erase(this);
 	constraints.erase(color);
 }

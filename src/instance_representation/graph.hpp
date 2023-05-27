@@ -5,7 +5,7 @@
 
 class Graph {
 public:
-	static Graph* createGraph(int vertices);
+	static Graph* create(int vertices);
 	static Graph* copy(Graph* graph);
 
 	virtual int getVertexCount() const = 0;

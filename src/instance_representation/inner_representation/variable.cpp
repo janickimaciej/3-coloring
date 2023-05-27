@@ -15,27 +15,29 @@ void Variable::setIndex(int index) {
 	this->index = index;
 }
 
-bool Variable::hasEdge(const Variable& end) const {
-	return colors[0].hasConstraint(&end.colors[0]);
+bool Variable::hasConstraint(int color, const Variable& end, int endColor) const {
+	return colors[color].hasConstraint(&end.colors[endColor]);
 }
 
-void Variable::addEdge(Variable& end) {
-	if(hasEdge(end)) {
-		throw "Variable::addEdge: Edge already exists";
-	}
-	for(int i = 0; i < 3; i++) {
-		colors[i].addConstraint(&end.colors[i]);
-	}
+bool Variable::hasEdge(const Variable& end) const {
+	return colors[0].hasConstraint(&end.colors[0]);
 }
 
 void Variable::addConstraint(int color, Variable& end, int endColor) {
 	colors[color].addConstraint(&end.colors[endColor]);
 }
 
-void Variable::removeEdge(Variable& end) {
-	if(!hasEdge(end)) {
-		throw "Variable::removeEdge: Edge doesn't exist";
+void Variable::addEdge(Variable& end) {
+	for(int i = 0; i < 3; i++) {
+		colors[i].addConstraint(&end.colors[i]);
 	}
+}
+
+void Variable::removeConstraint(int color, Variable& end, int endColor) {
+	colors[color].removeConstraint(&end.colors[endColor]);
+}
+
+void Variable::removeEdge(Variable& end) {
 	for(int i = 0; i < 3; i++) {
 		colors[i].removeConstraint(&end.colors[i]);
 	}

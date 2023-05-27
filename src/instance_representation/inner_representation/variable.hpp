@@ -12,10 +12,12 @@ public:
 
 	int getIndex();
 	void setIndex(int index);
-
+	
+	bool hasConstraint(int color, const Variable& end, int endColor) const;
 	bool hasEdge(const Variable& end) const;
-	void addEdge(Variable& end);
 	void addConstraint(int color, Variable& end, int endColor);
+	void addEdge(Variable& end);
+	void removeConstraint(int color, Variable& end, int endColor);
 	void removeEdge(Variable& end);
 	std::vector<ConstraintInfo> getConstraints() const;
 	std::vector<int> getNeighbors() const;

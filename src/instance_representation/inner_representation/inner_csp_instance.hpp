@@ -1,8 +1,8 @@
 #ifndef INNER_CSP_INSTANCE
 #define INNER_CSP_INSTANCE
 
-#include "csp_instance.hpp"
-#include "graph.hpp"
+#include "../csp_instance.hpp"
+#include "../graph.hpp"
 #include "variable.hpp"
 #include <vector>
 
@@ -14,8 +14,11 @@ public:
 
 	// CSP interface
 	virtual int getVariableCount() const override;
-
-	virtual void addConstraint(const ConstraintInfo& constraint) override;
+	virtual void removeVariable(int variable) override;
+	
+	virtual bool hasConstraint(int startVariable, int startColor, int endVariable, int endColor) const override;
+	virtual void addConstraint(int startVariable, int startColor, int endVariable, int endColor) override;
+	virtual void removeConstraint(int startVariable, int startColor, int endVariable, int endColor) override;
 
 	// Graph interface
 	virtual int getVertexCount() const override;
@@ -26,6 +29,7 @@ public:
 	virtual void addEdge(int start, int end) override;
 	virtual void removeEdge(int start, int end) override;
 
+	void error(const char* errorMsg) const;
 	~InnerCSPInstance();
 };
 

@@ -1,13 +1,17 @@
 #ifndef CSP_INSTANCE
 #define CSP_INSTANCE
 
-#include "constraint_info.hpp"
-
 class CSPInstance {
 public:
-	virtual int getVariableCount() const = 0;
+	static CSPInstance* create(int variables);
+	static CSPInstance* copy(CSPInstance* cspInstance);
 
-	virtual void addConstraint(const ConstraintInfo& constraint) = 0;
+	virtual int getVariableCount() const = 0;
+	virtual void removeVariable(int vertex) = 0;
+	
+	virtual bool hasConstraint(int startVariable, int startColor, int endVariable, int endColor) const = 0;
+	virtual void addConstraint(int startVariable, int startColor, int endVariable, int endColor) = 0;
+	virtual void removeConstraint(int startVariable, int startColor, int endVariable, int endColor) = 0;
 };
 
 #endif

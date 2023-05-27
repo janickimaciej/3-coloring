@@ -1,7 +1,7 @@
 #include "graph.hpp"
-#include "inner_csp_instance.hpp"
+#include "inner_representation/inner_csp_instance.hpp"
 
-Graph* Graph::createGraph(int vertices) {
+Graph* Graph::create(int vertices) {
 	return new InnerCSPInstance(vertices);
 }
 
