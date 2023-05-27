@@ -2,17 +2,17 @@
 #define VARIABLE
 
 #include "color.hpp"
+#include <vector>
 
 class Variable {
-	Variable* next = nullptr;
-	Color colors[4];
+	std::vector<Color> colors = std::vector<Color>(4, Color(*this));
 public:
-	bool exists = true;
-	void setNext(Variable* next);
+	int index;
 
 	bool hasEdge(const Variable& end) const;
 	void addEdge(Variable& end);
 	void removeEdge(Variable& end);
+	std::vector<int> getNeighbors() const;
 };
 
 #endif

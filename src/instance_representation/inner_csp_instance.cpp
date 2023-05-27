@@ -1,28 +1,54 @@
 #include "inner_csp_instance.hpp"
 
-InnerCSPInstance::InnerCSPInstance(int variableCount) {
-	this->variableCount = variableCount;
-	variables = new Variable[variableCount];
-	for(int i = 0; i < variableCount - 1; i++) {
-		variables[i].setNext(&variables[i + 1]);
+InnerCSPInstance::InnerCSPInstance(int variableCount) : variables(variableCount) {
+	for(int i = 0; i < variables.size(); i++) {
+		variables[i].index = i;
 	}
-	head = &variables[0];
-	tail = &variables[variableCount - 1];
 }
 
-int InnerCSPInstance::getVertexCount() {
-	return variableCount;
+InnerCSPInstance::InnerCSPInstance(const InnerCSPInstance& cspInstance) : InnerCSPInstance(cspInstance.getVariableCount()) {
+	for(int variable = 0; variable < variables.size(); variable++) {
+		std::vector<int> neighbors = cspInstance.variables[variable].getNeighbors();
+		for(int neighbor = 0; neighbor < neighbors.size(); neighbor++) {
+			this->addEdge(variable, neighbor);
+		}
+	}
+}
+
+int InnerCSPInstance::getVariableCount() const {
+	return variables.size();
+}
+
+int InnerCSPInstance::getVertexCount() const {
+	return variables.size();
+}
+
+std::vector<int> InnerCSPInstance::getNeighbors(int vertex) const {
+	if(vertex < 0 || vertex >= variables.size()) {
+		throw "InnerCSPInstance::getNeighbors: Vertex doesn't exist";
+	}
+	return variables[vertex].getNeighbors();
+}
+
+void InnerCSPInstance::removeVertex(int vertex) {
+	if(vertex < 0 || vertex >= variables.size()) {
+		throw "InnerCSPInstance::removeVertex: Vertex doesn't exist";
+	}
+	variables.erase(variables.begin() + vertex);
+	for(int i = vertex; i < variables.size(); i++) {
+		variables[i].index = i;
+	}
 }
 
 bool InnerCSPInstance::hasEdge(int start, int end) {
-	if(start < 0 || start >= variableCount || end < 0 || end >= variableCount) {
+	if(start < 0 || start >= variables.size() || end < 0 || end >= variables.size()) {
 		throw "InnerCSPInstance::hasEdge: Vertex index out of bounds";
 	}
 	return variables[start].hasEdge(variables[end]);
 }
 
 void InnerCSPInstance::addEdge(int start, int end) {
-	if(start < 0 || start >= variableCount || end < 0 || end >= variableCount) {
+	if(start < 0 || start >= variables.size() || end < 0 || end >= variables.size()) {
 		throw "InnerCSPInstance::addEdge: Vertex index out of bounds";
 	}
 	if(hasEdge(start, end)) {
@@ -32,7 +58,7 @@ void InnerCSPInstance::addEdge(int start, int end) {
 }
 
 void InnerCSPInstance::removeEdge(int start, int end) {
-	if(start < 0 || start >= variableCount || end < 0 || end >= variableCount) {
+	if(start < 0 || start >= variables.size() || end < 0 || end >= variables.size()) {
 		throw "InnerCSPInstance::removeEdge: Vertex index out of bounds";
 	}
 	if(!hasEdge(start, end)) {

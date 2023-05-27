@@ -5,13 +5,11 @@
 using namespace std;
 
 int main() {
-	Graph* G = Graph::createGraph(10);
-	cout << G->hasEdge(3, 5) << endl;
-	G->addEdge(3, 5);
-	cout << G->hasEdge(3, 5) << endl;
-	G->removeEdge(3, 5);
-	cout << G->hasEdge(3, 5) << endl;
-
-	G6Parser parser;
-	parser.openFile();
+	Graph* G = Graph::createGraph(5);
+	G->addEdge(2, 4);
+	G->addEdge(2, 1);
+	std::vector<int> neighbors = G->getNeighbors(2);
+	for(int i = 0; i < neighbors.size(); i++) {
+		cout << neighbors[i] << endl;
+	}
 }

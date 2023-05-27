@@ -4,19 +4,25 @@
 #include "csp_instance.hpp"
 #include "graph.hpp"
 #include "variable.hpp"
+#include <vector>
 
 class InnerCSPInstance : public Graph, public CSPInstance {
-	int variableCount;
-	Variable* variables;
-	Variable* head;
-	Variable* tail;
+	std::vector<Variable> variables;
 public:
 	InnerCSPInstance(int vertices);
-	virtual int getVertexCount();
+	InnerCSPInstance(const InnerCSPInstance& cspInstance);
+
+	// CSP interface
+	virtual int getVariableCount() const override;
+
+	// Graph interface
+	virtual int getVertexCount() const override;
+	virtual std::vector<int> getNeighbors(int vertex) const override;
+	virtual void removeVertex(int vertex) override;
 	
-	virtual bool hasEdge(int start, int end);
-	virtual void addEdge(int start, int end);
-	virtual void removeEdge(int start, int end);
+	virtual bool hasEdge(int start, int end) override;
+	virtual void addEdge(int start, int end) override;
+	virtual void removeEdge(int start, int end) override;
 };
 
 #endif

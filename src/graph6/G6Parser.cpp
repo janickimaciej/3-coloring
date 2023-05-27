@@ -19,7 +19,7 @@ void G6Parser::openFile()
 void G6Parser::openFile(string path) {
 	file.open(path, ios::in);
 	if(!file) {
-		cout << "Incorrect file path" << endl;
+		throw "G6Parser::openFile: Incorrect file path";
 	}
 }
 
