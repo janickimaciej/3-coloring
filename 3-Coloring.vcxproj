@@ -137,6 +137,8 @@
   <ItemGroup>
     <ClCompile Include="src\graph6\G6Parser.cpp" />
     <ClCompile Include="src\instance_representation\color.cpp" />
+    <ClCompile Include="src\instance_representation\constraint_info.cpp" />
+    <ClCompile Include="src\instance_representation\constraint_info.hpp" />
     <ClCompile Include="src\instance_representation\graph.cpp" />
     <ClCompile Include="src\instance_representation\inner_csp_instance.cpp" />
     <ClCompile Include="src\instance_representation\variable.cpp" />

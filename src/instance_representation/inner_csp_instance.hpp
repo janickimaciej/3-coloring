@@ -15,6 +15,8 @@ public:
 	// CSP interface
 	virtual int getVariableCount() const override;
 
+	virtual void addConstraint(const ConstraintInfo& constraint) override;
+
 	// Graph interface
 	virtual int getVertexCount() const override;
 	virtual std::vector<int> getNeighbors(int vertex) const override;

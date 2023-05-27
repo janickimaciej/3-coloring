@@ -4,3 +4,7 @@
 Graph* Graph::createGraph(int vertices) {
 	return new InnerCSPInstance(vertices);
 }
+
+Graph* Graph::copy(Graph* graph) {
+	return new InnerCSPInstance(*(InnerCSPInstance*)graph);
+}

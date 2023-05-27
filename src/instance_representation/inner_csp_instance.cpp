@@ -8,15 +8,20 @@ InnerCSPInstance::InnerCSPInstance(int variableCount) : variables(variableCount)
 
 InnerCSPInstance::InnerCSPInstance(const InnerCSPInstance& cspInstance) : InnerCSPInstance(cspInstance.getVariableCount()) {
 	for(int variable = 0; variable < variables.size(); variable++) {
-		std::vector<int> neighbors = cspInstance.variables[variable]->getNeighbors();
-		for(int neighbor = 0; neighbor < neighbors.size(); neighbor++) {
-			this->addEdge(variable, neighbor);
+		std::vector<ConstraintInfo> constraints = cspInstance.variables[variable]->getConstraints();
+		for(int constraint = 0; constraint < constraints.size(); constraint++) {
+			addConstraint(constraints[constraint]);
 		}
 	}
 }
 
 int InnerCSPInstance::getVariableCount() const {
 	return variables.size();
+}
+
+void InnerCSPInstance::addConstraint(const ConstraintInfo& constraint) {
+	variables[constraint.startVariable]->addConstraint(constraint.startColor, *variables[constraint.endVariable],
+		constraint.endColor);
 }
 
 int InnerCSPInstance::getVertexCount() const {

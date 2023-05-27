@@ -6,6 +6,7 @@
 class Graph {
 public:
 	static Graph* createGraph(int vertices);
+	static Graph* copy(Graph* graph);
 
 	virtual int getVertexCount() const = 0;
 	virtual std::vector<int> getNeighbors(int vertex) const = 0;

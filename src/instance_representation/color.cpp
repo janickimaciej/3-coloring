@@ -2,6 +2,10 @@
 #include "variable.hpp"
 #include <iostream>
 
+void Color::setColor(int color) {
+	this->color = color;
+}
+
 void Color::setParent(Variable* parent) {
 	this->parent = parent;
 }
@@ -10,12 +14,18 @@ bool Color::hasConstraint(const Color* color) const {
 	return constraints.find((Color*)color) != constraints.end();
 }
 
+std::vector<ConstraintInfo> Color::getConstraints() const {
+	std::vector<ConstraintInfo> constraintInfos;
+	for(std::set<Color*>::iterator iter = constraints.begin(); iter != constraints.end(); iter++) {
+		constraintInfos.push_back(ConstraintInfo(parent->getIndex(), color, (*iter)->parent->getIndex(), (*iter)->color));
+	}
+	return constraintInfos;
+}
+
 std::vector<int> Color::getNeighbors() const {
 	std::vector<int> neighbors;
-	std::set<Color*>::iterator iter = constraints.begin();
-	while(iter != constraints.end()) {
+	for(std::set<Color*>::iterator iter = constraints.begin(); iter != constraints.end(); iter++) {
 		neighbors.push_back((*iter)->parent->getIndex());
-		iter++;
 	}
 	return neighbors;
 }
@@ -25,7 +35,7 @@ void Color::addConstraint(Color* color) {
 		throw "Color::addConstraint: Color can't be null";
 	}
 	if(hasConstraint(color)) {
-		throw "Color::addConstraint: Constraint already exists";
+		return;
 	}
 	constraints.insert(color);
 	color->constraints.insert(this);
