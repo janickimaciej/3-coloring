@@ -3,6 +3,8 @@
 
 #include "color.hpp"
 #include <vector>
+#include "constraint_info.hpp"
+#include "../color_pair.hpp"
 
 class Variable {
 	Color colors[4];
@@ -20,7 +22,12 @@ public:
 	void removeConstraint(int color, Variable& end, int endColor);
 	void removeEdge(Variable& end);
 	std::vector<ConstraintInfo> getConstraints() const;
+	std::vector<ColorPair> getConstraints(int color) const;
 	std::vector<int> getNeighbors() const;
+
+	bool isColorAvailable(int color) const;
+	std::vector<int> getAvailableColors() const;
+	void disableColor(int color);
 };
 
 #endif

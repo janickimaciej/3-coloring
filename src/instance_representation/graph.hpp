@@ -15,6 +15,11 @@ public:
 	virtual bool hasEdge(int start, int end) = 0;
 	virtual void addEdge(int start, int end) = 0;
 	virtual void removeEdge(int start, int end) = 0;
+
+	virtual bool isColorAvailable(int vertex, int color) const = 0;
+	virtual std::vector<int> getAvailableColors(int vertex) const = 0;
+	virtual void disableColor(int vertex, int color) = 0;
+	virtual void setColor(int vertex, int color) = 0;
 };
 
 #endif

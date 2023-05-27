@@ -12,8 +12,13 @@ public:
 	InnerCSPInstance(int vertices);
 	InnerCSPInstance(const InnerCSPInstance& cspInstance);
 
+	void error(const char* errorMsg) const;
+
+	~InnerCSPInstance();
+
 	// CSP interface
 	virtual int getVariableCount() const override;
+	virtual std::vector<ColorPair> getConstraints(int variable, int color) const;
 	virtual void removeVariable(int variable) override;
 	
 	virtual bool hasConstraint(int startVariable, int startColor, int endVariable, int endColor) const override;
@@ -29,8 +34,11 @@ public:
 	virtual void addEdge(int start, int end) override;
 	virtual void removeEdge(int start, int end) override;
 
-	void error(const char* errorMsg) const;
-	~InnerCSPInstance();
+	// Common interface
+	virtual bool isColorAvailable(int variable, int color) const override;
+	virtual std::vector<int> getAvailableColors(int variable) const override;
+	virtual void disableColor(int variable, int color) override;
+	virtual void setColor(int variable, int color) override;
 };
 
 #endif

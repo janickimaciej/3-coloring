@@ -3,7 +3,7 @@
 
 #include <set>
 #include <vector>
-#include "constraint_info.hpp"
+#include "../color_pair.hpp"
 
 class Variable;
 
@@ -18,7 +18,7 @@ public:
 	void setParent(Variable* parent);
 
 	bool hasConstraint(const Color* color) const;
-	std::vector<ConstraintInfo> getConstraints() const;
+	std::vector<ColorPair> getConstraints() const;
 	std::vector<int> getNeighbors() const;
 	void addConstraint(Color* color);
 	void removeConstraint(Color* color);

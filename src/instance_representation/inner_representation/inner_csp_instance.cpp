@@ -21,8 +21,23 @@ InnerCSPInstance::InnerCSPInstance(const InnerCSPInstance& cspInstance) : InnerC
 	}
 }
 
+void InnerCSPInstance::error(const char* errorMsg) const {
+	std::cerr << errorMsg << std::endl;
+	throw std::invalid_argument(errorMsg);
+}
+
+InnerCSPInstance::~InnerCSPInstance() {
+	for(int i = 0; i < variables.size(); i++) {
+		delete variables[i];
+	}
+}
+
 int InnerCSPInstance::getVariableCount() const {
 	return variables.size();
+}
+
+std::vector<ColorPair> InnerCSPInstance::getConstraints(int variable, int color) const {
+	return variables[variable]->getConstraints(color);
 }
 
 void InnerCSPInstance::removeVariable(int variable) {
@@ -114,13 +129,49 @@ void InnerCSPInstance::removeEdge(int start, int end) {
 	variables[start]->removeEdge(*variables[end]);
 }
 
-void InnerCSPInstance::error(const char* errorMsg) const {
-	std::cerr << errorMsg << std::endl;
-	throw std::invalid_argument(errorMsg);
+bool InnerCSPInstance::isColorAvailable(int variable, int color) const {
+	if(variable < 0 || variable >= variables.size()) {
+		error("isColorAvailable: Vertex index out of bounds");
+	}
+	if(color < 0 || color >= 4) {
+		error("isColorAvailable: Color index of bounds");
+	}
+	return variables[variable]->isColorAvailable(color);
 }
 
-InnerCSPInstance::~InnerCSPInstance() {
-	for(int i = 0; i < variables.size(); i++) {
-		delete variables[i];
+std::vector<int> InnerCSPInstance::getAvailableColors(int variable) const {
+	return variables[variable]->getAvailableColors();
+}
+
+void InnerCSPInstance::disableColor(int variable, int color) {
+	if(variable < 0 || variable >= variables.size()) {
+		error("disableColor: Vertex index out of bounds");
+	}
+	if(color < 0 || color >= 4) {
+		error("disableColor: Color index of bounds");
+	}
+	if(!isColorAvailable(variable, color)) {
+		error("disableColor: Color is unavailable");
+	}
+	variables[variable]->disableColor(color);
+}
+
+void InnerCSPInstance::setColor(int variable, int color) {
+	if(variable < 0 || variable >= variables.size()) {
+		error("disableColor: Vertex index out of bounds");
+	}
+	if(color < 0 || color >= 4) {
+		error("disableColor: Color index of bounds");
+	}
+	if(!isColorAvailable(variable, color)) {
+		error("disableColor: Color is unavailable");
+	}
+	for(int i = 0; i < 4; i++) {
+		if(i == color) {
+			continue;
+		}
+		if(isColorAvailable(variable, color)) {
+			variables[variable]->disableColor(i);
+		}
 	}
 }

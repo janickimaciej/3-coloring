@@ -11,15 +11,18 @@ void Color::setParent(Variable* parent) {
 }
 
 bool Color::hasConstraint(const Color* color) const {
+	if(!isAvailable) {
+		return false;
+	}
 	return constraints.find((Color*)color) != constraints.end();
 }
 
-std::vector<ConstraintInfo> Color::getConstraints() const {
-	std::vector<ConstraintInfo> constraintInfos;
+std::vector<ColorPair> Color::getConstraints() const {
+	std::vector<ColorPair> colorPairs;
 	for(std::set<Color*>::iterator iter = constraints.begin(); iter != constraints.end(); iter++) {
-		constraintInfos.push_back(ConstraintInfo(parent->getIndex(), color, (*iter)->parent->getIndex(), (*iter)->color));
+		colorPairs.push_back(ColorPair((*iter)->parent->getIndex(), (*iter)->color));
 	}
-	return constraintInfos;
+	return colorPairs;
 }
 
 std::vector<int> Color::getNeighbors() const {
