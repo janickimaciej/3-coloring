@@ -7,11 +7,17 @@ class CycleReduction
 {
 private:
 	Graph* graph;
-	bool* visited;
+	int n;
+
 	std::vector<int>* neighbours;
-	int v;
+	bool* visited;
 	int* parents;
+	bool* toDeletion;
+	bool* threes;
 	std::vector<int> cycle;
+
+	bool hasReduced;
+	int v;
 
 	bool cycleRec(int curr, int parent);
 	void deleteCycle(int start, int end);
@@ -19,7 +25,8 @@ public:
 
 	CycleReduction(Graph* graph);
 	~CycleReduction();
-	bool hasCycle();
+	void Update();
+	bool Reduce();
 
 
 
