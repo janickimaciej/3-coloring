@@ -8,3 +8,5 @@ Graph* Graph::create(int vertices) {
 Graph* Graph::copy(const Graph* graph) {
 	return new InnerRepresentation::InnerCSPInstance(*(InnerRepresentation::InnerCSPInstance*)graph);
 }
+
+Graph::~Graph() { }

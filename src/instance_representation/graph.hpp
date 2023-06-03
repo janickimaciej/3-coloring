@@ -22,6 +22,8 @@ public:
 	virtual std::vector<int> getAvailableColors(int vertex) const = 0;
 	virtual void disableColor(int vertex, int color) = 0;
 	virtual void setColor(int vertex, int color) = 0;
+
+	virtual ~Graph();
 };
 
 #endif

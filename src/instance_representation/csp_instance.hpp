@@ -23,6 +23,8 @@ public:
 	virtual std::vector<int> getAvailableColors(int variable) const = 0;
 	virtual void disableColor(int variable, int color) = 0;
 	virtual void setColor(int variable, int color) = 0;
+
+	virtual ~CSPInstance();
 };
 
 #endif

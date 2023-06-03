@@ -133,6 +133,7 @@
     <ClInclude Include="src\instance_representation\inner_representation\color.hpp" />
     <ClInclude Include="src\instance_representation\csp_instance.hpp" />
     <ClInclude Include="src\instance_representation\graph.hpp" />
+    <ClInclude Include="src\instance_representation\inner_representation\constraint_info.hpp" />
     <ClInclude Include="src\instance_representation\inner_representation\inner_csp_instance.hpp" />
     <ClInclude Include="src\instance_representation\inner_representation\variable.hpp" />
   </ItemGroup>
@@ -142,7 +143,6 @@
     <ClCompile Include="src\instance_representation\color_pair.cpp" />
     <ClCompile Include="src\instance_representation\inner_representation\color.cpp" />
     <ClCompile Include="src\instance_representation\inner_representation\constraint_info.cpp" />
-    <ClCompile Include="src\instance_representation\inner_representation\constraint_info.hpp" />
     <ClCompile Include="src\instance_representation\csp_instance.cpp" />
     <ClCompile Include="src\instance_representation\graph.cpp" />
     <ClCompile Include="src\instance_representation\inner_representation\inner_csp_instance.cpp" />

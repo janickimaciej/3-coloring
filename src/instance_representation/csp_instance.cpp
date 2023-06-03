@@ -8,3 +8,5 @@ CSPInstance* CSPInstance::create(int variables) {
 CSPInstance* CSPInstance::copy(const CSPInstance* cspInstance) {
 	return new InnerRepresentation::InnerCSPInstance(*(InnerRepresentation::InnerCSPInstance*)cspInstance);
 }
+
+CSPInstance::~CSPInstance() { }

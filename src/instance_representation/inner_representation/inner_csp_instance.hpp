@@ -16,7 +16,7 @@ namespace InnerRepresentation {
 		void copyColoring(const InnerCSPInstance* reducedCSPInstance, std::vector<int> removedVariables);
 		void error(const char* errorMsg) const;
 
-		~InnerCSPInstance();
+		virtual ~InnerCSPInstance();
 
 		// CSP interface
 		virtual void copyColoring(const CSPInstance* reducedCSPInstance, std::vector<int> removedVariables) override;

@@ -19,6 +19,7 @@ int main() {
 	G2->setColor(2, 2);
 
 	G1->copyColoring(G2, removedVertices);
+	delete G2;
 
 	for(int i = 0; i < 4; i++) { // print available colors for each vertex
 		vector<int> colors = G1->getAvailableColors(i);
@@ -28,4 +29,6 @@ int main() {
 		}
 		cout << endl;
 	}
+
+	delete G1;
 }
