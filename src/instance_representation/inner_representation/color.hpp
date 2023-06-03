@@ -5,26 +5,28 @@
 #include <vector>
 #include "../color_pair.hpp"
 
-class Variable;
+namespace InnerRepresentation {
+	class Variable;
 
-class Color {
-	int color;
-	Variable* parent;
-	std::set<Color*> constraints;
-public:
-	bool isAvailable = true;
+	class Color {
+		const int color;
+		const Variable* const parent;
+		std::set<Color*> constraints;
+		bool isAvailable;
+	public:
+		Color(int color, const Variable* parent, bool isAvailable);
 
-	void setColor(int color);
-	void setParent(Variable* parent);
+		bool hasConstraint(const Color* color) const;
+		std::vector<ColorPair> getConstraints() const;
+		std::vector<int> getNeighbors() const;
+		void addConstraint(Color* color);
+		void removeConstraint(Color* color);
+		void clearConstraints();
+		bool getIsAvailable() const;
+		void disable();
 
-	bool hasConstraint(const Color* color) const;
-	std::vector<ColorPair> getConstraints() const;
-	std::vector<int> getNeighbors() const;
-	void addConstraint(Color* color);
-	void removeConstraint(Color* color);
-	void clearConstraints();
-
-	~Color();
-};
+		~Color();
+	};
+}
 
 #endif

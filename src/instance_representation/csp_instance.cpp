@@ -2,9 +2,9 @@
 #include "inner_representation/inner_csp_instance.hpp"
 
 CSPInstance* CSPInstance::create(int variables) {
-	return new InnerCSPInstance(variables);
+	return new InnerRepresentation::InnerCSPInstance(variables);
 }
 
-CSPInstance* CSPInstance::copy(CSPInstance* cspInstance) {
-	return new InnerCSPInstance(*(InnerCSPInstance*)cspInstance);
+CSPInstance* CSPInstance::copy(const CSPInstance* cspInstance) {
+	return new InnerRepresentation::InnerCSPInstance(*(InnerRepresentation::InnerCSPInstance*)cspInstance);
 }
