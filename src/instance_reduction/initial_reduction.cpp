@@ -11,7 +11,7 @@ std::vector<Graph*>* InitialReduction::Reduce()
 	while (1)
 	{
 		cycle.setTarget(i);
-		low = LowReduction(instances[i]);
+		low.Set(instances[i]);
 		while (1)
 		{
 			low.Reduce();
