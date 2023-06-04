@@ -5,7 +5,8 @@
 
 class LowReduction
 {
-private:
+private: 
+
 	Graph* g;
 	bool* toDeletion;
 	int* degrees;

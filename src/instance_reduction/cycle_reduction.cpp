@@ -77,33 +77,36 @@ void CycleReduction::deleteCycle(int start, int end)
 {
 	while (start != end)
 	{
-		std::cout << start << " ";
 		toDeletion[start] = true;
 		cycle.push_back(start);
 		start = parents[start];
 	}
 	toDeletion[end] = true;
 	cycle.push_back(end);
-	std::cout << end << "\n";
 
+
+	int w1, w2, w3;
+	
 	// Option: cycle is even
 	if (cycle.size() % 2 == 0)
 	{
 		// Delete All
+		Clear();
 		return;
 	}
 
 	// Option: two neighbours of the cycle are connected
-	for (int i = 0; i < cycle.size(); i++)
+	w1 = findNeighbour(cycle[0]);
+	for (int i = 1; i <= cycle.size(); i++)
 	{
-		for (int ver : neighbours[cycle[i]])
+		w2 = findNeighbour(cycle[i % cycle.size()]);
+		if (graph->hasEdge(w1, w2))
 		{
-			if (graph->hasEdge(ver, cycle[(i + 1) % cycle.size()]))
-			{
-				// Delete All
-				return;
-			}
+			// Delete All
+			Clear();
+			return;
 		}
+		w1 = w2;
 	}
 
 
@@ -116,6 +119,18 @@ void CycleReduction::Clear()
 		if (toDeletion[i]) graph->removeVertex(i);
 	}
 }
+
+int CycleReduction::findNeighbour(int cycleVer)
+{
+	for (int ver : neighbours[cycleVer])
+	{
+		if (!toDeletion[ver])
+		{
+			return ver;
+		}
+	}
+}
+
 
 void CycleReduction::Update()
 {
