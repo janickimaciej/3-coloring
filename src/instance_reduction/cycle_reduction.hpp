@@ -24,7 +24,6 @@ private:
 	void deleteCycle(int start, int end);
 	void Clear();
 	void Clear(Graph* g);
-	void setTarget(int target);
 	int findNeighbour(int cycleVer);
 public:
 

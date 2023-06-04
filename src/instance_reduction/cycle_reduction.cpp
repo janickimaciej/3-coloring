@@ -1,5 +1,6 @@
 #include "cycle_reduction.hpp"
 #include <iostream>
+#include "../graph6/G6Parser.hpp"
 
 
 
@@ -7,7 +8,6 @@ CycleReduction::CycleReduction(std::vector<Graph*>* instances)
 {
 	this->instances = instances;
 	setTarget(0);
-	this->instances->push_back(instances->at(0));
 }
 
 void CycleReduction::setTarget(int g)
@@ -64,10 +64,15 @@ bool CycleReduction::cycleRec(int curr, int parent)
 		if (v == parent) continue;
 		if (visited[v])
 		{
-			std::cout << "Start cycle " << curr << " end cycle " << v << "\n";
 			deleteCycle(curr, v);
 			return true;
 		}
+	}
+	for (int i = 0; i < neighbours[curr].size(); i++)
+	{
+		v = neighbours[curr][i];
+		if (!threes[v]) continue;
+		if (v == parent) continue;
 		if (cycleRec(v, curr)) return true;
 	}
 	return false;
@@ -169,7 +174,7 @@ void CycleReduction::deleteCycle(int start, int end)
 	Clear(newInst);
 
 	// merge three neighbours
-
+	instances->push_back(Graph::copy(graph));
 	w3 = findNeighbour(cycle[2]);
 	graph->addVertex();
 	for (int ver : neighbours[w1])
@@ -184,12 +189,19 @@ void CycleReduction::deleteCycle(int start, int end)
 	{
 		graph->addEdge(n, ver);
 	}
-	graph->addEdge(n, findNeighbour(cycle[2]));
+	graph->addVertex();
+	graph->addEdge(n, n + 1);
+	graph->addEdge(n + 1, cycle[3]);
+	graph->addEdge(n + 1, cycle[cycle.size() - 1]);
 
-	for (int i = 2; i < cycle.size(); i++)
+
+	for (int i = 3; i < cycle.size(); i++)
 	{
 		toDeletion[cycle[i]] = false;
 	}
+	toDeletion[w1] = true;
+	toDeletion[w2] = true;
+	toDeletion[w3] = true;
 
 	Clear();
 
@@ -247,7 +259,7 @@ void CycleReduction::Update()
 		if (neighbours[i].size() == 3) threes[i] = true;
 		else threes[i] = false;
 	}
-	for (int i = 0; i < n; i++)
+	/*for (int i = 0; i < n; i++)
 	{
 		std::cout << i << ": ";
 		for (int ver : neighbours[i])
@@ -255,7 +267,7 @@ void CycleReduction::Update()
 			std::cout << ver << " ";
 		}
 		std::cout << "\n";
-	}
+	}*/
 	v = 0;
 }
 

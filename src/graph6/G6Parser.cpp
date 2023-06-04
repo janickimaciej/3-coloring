@@ -30,6 +30,37 @@ Graph* G6Parser::parse()
 	return graph;
 }
 
+void G6Parser::parseBack(Graph* g)
+{
+	int n = g->getVertexCount();
+	cout << (char)(n + 63);
+	int b = 5;
+	int code = 0;
+	for (int i = 1; i < n; i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			if (g->hasEdge(i, j))
+			{
+				code |= (1 << b);
+			}
+			b--;
+			if (b < 0)
+			{
+				cout << (char)(code + 63);
+				b = 5;
+				code = 0;
+			}
+		}
+	}
+	if (b != 5)
+	{
+		cout << (char)(code + 63);
+	}
+	cout << "\n";
+	
+}
+
 void G6Parser::createGraph()
 {
 	int n;
