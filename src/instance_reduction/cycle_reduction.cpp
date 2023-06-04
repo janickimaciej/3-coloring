@@ -109,6 +109,89 @@ void CycleReduction::deleteCycle(int start, int end)
 		w1 = w2;
 	}
 
+	Graph* newInst;
+
+	// Option: cycle length three
+	if (cycle.size() == 3)
+	{
+
+		// link two neighbours
+		newInst = Graph::copy(graph);
+		instances->push_back(newInst);
+		w1 = findNeighbour(cycle[0]);
+		w2 = findNeighbour(cycle[1]);
+		newInst->addEdge(w1, w2);
+		Clear(newInst);
+
+		// merge neighbours
+		graph->addVertex();
+		for (int ver : neighbours[w1])
+		{
+			graph->addEdge(n, ver);
+		}
+		for (int ver : neighbours[w2])
+		{
+			graph->addEdge(n, ver);
+		}
+		graph->addEdge(n, findNeighbour(cycle[2]));
+		toDeletion[w1] = true;
+		toDeletion[w2] = true;
+		Clear();
+		return;
+	}
+
+	// Option: cycle length > 3 and odd
+	
+	// add edge to two neighbours
+	newInst = Graph::copy(graph);
+	instances->push_back(newInst);
+	w1 = findNeighbour(cycle[0]);
+	w2 = findNeighbour(cycle[1]);
+	newInst->addEdge(w1, w2);
+	Clear(newInst);
+
+	// merge two neighbours
+
+	newInst = Graph::copy(graph);
+	instances->push_back(newInst);
+	newInst->addVertex();
+	for (int ver : neighbours[w1])
+	{
+		newInst->addEdge(n, ver);
+	}
+	for (int ver : neighbours[w2])
+	{
+		newInst->addEdge(n, ver);
+	}
+	newInst->addEdge(n, findNeighbour(cycle[2]));
+	toDeletion[w1] = true;
+	toDeletion[w2] = true;
+	Clear(newInst);
+
+	// merge three neighbours
+
+	w3 = findNeighbour(cycle[2]);
+	graph->addVertex();
+	for (int ver : neighbours[w1])
+	{
+		graph->addEdge(n, ver);
+	}
+	for (int ver : neighbours[w2])
+	{
+		graph->addEdge(n, ver);
+	}
+	for (int ver : neighbours[w3])
+	{
+		graph->addEdge(n, ver);
+	}
+	graph->addEdge(n, findNeighbour(cycle[2]));
+
+	for (int i = 2; i < cycle.size(); i++)
+	{
+		toDeletion[cycle[i]] = false;
+	}
+
+	Clear();
 
 }
 
@@ -117,6 +200,14 @@ void CycleReduction::Clear()
 	for (int i = n - 1; i >= 0; i--)
 	{
 		if (toDeletion[i]) graph->removeVertex(i);
+	}
+}
+
+void CycleReduction::Clear(Graph* g)
+{
+	for (int i = n - 1; i >= 0; i--)
+	{
+		if (toDeletion[i]) g->removeVertex(i);
 	}
 }
 

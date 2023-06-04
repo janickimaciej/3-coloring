@@ -23,7 +23,9 @@ private:
 	bool cycleRec(int curr, int parent);
 	void deleteCycle(int start, int end);
 	void Clear();
+	void Clear(Graph* g);
 	void setTarget(int target);
+	int findNeighbour(int cycleVer);
 public:
 
 	CycleReduction(std::vector<Graph*>* instances);
