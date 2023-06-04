@@ -7,6 +7,7 @@ class CycleReduction
 {
 private:
 	Graph* graph;
+	std::vector<Graph*>* instances;
 	int n;
 
 	std::vector<int>* neighbours;
@@ -21,10 +22,12 @@ private:
 
 	bool cycleRec(int curr, int parent);
 	void deleteCycle(int start, int end);
+	void Clear();
 public:
 
-	CycleReduction(Graph* graph);
-	~CycleReduction();
+	CycleReduction(std::vector<Graph*>* instances);
+	~CycleReduction(); 
+	void setTarget(int g);
 	void Update();
 	bool Reduce();
 

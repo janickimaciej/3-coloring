@@ -3,6 +3,7 @@
 #include "graph6/G6Parser.hpp"
 #include "instance_reduction/cycle_reduction.hpp"
 #include "instance_reduction/low_degree_reduction.hpp"
+#include <vector>
 
 using namespace std;
 
@@ -30,6 +31,10 @@ int main() {
 		cout << "\n";
 	}*/
 	
-	CycleReduction cycle_red(g);
-	cycle_red.reduce();
+	std::vector<Graph*> instances;
+	instances.push_back(g);
+	cout << instances.size() << "\n";
+	CycleReduction cycle(&instances);
+	cout << instances.size() << "\n";
+	
 }

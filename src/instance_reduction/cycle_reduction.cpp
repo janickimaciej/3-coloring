@@ -3,9 +3,16 @@
 
 
 
-CycleReduction::CycleReduction(Graph* graph)
+CycleReduction::CycleReduction(std::vector<Graph*>* instances)
 {
-	this->graph = graph;
+	this->instances = instances;
+	setTarget(0);
+	this->instances->push_back(instances->at(0));
+}
+
+void CycleReduction::setTarget(int g)
+{
+	this->graph = instances->at(g);
 	n = graph->getVertexCount();
 	visited = new bool[n];
 	parents = new int[n];
@@ -83,6 +90,7 @@ void CycleReduction::deleteCycle(int start, int end)
 	if (cycle.size() % 2 == 0)
 	{
 		// Delete All
+		return;
 	}
 
 	// Option: two neighbours of the cycle are connected
@@ -93,8 +101,19 @@ void CycleReduction::deleteCycle(int start, int end)
 			if (graph->hasEdge(ver, cycle[(i + 1) % cycle.size()]))
 			{
 				// Delete All
+				return;
 			}
 		}
+	}
+
+
+}
+
+void CycleReduction::Clear()
+{
+	for (int i = n - 1; i >= 0; i--)
+	{
+		if (toDeletion[i]) graph->removeVertex(i);
 	}
 }
 
@@ -143,3 +162,4 @@ CycleReduction::~CycleReduction()
 	delete[] threes;
 	delete[] toDeletion;
 }
+
