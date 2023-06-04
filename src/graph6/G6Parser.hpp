@@ -18,6 +18,7 @@ public:
 	void openFile();
 	void openFile(std::string path);
 	Graph* parse();
+	static void parseBack(Graph* g);
 };
 
 #endif

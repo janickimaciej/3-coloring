@@ -5,7 +5,7 @@ InitialReduction::InitialReduction(Graph* g) : low(g), cycle(&instances)
 	instances.push_back(g);
 }
 
-void InitialReduction::Reduce()
+std::vector<Graph*>* InitialReduction::Reduce()
 {
 	int i = 0;
 	while (1)
@@ -22,4 +22,6 @@ void InitialReduction::Reduce()
 		i++;
 		if (i > instances.size()) break;
 	}
+	
+	return &instances;
 }
