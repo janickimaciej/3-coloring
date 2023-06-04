@@ -17,6 +17,12 @@ LowReduction::LowReduction(Graph* g)
 	hasReduced = false;
 }
 
+void LowReduction::Set(Graph* g)
+{
+	this->g = g;
+	Update();
+}
+
 LowReduction::~LowReduction()
 {
 	delete[] toDeletion;

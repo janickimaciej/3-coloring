@@ -12,6 +12,15 @@ CycleReduction::CycleReduction(std::vector<Graph*>* instances)
 
 void CycleReduction::setTarget(int g)
 {
+	if (visited != nullptr)
+	{
+		delete[] visited;
+		delete[] neighbours;
+		delete[] parents;
+		delete[] threes;
+		delete[] toDeletion;
+		cycle.clear();
+	}
 	this->graph = instances->at(g);
 	n = graph->getVertexCount();
 	visited = new bool[n];

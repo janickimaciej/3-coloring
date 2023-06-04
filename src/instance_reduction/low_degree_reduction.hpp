@@ -22,5 +22,6 @@ public:
 	~LowReduction();
 	bool Reduce();
 	void Update();
+	void Set(Graph* g);
 };
 #endif // !LOW_RED
