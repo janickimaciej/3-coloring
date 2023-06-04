@@ -67,7 +67,7 @@ void G6Parser::createGraph()
 		}
 	}
 
-	graph = Graph::createGraph(n);
+	graph = Graph::create(n);
 }
 
 void G6Parser::fillEdges()
