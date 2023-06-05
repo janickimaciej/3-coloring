@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\csp\csp_solver.hpp" />
     <ClInclude Include="src\graph6\G6Parser.hpp" />
     <ClInclude Include="src\instance_reduction\cycle_reduction.hpp" />
     <ClInclude Include="src\instance_reduction\initial_reduction.hpp" />
@@ -138,8 +139,10 @@
     <ClInclude Include="src\instance_representation\inner_representation\constraint_info.hpp" />
     <ClInclude Include="src\instance_representation\inner_representation\inner_csp_instance.hpp" />
     <ClInclude Include="src\instance_representation\inner_representation\variable.hpp" />
+    <ClInclude Include="src\csp\result.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\csp\csp_solver.cpp" />
     <ClCompile Include="src\graph6\G6Parser.cpp" />
     <ClCompile Include="src\instance_reduction\cycle_reduction.cpp" />
     <ClCompile Include="src\instance_reduction\initial_reduction.cpp" />

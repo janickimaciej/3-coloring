@@ -6,7 +6,9 @@ CSPInstance* CSPInstance::create(int variables) {
 }
 
 CSPInstance* CSPInstance::copy(const CSPInstance* cspInstance) {
-	return new InnerRepresentation::InnerCSPInstance(*(InnerRepresentation::InnerCSPInstance*)cspInstance);
+	return new InnerRepresentation::InnerCSPInstance(
+		*dynamic_cast<const InnerRepresentation::InnerCSPInstance*>(cspInstance)
+	);
 }
 
 CSPInstance::~CSPInstance() { }
