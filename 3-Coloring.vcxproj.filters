@@ -10,6 +10,8 @@
     <ClInclude Include="src\instance_reduction\cycle_reduction.hpp" />
     <ClInclude Include="src\instance_representation\color_pair.hpp" />
     <ClInclude Include="src\instance_representation\inner_representation\constraint_info.hpp" />
+    <ClInclude Include="src\csp\csp_solver.hpp" />
+    <ClInclude Include="src\csp\result.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\instance_representation\graph.cpp" />
@@ -22,5 +24,6 @@
     <ClCompile Include="src\instance_reduction\cycle_reduction.cpp" />
     <ClCompile Include="src\instance_representation\csp_instance.cpp" />
     <ClCompile Include="src\instance_representation\color_pair.cpp" />
+    <ClCompile Include="src\csp\csp_solver.cpp" />
   </ItemGroup>
 </Project>
