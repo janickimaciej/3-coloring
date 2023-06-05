@@ -2,12 +2,13 @@
 #define CYCLE_RED
 
 #include "../instance_representation/graph.hpp"
+#include "../instance_representation//instance.hpp"
 
 class CycleReduction
 {
 private:
-	Graph* graph;
-	std::vector<Graph*>* instances;
+	Instance* instance;
+	std::vector<Instance*>* instances;
 	int n;
 
 	std::vector<int>* neighbours;
@@ -23,11 +24,11 @@ private:
 	bool cycleRec(int curr, int parent);
 	void deleteCycle(int start, int end);
 	void Clear();
-	void Clear(Graph* g);
+	void Clear(Instance* g);
 	int findNeighbour(int cycleVer);
 public:
 
-	CycleReduction(std::vector<Graph*>* instances);
+	CycleReduction(std::vector<Instance*>* instances);
 	~CycleReduction(); 
 	void setTarget(int g);
 	void Update();

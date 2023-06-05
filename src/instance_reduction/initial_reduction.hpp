@@ -12,11 +12,11 @@ private:
 	LowReduction low;
 	CycleReduction cycle;
 	// TreeReduction if time
-	std::vector<Graph*> instances;
+	std::vector<Instance*> instances;
 
 public:
 	InitialReduction(Graph* g);
-	std::vector<Graph*>* Reduce();
+	std::vector<Instance*>* Reduce();
 };
 
 #endif // !INIT_RED

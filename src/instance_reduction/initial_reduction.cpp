@@ -1,11 +1,11 @@
 #include "initial_reduction.hpp"
 
-InitialReduction::InitialReduction(Graph* g) : low(g), cycle(&instances)
+InitialReduction::InitialReduction(Graph* g) : low(instances[0]), cycle(&instances)
 {
-	instances.push_back(g);
+	instances.push_back(new Instance(g));
 }
 
-std::vector<Graph*>* InitialReduction::Reduce()
+std::vector<Instance*>* InitialReduction::Reduce()
 {
 	int i = 0;
 	while (1)
