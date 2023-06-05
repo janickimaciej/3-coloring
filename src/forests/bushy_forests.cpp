@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-BushyForest::BushyForest(std::vector<Graph*>* instances)
+BushyForest::BushyForest(std::vector<Instance*>* instances)
 {
 	this->instances = instances;
 	setTarget(0);
@@ -27,8 +27,8 @@ void BushyForest::setTarget(int target)
 		delete[] insideNode;
 		forest.clear();
 	}
-	graph = instances->at(target);
-	n = graph->getVertexCount();
+	instance = instances->at(target);
+	n = instance->graph->getVertexCount();
 	inForest = new bool[n];
 	neighbours = new std::vector<int>[n];
 	insideNode = new bool[n];
@@ -36,7 +36,7 @@ void BushyForest::setTarget(int target)
 	{
 		inForest[i] = false;
 		insideNode[i] = false;
-		neighbours[i] = graph->getNeighbors(i);
+		neighbours[i] = instance->graph->getNeighbors(i);
 	}
 	outNeigh = 0;
 }
@@ -88,11 +88,12 @@ void BushyForest::CheckLeaf(int leaf)
 
 void BushyForest::generateInstances()
 {
-	for (int i = n - 1; i >= 0; i++)
+	for (int i = n - 1; i >= 0; i--)
 	{
 		if (inForest[i])
 		{
-			graph->removeVertex(i);
+			instance->innerTree.push_back(instance->indexes[i]);
+			instance->removeVertex(i);
 		}
 	}
 }

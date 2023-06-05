@@ -1,23 +1,23 @@
 #include "low_degree_reduction.hpp"
 #include <iostream>
 
-LowReduction::LowReduction(Graph* g)
+LowReduction::LowReduction(Instance* g)
 {
 	this->g = g;
-	n = g->getVertexCount();
+	n = g->graph->getVertexCount();
 	toDeletion = new bool[n];
 	degrees = new int[n];
 	neighbours = new std::vector<int>[n];
 	for (int i = 0; i < n; i++)
 	{
 		toDeletion[i] = false;
-		neighbours[i] = g->getNeighbors(i);
+		neighbours[i] = g->graph->getNeighbors(i);
 		degrees[i] = neighbours[i].size();
 	}
 	hasReduced = false;
 }
 
-void LowReduction::Set(Graph* g)
+void LowReduction::Set(Instance* g)
 {
 	this->g = g;
 	Update();
@@ -57,14 +57,14 @@ void LowReduction::Update()
 	delete[] degrees;
 	delete[] neighbours;
 
-	n = g->getVertexCount();
+	n = g->graph->getVertexCount();
 	toDeletion = new bool[n];
 	degrees = new int[n];
 	neighbours = new std::vector<int>[n];
 	for (int i = 0; i < n; i++)
 	{
 		toDeletion[i] = false;
-		neighbours[i] = g->getNeighbors(i);
+		neighbours[i] = g->graph->getNeighbors(i);
 		degrees[i] = neighbours[i].size();
 	}
 }

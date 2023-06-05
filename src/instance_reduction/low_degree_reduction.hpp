@@ -2,12 +2,13 @@
 #define LOW_RED
 
 #include "../instance_representation/graph.hpp"
+#include "../instance_representation/instance.hpp"
 
 class LowReduction
 {
 private: 
 
-	Graph* g;
+	Instance* g;
 	bool* toDeletion;
 	int* degrees;
 	std::vector<int>* neighbours;
@@ -18,10 +19,10 @@ private:
 	void ReduceRec(int v);
 
 public:
-	LowReduction(Graph* g);
+	LowReduction(Instance* g);
 	~LowReduction();
 	bool Reduce();
 	void Update();
-	void Set(Graph* g);
+	void Set(Instance* g);
 };
 #endif // !LOW_RED

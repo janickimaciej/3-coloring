@@ -4,12 +4,13 @@
 #include <vector>
 
 #include "../instance_representation/graph.hpp"
+#include "../instance_representation/instance.hpp"
 
 class BushyForest
 {
 private:
-	std::vector<Graph*>* instances;
-	Graph* graph;
+	std::vector<Instance*>* instances;
+	Instance* instance;
 	bool* inForest;
 	bool* insideNode;
 	std::vector<int>* neighbours;
@@ -24,7 +25,7 @@ private:
 	void generateInstances();
 
 public:
-	BushyForest(std::vector<Graph*>* instances);
+	BushyForest(std::vector<Instance*>* instances);
 	void PrepareAll();
 };
 
