@@ -5,6 +5,8 @@ Coloring::Coloring(Graph* graph)
 {
 	this->graph = graph;
 	this->instances = nullptr;
+	this->instance = nullptr;
+	int n = 0;
 }
 
 bool Coloring::Solve()
@@ -30,7 +32,7 @@ bool Coloring::tryToColor(int inst)
 	n = graph->getVertexCount();
 	instance = instances->at(inst);
 	copyColoring();
-	colorForest(0, Graph::copy(graph));
+	return colorForest(0, Graph::copy(graph));
 }
 
 bool Coloring::colorForest(int v, Graph* copy)

@@ -140,7 +140,7 @@ void CycleReduction::deleteCycle(int start, int end)
 		// merge neighbours
 		instance->addVertex();
 		std::vector<int> merge;
-		merge.push_back(instance->indexes[instance->graph->getVertexCount()]);
+		merge.push_back(instance->indexes[n]);
 		merge.push_back(instance->indexes[w1]);
 		merge.push_back(instance->indexes[w2]);
 		instance->superVertices.push_back(merge);
@@ -175,9 +175,9 @@ void CycleReduction::deleteCycle(int start, int end)
 	instances->push_back(newInst);
 	newInst->addVertex();
 	std::vector<int> merge;
-	merge.push_back(instance->indexes[n]);
-	merge.push_back(instance->indexes[w1]);
-	merge.push_back(instance->indexes[w2]);
+	merge.push_back(newInst->indexes[n]);
+	merge.push_back(newInst->indexes[w1]);
+	merge.push_back(newInst->indexes[w2]);
 	newInst->superVertices.push_back(merge);
 	for (int ver : neighbours[w1])
 	{
