@@ -23,7 +23,7 @@ namespace InnerRepresentation {
 			}
 			
 			for(int color = 0; color < 4; color++) {
-				if(!cspInstance.isColorAvailable(variable, color)) {
+				if(!cspInstance.isColorAvailable(variable, color) && isColorAvailable(variable, color)) {
 					disableColor(variable, color);
 				}
 			}
