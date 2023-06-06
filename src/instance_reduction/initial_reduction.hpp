@@ -9,13 +9,14 @@
 class InitialReduction
 {
 private:
-	LowReduction low;
-	CycleReduction cycle;
+	LowReduction* low;
+	CycleReduction* cycle;
 	// TreeReduction if time
 	std::vector<Instance*> instances;
 
 public:
 	InitialReduction(Graph* g);
+	~InitialReduction();
 	std::vector<Instance*>* Reduce();
 };
 

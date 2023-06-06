@@ -7,6 +7,7 @@ Coloring::Coloring(Graph* graph)
 	this->instances = nullptr;
 	this->instance = nullptr;
 	n = 0;
+	solved = false;
 }
 
 bool Coloring::Solve()
@@ -21,6 +22,7 @@ bool Coloring::Solve()
 		result = CSPSolver::solve(dynamic_cast<CSPInstance*>(instances->at(i)->graph));
 		if (result == Result::Success)
 		{
+			solved = true;
 			if (tryToColor(i)) return true;
 		}
 	}
