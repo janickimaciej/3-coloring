@@ -34,3 +34,15 @@ void Instance::addVertex()
 	indexes.push_back(n);
 	n++;
 }
+
+void Instance::giveColor(Graph* g, int v, int color)
+{
+	g->setColor(v, color);
+	for (int ver : g->getNeighbors(v))
+	{
+		if (g->isColorAvailable(ver, color))
+		{
+			g->disableColor(ver, color);
+		}
+	}
+}

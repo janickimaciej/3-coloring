@@ -22,6 +22,8 @@ public:
 
 	void removeVertex(int vertex);
 	void addVertex();
+
+	static void giveColor(Graph* g, int v, int color);
 };
 
 #endif // !INST
