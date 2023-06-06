@@ -14,7 +14,11 @@ bool bruteForce::Solve()
 
 bool bruteForce::tryRec(int v, Graph* copy)
 {
-    if (v == n) return true;
+    if (v == n)
+    {
+        graph = copy;
+        return true;
+    }
 
     if (copy->getAvailableColors(v).size() > 0)
     {
