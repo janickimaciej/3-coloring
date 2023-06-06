@@ -9,14 +9,13 @@
 using namespace std;
 
 int main() {
-	G6Parser parser;
+	//G6Parser parser;
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\cycleTest.g6");
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\lowTest.g6");
-	parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\threesTest.g6");
+	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\threesTest.g6");
 	
-
-	Graph* g = parser.parse();
-	cout << g->getVertexCount() << "\n";
+	//Graph* g = parser.parse();
+	//cout << g->getVertexCount() << "\n";
 	
 	/*LowReduction low_red(g);
 	low_red.Reduce();
@@ -32,11 +31,11 @@ int main() {
 		cout << "\n";
 	}*/
 	
-	std::vector<Graph*> instances;
+	/*std::vector<Graph*> instances;
 	instances.push_back(g);
 	cout << instances.size() << "\n";
 	CycleReduction cycle(&instances);
-	cout << instances.size() << "\n";
+	cout << instances.size() << "\n";*/
 	
 	Graph* G1 = Graph::create(4);
 	G1->addEdge(0, 1);

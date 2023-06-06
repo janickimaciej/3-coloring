@@ -14,11 +14,17 @@ namespace InnerRepresentation {
 		InnerCSPInstance(cspInstance.getVariableCount()) {
 		for(int variable = 0; variable < variables.size(); variable++) {
 			std::vector<ConstraintInfo> constraints = cspInstance.variables[variable]->getConstraints();
-			for(int constraint = 0; constraint < constraints.size(); constraint++) {
-				if(!hasConstraint(constraints[constraint].startVariable, constraints[constraint].startColor,
-					constraints[constraint].endVariable, constraints[constraint].endColor)) {
-					addConstraint(constraints[constraint].startVariable, constraints[constraint].startColor,
-						constraints[constraint].endVariable, constraints[constraint].endColor);
+			for(auto constraint = constraints.begin(); constraint != constraints.end(); constraint++) {
+				if(!hasConstraint(constraint->startVariable, constraint->startColor,
+					constraint->endVariable, constraint->endColor)) {
+					addConstraint(constraint->startVariable, constraint->startColor,
+						constraint->endVariable, constraint->endColor);
+				}
+			}
+			
+			for(int color = 0; color < 4; color++) {
+				if(!cspInstance.isColorAvailable(variable, color)) {
+					disableColor(variable, color);
 				}
 			}
 		}
