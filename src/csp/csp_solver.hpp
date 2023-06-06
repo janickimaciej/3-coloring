@@ -9,8 +9,11 @@ class CSPSolver;
 typedef Result(* Lemma)(CSPInstance*);
 
 class CSPSolver {
-	static const int lemmasCount = 11;
+	static const int lemmasCount = 12;
 	static const Lemma lemmas[lemmasCount];
+
+	static void chooseColorReduce(CSPInstance* reduced, const ColorPair& varCol);
+	static void chooseColorColor(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& varCol);
 
 	static Result lemma0(CSPInstance* cspInstance);
 	static void lemma0Reduce(CSPInstance* reduced, const ColorPair& vR);
@@ -59,8 +62,7 @@ class CSPSolver {
 	static void lemma7Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR,
 		const ColorPair& wR);
 	static void lemma7Branch2Reduce(CSPInstance* reduced, const ColorPair& wR);
-	static void lemma7Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR,
-		const ColorPair& wR);
+	static void lemma7Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& wR);
 
 	static Result lemma8(CSPInstance* cspInstance);
 	static void lemma8Match(const CSPInstance* cspInstance, ColorPair& vR, ColorPair& wR, ColorPair& wB, ColorPair& wG,
@@ -93,6 +95,13 @@ class CSPSolver {
 	static Result lemma10Case2(CSPInstance* cspInstance, const ColorPair& vR, const ColorPair& wR, const ColorPair& xR);
 	static void lemma10Case2Reduce(CSPInstance* reduced, const ColorPair& varR);
 	static void lemma10Case2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& varR);
+
+	static Result lemma11(CSPInstance* cspInstance);
+	static void lemma11Match(const CSPInstance* cspInstance, ColorPair& vR);
+	static void lemma11Branch1Reduce(CSPInstance* reduced, const ColorPair& vR);
+	static void lemma11Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
+	static void lemma11Branch2Reduce(CSPInstance* reduced, const ColorPair& vR);
+	static void lemma11Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
 public:
 	CSPSolver() = delete;
 	~CSPSolver() = delete;
