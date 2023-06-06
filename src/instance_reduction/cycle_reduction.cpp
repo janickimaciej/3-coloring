@@ -7,20 +7,34 @@
 CycleReduction::CycleReduction(std::vector<Instance*>* instances)
 {
 	this->instances = instances;
-	setTarget(0);
+	this->instance = instances->at(0);
+	n = instance->graph->getVertexCount();
+	visited = new bool[n];
+	parents = new int[n];
+	toDeletion = new bool[n];
+	threes = new bool[n];
+	neighbours = new std::vector<int>[n];
+	for (int i = 0; i < n; i++)
+	{
+		visited[i] = false;
+		toDeletion[i] = false;
+		neighbours[i] = instance->graph->getNeighbors(i);
+		if (neighbours[i].size() == 3) threes[i] = true;
+		else threes[i] = false;
+	}
+	v = 0;
+	hasReduced = false;
 }
+
 
 void CycleReduction::setTarget(int g)
 {
-	if (visited != nullptr)
-	{
-		delete[] visited;
-		delete[] neighbours;
-		delete[] parents;
-		delete[] threes;
-		delete[] toDeletion;
-		cycle.clear();
-	}
+	delete[] visited;
+	delete[] neighbours;
+	delete[] parents;
+	delete[] threes;
+	delete[] toDeletion;
+	cycle.clear();
 	this->instance = instances->at(g);
 	n = instance->graph->getVertexCount();
 	visited = new bool[n];
@@ -296,10 +310,13 @@ void CycleReduction::Update()
 
 CycleReduction::~CycleReduction()
 {
-	delete[] visited;
-	delete[] neighbours;
-	delete[] parents;
-	delete[] threes;
-	delete[] toDeletion;
+	if (n != -1)
+	{
+		delete[] visited;
+		delete[] neighbours;
+		delete[] parents;
+		delete[] threes;
+		delete[] toDeletion;
+	}
 }
 

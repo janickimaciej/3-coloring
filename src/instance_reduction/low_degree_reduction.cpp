@@ -17,6 +17,7 @@ LowReduction::LowReduction(Instance* g)
 	hasReduced = false;
 }
 
+
 void LowReduction::Set(Instance* g)
 {
 	this->g = g;

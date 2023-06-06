@@ -10,9 +10,9 @@
 class Coloring
 {
 	std::vector<Instance*>* instances;
-	Graph* graph;
 	Instance* instance;
 	int n;
+	bool solved;
 
 	bool tryToColor(int inst);
 	bool colorForest(int v, Graph* copy);
@@ -21,6 +21,7 @@ class Coloring
 	bool checkRest(Graph* copy);
 
 public:
+	Graph* graph;
 	Coloring(Graph* graph);
 	bool Solve();
 
