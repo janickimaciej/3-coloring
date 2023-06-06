@@ -68,6 +68,7 @@ bool Coloring::colorForest(int v, Graph* copy)
 				if (colorForest(v + 1, g)) return true;
 			}
 		}
+		return false;
 		
 	}
 }
