@@ -12,16 +12,16 @@ namespace InnerRepresentation {
 
 	std::vector<ColorPair> Color::getConstraints() const {
 		std::vector<ColorPair> colorPairs;
-		for(std::set<Color*>::iterator iter = constraints.begin(); iter != constraints.end(); iter++) {
-			colorPairs.push_back(ColorPair((*iter)->parent->getIndex(), (*iter)->color));
+		for(auto constraint = constraints.begin(); constraint != constraints.end(); constraint++) {
+			colorPairs.push_back(ColorPair((*constraint)->parent->getIndex(), (*constraint)->color));
 		}
 		return colorPairs;
 	}
 
 	std::vector<int> Color::getNeighbors() const {
 		std::vector<int> neighbors;
-		for(std::set<Color*>::iterator iter = constraints.begin(); iter != constraints.end(); iter++) {
-			neighbors.push_back((*iter)->parent->getIndex());
+		for(auto constraint = constraints.begin(); constraint != constraints.end(); constraint++) {
+			neighbors.push_back((*constraint)->parent->getIndex());
 		}
 		return neighbors;
 	}
@@ -40,9 +40,10 @@ namespace InnerRepresentation {
 	}
 
 	void Color::clearConstraints() {
-		std::set<Color*>::iterator iter;
-		while((iter = constraints.begin()) != constraints.end()) {
-			removeConstraint(*iter);
+		auto constraint = constraints.begin();
+		while(constraint != constraints.end()) {
+			removeConstraint(*constraint);
+			constraint = constraints.begin();
 		}
 	}
 
