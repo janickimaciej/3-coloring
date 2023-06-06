@@ -3,15 +3,16 @@
 
 #include "../instance_representation/graph.hpp"
 
-class bruteForce
+class BruteForce
 {
 private:
 	int n;
 
 	bool tryRec(int v, Graph* copy);
+	void giveColor(Graph* g, int v, int color);
 
 public:
-	bruteForce(Graph* graph);
+	BruteForce(Graph* graph);
 	bool Solve();
 	Graph* graph;
 };
