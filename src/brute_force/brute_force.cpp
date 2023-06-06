@@ -22,10 +22,10 @@ bool BruteForce::tryRec(int v, Graph* copy)
 
     if (copy->getAvailableColors(v).size() > 0)
     {
-        std::vector<int> colors = copy->getAvailableColors(0);
+        /*std::vector<int> colors = copy->getAvailableColors(0);
         std::vector<int> colors2 = copy->getAvailableColors(1);
         std::vector<int> colors3 = copy->getAvailableColors(2);
-        int a = 5;
+        int a = 5;*/
         for (int color : copy->getAvailableColors(v))
         {
             Graph* g = Graph::copy(copy);

@@ -6,7 +6,7 @@ Coloring::Coloring(Graph* graph)
 	this->graph = graph;
 	this->instances = nullptr;
 	this->instance = nullptr;
-	int n = 0;
+	n = 0;
 }
 
 bool Coloring::Solve()
@@ -50,7 +50,7 @@ bool Coloring::colorForest(int v, Graph* copy)
 			for (int color : copy->getAvailableColors(ver))
 			{
 				g = Graph::copy(copy);
-				g->setColor(ver, color);
+				Instance::giveColor(g, ver, color);
 				if (colorForest(v + 1, g)) return true;
 			}
 		}
@@ -63,7 +63,7 @@ bool Coloring::colorForest(int v, Graph* copy)
 				g = Graph::copy(copy);
 				for (int mer : unMerged)
 				{
-					g->setColor(mer, color);
+					Instance::giveColor(g, mer, color);
 				}
 				if (colorForest(v + 1, g)) return true;
 			}
@@ -80,7 +80,7 @@ void Coloring::copyColoring()
 		int color = instance->graph->getAvailableColors(i).at(0);
 		if (instance->indexes[i] < n)
 		{
-			graph->setColor(instance->indexes[i], color);
+			Instance::giveColor(graph, instance->indexes[i], color);
 		}
 		else
 		{
@@ -88,7 +88,7 @@ void Coloring::copyColoring()
 			unMerge(instance->indexes[i], &unmerged);
 			for (int ver : unmerged)
 			{
-				graph->setColor(ver, color);
+				Instance::giveColor(graph, ver, color);
 			}
 		}
 		
@@ -126,7 +126,7 @@ bool Coloring::checkRest(Graph* copy)
 		{
 			if (copy->getAvailableColors(ver).size() > 0)
 			{
-				copy->setColor(ver, copy->getAvailableColors(ver).at(0));
+				Instance::giveColor(copy, ver, copy->getAvailableColors(ver).at(0));
 			}
 			else return false;
 		}
@@ -138,7 +138,7 @@ bool Coloring::checkRest(Graph* copy)
 			{
 				if (copy->getAvailableColors(mer).size() > 0)
 				{
-					copy->setColor(mer, copy->getAvailableColors(mer).at(0));
+					Instance::giveColor(copy, mer, copy->getAvailableColors(mer).at(0));
 				}
 				else return false;
 			}

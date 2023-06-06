@@ -5,43 +5,32 @@
 #include "instance_reduction/cycle_reduction.hpp"
 #include "instance_reduction/low_degree_reduction.hpp"
 #include <vector>
+#include "brute_force/brute_force.hpp"
 
 using namespace std;
 
 int main() {
-	//G6Parser parser;
+	G6Parser parser;
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\cycleTest.g6");
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\lowTest.g6");
-	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\threesTest.g6");
+	parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\bruteCheck.g6");
 	
-	//Graph* g = parser.parse();
-	//cout << g->getVertexCount() << "\n";
+	Graph* g = parser.parse();
+	cout << g->getVertexCount() << "\n";
 	
-	/*LowReduction low_red(g);
-	low_red.Reduce();
-
-	cout << "\n";
-	for (int i = 0; i < g->getVertexCount(); i++)
+	BruteForce brute(g);
+	if (brute.Solve())
 	{
-		cout << i << ": ";
-		for (int v : g->getNeighbors(i))
+		cout << "solved\n";
+		for (int i = 0; i < brute.graph->getVertexCount(); i++)
 		{
-			cout << v << " ";
+			cout << i << ": " << brute.graph->getAvailableColors(i).at(0) << "\n";
 		}
-		cout << "\n";
-	}*/
+	}
+	else
+	{
+		cout << "not solved\n";
+	}
 	
-	/*std::vector<Graph*> instances;
-	instances.push_back(g);
-	cout << instances.size() << "\n";
-	CycleReduction cycle(&instances);
-	cout << instances.size() << "\n";*/
 	
-	Graph* G1 = Graph::create(4);
-	G1->addEdge(0, 1);
-	G1->addEdge(0, 2);
-	G1->addEdge(0, 3);
-	
-	cout << (bool)CSPSolver::solve(dynamic_cast<CSPInstance*>(G1)) << endl;
-	delete G1;
 }
