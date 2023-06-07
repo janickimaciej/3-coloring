@@ -80,16 +80,47 @@ void K() {
 }
 
 void M() {
-	Graph* G1 = Graph::create(4);
-	G1->addEdge(0, 1);
-	G1->addEdge(0, 2);
-	G1->addEdge(0, 3);
+	G6Parser parser;
+
+	vector<string> files;
+	vector<int> edges;
 	
-	cout << (bool)CSPSolver::solve(dynamic_cast<CSPInstance*>(G1)) << endl;
-	delete G1;
+	files.push_back("D:\\Downloads\\n5e7.g6");
+	edges.push_back(7);
+	files.push_back("D:\\Downloads\\n11e32.g6");
+	edges.push_back(32);
+	files.push_back("D:\\Downloads\\n21e59.g6");
+	edges.push_back(59);
+	files.push_back("D:\\Downloads\\n31e62.g6");
+	edges.push_back(62);
+	files.push_back("D:\\Downloads\\n12e24F.g6");
+	edges.push_back(24);
+	files.push_back("D:\\Downloads\\n4e6F.g6");
+	edges.push_back(6);
+
+	Graph* g;
+	Graph* copy;
+	for (int i = 0; i < files.size(); i++)
+	{
+		parser.openFile(files[i]);
+		Graph* g = parser.parse();
+
+		cout << "n" << g->getVertexCount() << " e" << edges[i] << "\n";
+
+		switch(CSPSolver::solve(dynamic_cast<CSPInstance*>(g))) {
+		case Result::Success:
+			cout << "Success" << endl;
+			break;
+		case Result::Failure:
+			cout << "Failure" << endl;
+			break;
+		}
+
+		cout << endl;
+	}
 }
 
 int main() {
-	K();
-	//M();
+	//K();
+	M();
 }

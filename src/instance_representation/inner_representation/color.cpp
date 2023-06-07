@@ -30,6 +30,10 @@ namespace InnerRepresentation {
 		if(!isAvailable || !color->isAvailable) {
 			return;
 		}
+		if(color == this) {
+			disable();
+			return;
+		}
 		constraints.insert(color);
 		color->constraints.insert(this);
 	}
