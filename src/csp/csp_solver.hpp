@@ -10,7 +10,7 @@ class CSPSolver;
 typedef Result(* Lemma)(CSPInstance*);
 
 class CSPSolver {
-	static const int lemmasCount = 15;
+	static const int lemmasCount = 16;
 	static const Lemma lemmas[lemmasCount];
 
 	static void chooseColorReduce(CSPInstance* reduced, const ColorPair& varCol);
@@ -133,11 +133,21 @@ class CSPSolver {
 	static void lemma13Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& zR);
 
 	static Result lemma14(CSPInstance* cspInstance);
-	static void lemma14Match(const CSPInstance* cspInstance, ColorPair& vR);
-	static void lemma14Branch1Reduce(CSPInstance* reduced, const ColorPair& vR);
-	static void lemma14Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
-	static void lemma14Branch2Reduce(CSPInstance* reduced, const ColorPair& vR);
-	static void lemma14Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced);
+	static void lemma14Match(const CSPInstance* cspInstance, ColorPair& vR, ColorPair& wR, ColorPair& xR, ColorPair& yR);
+	static void lemma14Branch1Reduce(CSPInstance* reduced, const ColorPair& wR);
+	static void lemma14Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& wR);
+	static void lemma14Branch2Reduce(CSPInstance* reduced, const ColorPair& xR);
+	static void lemma14Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& xR);
+	static void lemma14Branch3Reduce(CSPInstance* reduced, const ColorPair& vR, const ColorPair& yR);
+	static void lemma14Branch3Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR,
+		const ColorPair& yR);
+
+	static Result lemma16(CSPInstance* cspInstance);
+	static void lemma16Match(const CSPInstance* cspInstance, ColorPair& vR);
+	static void lemma16Branch1Reduce(CSPInstance* reduced, const ColorPair& vR);
+	static void lemma16Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
+	static void lemma16Branch2Reduce(CSPInstance* reduced, const ColorPair& vR);
+	static void lemma16Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced);
 public:
 	CSPSolver() = delete;
 	~CSPSolver() = delete;
