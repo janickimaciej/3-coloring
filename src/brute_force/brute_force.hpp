@@ -8,9 +8,10 @@ class BruteForce
 private:
 	int n;
 
-	bool tryRec(int v, Graph* copy);
 	void giveColor(Graph* g, int v, int color);
 
+	int* colors;
+	bool checkCombination(Graph* g);
 public:
 	BruteForce(Graph* graph);
 	bool Solve();

@@ -1,41 +1,77 @@
 #include "brute_force.hpp"
+#include <iostream>
 
+
+bool BruteForce::checkCombination(Graph* g)
+{
+    for (int i = 0; i < n; i++)
+    {
+        int a = 5;
+        if (g->isColorAvailable(i, colors[i]))
+        {
+            giveColor(g, i, colors[i]);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 BruteForce::BruteForce(Graph* graph)
 {
     this->graph = graph;
     n = graph->getVertexCount();
+    colors = new int[n];
+    for (int i = 0; i < n; i++)
+    {
+        colors[i] = 0;
+    }
 }
 
 bool BruteForce::Solve()
 {
-    return tryRec(0, Graph::copy(graph));
-}
-
-bool BruteForce::tryRec(int v, Graph* copy)
-{
-    if (v == n)
+    Graph* copy;
+    int index = 0;
+    while (1)
     {
-        graph = copy;
-        return true;
-    }
-
-    if (copy->getAvailableColors(v).size() > 0)
-    {
-        /*std::vector<int> colors = copy->getAvailableColors(0);
-        std::vector<int> colors2 = copy->getAvailableColors(1);
-        std::vector<int> colors3 = copy->getAvailableColors(2);
-        int a = 5;*/
-        for (int color : copy->getAvailableColors(v))
+        copy = Graph::copy(graph);
+        /*if (checkCombination(copy))
         {
-            Graph* g = Graph::copy(copy);
-            giveColor(g, v, color);
-            if (tryRec(v + 1, g)) return true;
+            graph = copy; 
+            return true;
+        }*/
+        /*for (int i = 0; i < n; i++)
+        {
+            std::cout << colors[i];
         }
-        return false;
+        std::cout << "\n";*/
+        checkCombination(copy);
+        if (colors[index] == 2)
+        {
+			while (colors[index] == 2)
+			{
+                colors[index] = 0;
+                index++;
+                if (index == n)
+                {
+                    break;
+                }
+			}
+            if (index == n) break;
+            colors[index]++;
+            index = 0;
+        }
+        else
+        {
+            colors[index]++;
+        }
+        delete copy;
     }
-    else return false;
+    return false;
 }
+
 
 void BruteForce::giveColor(Graph *g, int v, int color)
 {
