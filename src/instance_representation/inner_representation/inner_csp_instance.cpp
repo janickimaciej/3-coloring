@@ -105,9 +105,6 @@ namespace InnerRepresentation {
 		if(startColor < 0 || startColor >= 4 || endColor < 0 || endColor >= 4) {
 			error("addConstraint: Color index of bounds");
 		}
-		if(hasConstraint(startVariable, startColor, endVariable, endColor)) {
-			//error("addConstraint: Constraint already exists");
-		}
 		variables[startVariable]->addConstraint(startColor, *variables[endVariable], endColor);
 	}
 
@@ -117,9 +114,6 @@ namespace InnerRepresentation {
 		}
 		if(startColor < 0 || startColor >= 4 || endColor < 0 || endColor >= 4) {
 			error("removeConstraint: Color index of bounds");
-		}
-		if(!hasConstraint(startVariable, startColor, endVariable, endColor)) {
-			error("removeConstraint: Constraint doesn't exist");
 		}
 		variables[startVariable]->removeConstraint(startColor, *variables[endVariable], endColor);
 	}
@@ -158,18 +152,12 @@ namespace InnerRepresentation {
 		if(start < 0 || start >= variables.size() || end < 0 || end >= variables.size()) {
 			error("addEdge: Vertex index out of bounds");
 		}
-		if(hasEdge(start, end)) {
-			error("addEdge: Edge already exists");
-		}
 		variables[start]->addEdge(*variables[end]);
 	}
 
 	void InnerCSPInstance::removeEdge(int start, int end) {
 		if(start < 0 || start >= variables.size() || end < 0 || end >= variables.size()) {
 			error("removeEdge: Vertex index out of bounds");
-		}
-		if(!hasEdge(start, end)) {
-			error("removeEdge: Edge doesn't exist");
 		}
 		variables[start]->removeEdge(*variables[end]);
 	}
@@ -194,9 +182,6 @@ namespace InnerRepresentation {
 		}
 		if(color < 0 || color >= 4) {
 			error("disableColor: Color index of bounds");
-		}
-		if(!isColorAvailable(variable, color)) {
-			error("disableColor: Color is unavailable");
 		}
 		variables[variable]->disableColor(color);
 	}

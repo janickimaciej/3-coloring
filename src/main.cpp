@@ -84,8 +84,19 @@ void M() {
 
 	vector<string> files;
 	vector<int> edges;
+	
+	files.push_back("D:\\Downloads\\n5e7.g6");
+	edges.push_back(7);
+	files.push_back("D:\\Downloads\\n11e32.g6");
+	edges.push_back(32);
+	files.push_back("D:\\Downloads\\n21e59.g6");
+	edges.push_back(59);
 	files.push_back("D:\\Downloads\\n31e62.g6");
 	edges.push_back(62);
+	files.push_back("D:\\Downloads\\n12e24F.g6");
+	edges.push_back(24);
+	files.push_back("D:\\Downloads\\n4e6F.g6");
+	edges.push_back(6);
 
 	Graph* g;
 	Graph* copy;
@@ -96,23 +107,16 @@ void M() {
 
 		cout << "n" << g->getVertexCount() << " e" << edges[i] << "\n";
 
-		cout << (bool)CSPSolver::solve(dynamic_cast<CSPInstance*>(g)) << endl;
-		return;
+		switch(CSPSolver::solve(dynamic_cast<CSPInstance*>(g))) {
+		case Result::Success:
+			cout << "Success" << endl;
+			break;
+		case Result::Failure:
+			cout << "Failure" << endl;
+			break;
+		}
 
-		Coloring coloring(Graph::copy(g));
-		auto start = high_resolution_clock::now();
-		cout << coloring.Solve() << "\n";
-		auto stop = high_resolution_clock::now();
-		auto duration = duration_cast<seconds>(stop - start);
-		if (duration.count() < 5)
-		{
-			auto durationMs = duration_cast<microseconds>(stop - start);
-			cout << "Our in " << durationMs.count() << " microseconds\n";
-		}
-		else
-		{
-			cout << "Our in " << duration.count() << " s\n";
-		}
+		cout << endl;
 	}
 }
 
