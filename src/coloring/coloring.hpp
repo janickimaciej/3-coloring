@@ -6,6 +6,7 @@
 #include "../instance_representation/instance.hpp"
 #include "../forests/bushy_forests.hpp"
 #include "../csp/csp_solver.hpp"
+#include "../instance_representation/rules/rule.hpp"
 
 class Coloring
 {
@@ -17,7 +18,7 @@ class Coloring
 	bool tryToColor(int inst);
 	bool colorForest(int v, Graph* copy);
 	void copyColoring();
-	bool checkRest(Graph* copy);
+	bool checkRest(Graph* copy, Instance* copyInst);
 
 public:
 	Graph* graph;

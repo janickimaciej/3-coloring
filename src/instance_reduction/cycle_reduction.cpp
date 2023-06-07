@@ -59,6 +59,8 @@ void CycleReduction::setTarget(int g)
 bool CycleReduction::Reduce()
 {
 	hasReduced = false;
+	Rule* rule = instances->at(0)->rules[0];
+	int b = 3;
 	while (1)
 	{
 		for (int i = 0; i < n; i++)
@@ -67,7 +69,9 @@ bool CycleReduction::Reduce()
 			{
 				if (cycleRec(i, i))
 				{
+					rule = instances->at(0)->rules[0];
 					Update();
+					rule = instances->at(0)->rules[0];
 					hasReduced = true;
 					continue;
 				}
@@ -82,6 +86,8 @@ bool CycleReduction::cycleRec(int curr, int parent)
 {
 	parents[curr] = parent;
 	visited[curr] = true;
+	int min = -1;
+	int minV;
 	for (int i = 0; i < neighbours[curr].size(); i++)
 	{
 		v = neighbours[curr][i];
@@ -89,15 +95,31 @@ bool CycleReduction::cycleRec(int curr, int parent)
 		if (v == parent) continue;
 		if (visited[v])
 		{
-			deleteCycle(curr, v);
-			return true;
+			if (min == -1)
+			{
+				min = cycleLength(curr, v);
+				minV = v;
+			}
+			else if (cycleLength(curr, v) < min)
+			{
+				min = cycleLength(curr, v);
+				minV = v;
+			}
 		}
+	}
+	if (min != -1)
+	{
+		Rule* rule = instances->at(0)->rules[0];
+		deleteCycle(curr, minV);
+		rule = instances->at(0)->rules[0];
+		return true;
 	}
 	for (int i = 0; i < neighbours[curr].size(); i++)
 	{
 		v = neighbours[curr][i];
 		if (!threes[v]) continue;
 		if (v == parent) continue;
+		Rule* rule = instances->at(0)->rules[0];
 		if (cycleRec(v, curr)) return true;
 	}
 	return false;
@@ -127,16 +149,16 @@ void CycleReduction::deleteCycle(int start, int end)
 			ruleCycle.push_back(instance->indexes[ver]);
 			ruleNeigh.push_back(instance->indexes[findNeighbour(ver)]);
 		}
-		EvenRule even(ruleCycle, ruleNeigh);
+		EvenRule* even = new EvenRule(ruleCycle, ruleNeigh);
 		for (int ver : cycle)
 		{
-			if (ver < n) instance->rules[ver] = (Rule*) &even;
+			if (ver < n) instance->rules[ver] = (Rule*) even;
 			else
 			{
-				std::vector<int> unMerged = *instance->unMerge(ver);
+				std::vector<int> unMerged = *instance->unMerge(ver, n);
 				for (int mer : unMerged)
 				{
-					instance->rules[mer] = (Rule*) &even;
+					instance->rules[mer] = (Rule*) even;
 				}
 			}
 		}
@@ -154,7 +176,19 @@ void CycleReduction::deleteCycle(int start, int end)
 		{
 			std::vector<int> ruleCycle;
 			for (int ver : cycle) ruleCycle.push_back(instance->indexes[ver]);
-			NeighbourRule neighbour(w1, i % cycle.size(), ruleCycle);
+			NeighbourRule* neighbour = new NeighbourRule(w1, i % cycle.size(), ruleCycle);
+			for (int ver : cycle)
+			{
+				if (ver < n) instance->rules[ver] = (Rule*)neighbour;
+				else
+				{
+					std::vector<int> unMerged = *instance->unMerge(ver,n);
+					for (int mer : unMerged)
+					{
+						instance->rules[mer] = (Rule*)neighbour;
+					}
+				}
+			}
 			
 			// Delete All
 			Clear();
@@ -296,6 +330,8 @@ void CycleReduction::Clear(Instance* inst)
 
 int CycleReduction::findNeighbour(int cycleVer)
 {
+	std::vector<int> ne = neighbours[cycleVer];
+	int b = 56;
 	for (int ver : neighbours[cycleVer])
 	{
 		if (!toDeletion[ver])
@@ -303,6 +339,17 @@ int CycleReduction::findNeighbour(int cycleVer)
 			return ver;
 		}
 	}
+}
+
+int CycleReduction::cycleLength(int start, int end)
+{
+	int length = 0;
+	while (start != end)
+	{
+		length++;
+		start = parents[start];
+	}
+	return length;
 }
 
 

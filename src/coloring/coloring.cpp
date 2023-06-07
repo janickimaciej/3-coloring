@@ -16,6 +16,7 @@ bool Coloring::Solve()
 	instances = initial.Reduce();
 	BushyForest forest(instances);
 	forest.PrepareAll();
+	Rule* rule = instances->at(0)->rules[2];
 	Result result;
 	for (int i = 0; i < instances->size(); i++)
 	{
@@ -42,7 +43,8 @@ bool Coloring::colorForest(int v, Graph* copy)
 {
 	if (v == instance->innerTree.size())
 	{
-		return (checkRest(copy));
+		Instance* cp = Instance::copy(instance);
+		return (checkRest(copy, Instance::copy(instance)));
 	}
 	else
 	{
@@ -59,7 +61,7 @@ bool Coloring::colorForest(int v, Graph* copy)
 		}
 		else
 		{
-			std::vector<int> unMerged = *instance->unMerge(ver);
+			std::vector<int> unMerged = *instance->unMerge(ver, n);
 			for (int color : copy->getAvailableColors(unMerged[0]))
 			{
 				g = Graph::copy(copy);
@@ -86,7 +88,7 @@ void Coloring::copyColoring()
 		}
 		else
 		{
-			std::vector<int> unmerged = *instance->unMerge(instance->indexes[i]);
+			std::vector<int> unmerged = *instance->unMerge(instance->indexes[i],n);
 			for (int ver : unmerged)
 			{
 				Instance::giveColor(graph, ver, color);
@@ -97,15 +99,18 @@ void Coloring::copyColoring()
 }
 
 
-bool Coloring::checkRest(Graph* copy)
+bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 {
 	int ver;
-	for (int i = instance->deleted.size() - 1; i >= 0;  i--)
+	for (int i = copyInst->deleted.size() - 1; i >= 0;  i--)
 	{
-		ver = instance->deleted[i];
+		ver = copyInst->deleted[i];
 		if (ver < n)
 		{
-			if (instance->rules[ver]->apply(instance))
+			Rule* rul = copyInst->rules[ver];
+			Rule* rule = instances->at(0)->rules[2];
+			copyInst->rules[ver]->apply(copyInst, graph);
+			if (copyInst->rules[ver]->apply(copyInst, graph))
 			{
 				continue;
 			}
@@ -117,10 +122,10 @@ bool Coloring::checkRest(Graph* copy)
 		}
 		else
 		{
-			std::vector<int> unMerged = *instance->unMerge(ver);
+			std::vector<int> unMerged = *copyInst->unMerge(ver, n);
 			for (int mer : unMerged)
 			{
-				if (instance->rules[ver]->apply(instance))
+				if (copyInst->rules[ver]->apply(copyInst, graph))
 				{
 					continue;
 				}

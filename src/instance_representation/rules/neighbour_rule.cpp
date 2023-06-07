@@ -13,32 +13,33 @@ NeighbourRule::NeighbourRule(int neighbour, int target, std::vector<int> cycle)
 	int c = cycle.size();
 }
 
-bool NeighbourRule::apply(Instance* instance)
+bool NeighbourRule::apply(Instance* instance, Graph* graph)
 {
-	if (cycle[target] < instance->n)
+	int n = graph->getVertexCount();
+	if (cycle[target] < n)
 	{
-		Instance::giveColor(instance->graph, cycle[target], instance->graph->getAvailableColors(neighbour).at(0));
+		Instance::giveColor(graph, cycle[target], graph->getAvailableColors(neighbour).at(0));
 	}
 	else
 	{
-		std::vector<int> unMerged = *instance->unMerge(cycle[target]);
+		std::vector<int> unMerged = *instance->unMerge(cycle[target], n);
 		for (int ver : unMerged)
 		{
-			Instance::giveColor(instance->graph, ver, instance->graph->getAvailableColors(neighbour).at(0));
+			Instance::giveColor(graph, ver, graph->getAvailableColors(neighbour).at(0));
 		}
 	}
 	for (int i = (target + 1) % c; i < target; i = (i + 1) % c)
 	{
-		if (cycle[i] < instance->n)
+		if (cycle[i] < n)
 		{
-			Instance::giveNaive(instance->graph, cycle[i]);
+			Instance::giveNaive(graph, cycle[i]);
 		}
 		else
 		{
-			std::vector<int> unMerged = *instance->unMerge(cycle[i]);
+			std::vector<int> unMerged = *instance->unMerge(cycle[i], n);
 			for (int ver : unMerged)
 			{
-				Instance::giveNaive(instance->graph, ver);
+				Instance::giveNaive(graph, ver);
 			}
 		}
 	}

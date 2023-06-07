@@ -2,12 +2,13 @@
 #define INST
 
 #include "graph.hpp"
-#include "rules/rule.hpp"
+
+class Rule;
 
 class Instance
 {
 private:
-	void unMerging(int v, std::vector<int>* unmerged);
+	void unMerging(int v, int max, std::vector<int>* unmerged);
 public:
 	int n;
 	Graph* graph;
@@ -29,7 +30,7 @@ public:
 	static void giveColor(Graph* g, int v, int color);
 	static void giveNaive(Graph* g, int v);
 
-	std::vector<int>* unMerge(int v);
+	std::vector<int>* unMerge(int v, int max);
 };
 
 #endif // !INST

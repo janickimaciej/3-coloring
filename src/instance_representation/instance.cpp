@@ -1,12 +1,14 @@
 #include "instance.hpp"
-
+#include "../instance_representation/rules/rule.hpp"
 
 Instance::Instance(Graph* graph)
 {
 	this->graph = graph;
 	this->n = graph->getVertexCount();
-	for (int i = 0; i < graph->getVertexCount(); i++)
+	rules = new Rule*[n];
+	for (int i = 0; i < n; i++)
 	{
+		rules[i] = new Rule();
 		indexes.push_back(i);
 	}
 }
@@ -14,7 +16,16 @@ Instance::Instance(Graph* graph)
 Instance::Instance(const Instance& instance)
 {
 	graph = Graph::copy(instance.graph);
+	this->n = instance.n;
 	indexes = std::vector<int>(instance.indexes.begin(), instance.indexes.end());
+	innerTree = std::vector<int>(instance.innerTree.begin(), instance.innerTree.end());
+	deleted = std::vector<int>(instance.deleted.begin(), instance.deleted.end());
+	superVertices = std::vector<std::vector<int>>(instance.superVertices.begin(), instance.superVertices.end());
+	rules = new Rule * [n];
+	for (int i = 0; i < n; i++)
+	{
+		rules[i] = instance.rules[i]->copy();
+	}
 }
 
 Instance* Instance::copy(const Instance* instance)
@@ -53,14 +64,14 @@ void Instance::giveNaive(Graph* g, int v)
 	Instance::giveColor(g, v, g->getAvailableColors(v).at(0));
 }
 
-std::vector<int>* Instance::unMerge(int v)
+std::vector<int>* Instance::unMerge(int v, int max)
 {
 	std::vector<int> unMerged;
-	unMerging(v, &unMerged);
+	unMerging(v, max, &unMerged);
 	return &unMerged;
 }
 
-void Instance::unMerging(int v, std::vector<int>* unmerged)
+void Instance::unMerging(int v, int max, std::vector<int>* unmerged)
 {
 	for (std::vector<int> merge : this->superVertices)
 	{
@@ -68,13 +79,13 @@ void Instance::unMerging(int v, std::vector<int>* unmerged)
 		{
 			for (int i = 1; i < merge.size(); i++)
 			{
-				if (merge[i] < n)
+				if (merge[i] < max)
 				{
 					unmerged->push_back(merge[i]);
 				}
 				else
 				{
-					unMerging(merge[i], unmerged);
+					unMerging(merge[i], max, unmerged);
 				}
 			}
 		}

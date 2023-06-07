@@ -5,6 +5,8 @@
 
 class NeighbourRule : Rule
 {
+public:
+	virtual bool apply(Instance* instance, Graph* graph) override;
 private:
 	int neighbour;
 	int target;
@@ -15,7 +17,7 @@ private:
 
 public:
 	NeighbourRule(int neighbour, int target, std::vector<int> cycle);
-	virtual bool apply(Instance* instance) override;
+	virtual Rule* copy() override { return (Rule*) new NeighbourRule(neighbour, target, cycle); }
 };
 
 #endif // ! NEIGH_RULE

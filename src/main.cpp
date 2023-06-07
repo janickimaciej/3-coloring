@@ -16,6 +16,13 @@ using namespace std::chrono;
 void K() {
 	G6Parser parser;
 
+	/*parser.openFile("cycleEvil.g6");
+	Graph* h = parser.parse();
+	std::vector<Instance*> instances;
+	instances.push_back(new Instance(h));
+	CycleReduction cyc(&instances);
+	cyc.Reduce();*/
+
 
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\bruteCheck.g6");
 	vector<string> files;
@@ -30,12 +37,12 @@ void K() {
 	edges.push_back(56);
 	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n31e62.g6");
 	edges.push_back(62);*/
-	/*files.push_back("n11e32.g6");
-	edges.push_back(32);
-	files.push_back("clique4.g6");
-	edges.push_back(6);*/
-	files.push_back("n250e375.g6");
-	edges.push_back(375);
+	files.push_back("n31e62.g6");
+	edges.push_back(62);
+	files.push_back("n103e1133.g6");
+	edges.push_back(1133);
+	files.push_back("n64e672c4.g6");
+	edges.push_back(672);
 	/*files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n32e80.g6");
 	edges.push_back(80);*/
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\n21e59.g6");

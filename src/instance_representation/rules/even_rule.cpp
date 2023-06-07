@@ -8,43 +8,44 @@ void EvenRule::ClearRule(Instance* instance)
 EvenRule::EvenRule(std::vector<int> cycle, std::vector<int> neighbours)
 {
 	this->cycle = std::vector<int>(cycle.begin(), cycle.end());
-	this->neigbours = std::vector<int>(neigbours.begin(), neigbours.end());
+	this->neighbours = std::vector<int>(neighbours.begin(), neighbours.end());
 	c = cycle.size();
 }
 
-bool EvenRule::apply(Instance* instance)
+bool EvenRule::apply(Instance* instance, Graph* graph)
 {
-	int color = instance->graph->getAvailableColors(neigbours[0]).at(0);
+	int color = graph->getAvailableColors(neighbours[0]).at(0);
 	int color1;
+	int n = graph->getVertexCount();
 	for (int i = 0; i < c; i++)
 	{
-		color1 = instance->graph->getAvailableColors(neigbours[(i + 1) % c]).at(0);
+		color1 = graph->getAvailableColors(neighbours[(i + 1) % c]).at(0);
 		if (color != color1)
 		{
-			if (cycle[(i + 1) % c] < instance->n)
+			if (cycle[(i + 1) % c] < graph->getVertexCount())
 			{
-				Instance::giveColor(instance->graph, cycle[(i + 1) % c], color);
+				Instance::giveColor(graph, cycle[(i + 1) % c], color);
 			}
 			else
 			{
-				std::vector<int> unMerged = *instance->unMerge(cycle[(i + 1) % c]);
+				std::vector<int> unMerged = *instance->unMerge(cycle[(i + 1) % c], graph->getVertexCount());
 				for (int ver : unMerged)
 				{
-					Instance::giveColor(instance->graph, ver, color);
+					Instance::giveColor(graph, ver, color);
 				}
 			}
 			for (int j = (i + 2) % c; j < i + 1; j = (j + 1) % c)
 			{
-				if (cycle[j] < instance->n)
+				if (cycle[j] < n)
 				{
-					Instance::giveNaive(instance->graph, cycle[j]);
+					Instance::giveNaive(graph, cycle[j]);
 				}
 				else
 				{
-					std::vector<int> unMerged = *instance->unMerge(cycle[j]);
+					std::vector<int> unMerged = *instance->unMerge(cycle[j], graph->getVertexCount());
 					for (int ver : unMerged)
 					{
-						Instance::giveNaive(instance->graph, ver);
+						Instance::giveNaive(graph, ver);
 					}
 				}
 			}
@@ -70,7 +71,7 @@ bool EvenRule::apply(Instance* instance)
 	}
 	for (int i = 0; i < c; i++)
 	{
-		Instance::giveColor(instance->graph, cycle[i], i % 2 == 0 ? c1 : c2);
+		Instance::giveColor(graph, cycle[i], i % 2 == 0 ? c1 : c2);
 	}
 	return true;
 }
