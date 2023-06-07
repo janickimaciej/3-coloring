@@ -2,6 +2,7 @@
 #define CSP_SOLVER
 
 #include "../instance_representation/csp_instance.hpp"
+#include <unordered_set>
 #include "result.hpp"
 
 class CSPSolver;
@@ -102,6 +103,27 @@ class CSPSolver {
 	static void lemma11Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
 	static void lemma11Branch2Reduce(CSPInstance* reduced, const ColorPair& vR);
 	static void lemma11Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
+
+	static Result lemma12(CSPInstance* cspInstance);
+	static void lemma12Match(const CSPInstance* cspInstance, ColorPair& vR, int& lemmaCase,
+		std::unordered_set<ColorPair>& bipartite, ColorPair& xR, ColorPair& yR, std::unordered_set<ColorPair>& component);
+	static Result lemma12Case1(CSPInstance* cspInstance, const ColorPair& vR);
+	static void lemma12Case1Branch1Reduce(CSPInstance* reduced, const ColorPair& vR);
+	static void lemma12Case1Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
+	static void lemma12Case1Branch2Reduce(CSPInstance* reduced, const ColorPair& vR);
+	static void lemma12Case1Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
+	static Result lemma12Case2(CSPInstance* cspInstance, std::unordered_set<ColorPair> bipartite);
+	static void lemma12Case2Reduce(CSPInstance* reduced, std::unordered_set<ColorPair> bipartite);
+	static void lemma12Case2Color(CSPInstance* cspInstance, const CSPInstance* reduced, std::unordered_set<ColorPair> bipartite);
+	static Result lemma12Case3(CSPInstance* cspInstance, const ColorPair& xR, const ColorPair& yR,
+		std::unordered_set<ColorPair> component);
+	static void lemma12Case3Branch1Reduce(CSPInstance* reduced, const ColorPair& xR, const ColorPair& yR);
+	static void lemma12Case3Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& xR,
+		const ColorPair& yR);
+	static void lemma12Case3Branch2And3Reduce(CSPInstance* reduced, const ColorPair& varR, const ColorPair& fR,
+		const ColorPair& gR);
+	static void lemma12Case3Branch2And3Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& varR,
+		const ColorPair& fR, const ColorPair& gR);
 public:
 	CSPSolver() = delete;
 	~CSPSolver() = delete;

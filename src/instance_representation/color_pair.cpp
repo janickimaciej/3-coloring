@@ -2,6 +2,6 @@
 
 ColorPair::ColorPair(int variable, int color) : variable(variable), color(color) { }
 
-bool ColorPair::operator==(const ColorPair& colorPair) {
+bool ColorPair::operator==(const ColorPair& colorPair) const {
 	return variable == colorPair.variable && color == colorPair.color;
 }
