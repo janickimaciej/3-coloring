@@ -22,6 +22,7 @@ bool Coloring::Solve()
 		result = CSPSolver::solve(dynamic_cast<CSPInstance*>(instances->at(i)->graph));
 		if (result == Result::Success)
 		{
+			instance = instances->at(i);
 			solved = true;
 			if (tryToColor(i)) return true;
 		}
@@ -46,7 +47,7 @@ bool Coloring::colorForest(int v, Graph* copy)
 	else
 	{
 		Graph* g;
-		int ver = instance->indexes[instance->innerTree[v]];
+		int ver = instance->innerTree[v];
 		if (ver < n)
 		{
 			for (int color : copy->getAvailableColors(ver))
