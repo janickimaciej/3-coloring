@@ -14,6 +14,10 @@
     <ClInclude Include="src\instance_representation\inner_representation\constraint_info.hpp" />
     <ClInclude Include="src\csp\csp_solver.hpp" />
     <ClInclude Include="src\csp\result.hpp" />
+    <ClInclude Include="src\brute_force\brute_force.hpp" />
+    <ClInclude Include="src\coloring\coloring.hpp" />
+    <ClInclude Include="src\forests\bushy_forests.hpp" />
+    <ClInclude Include="src\instance_representation\instance.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\instance_representation\graph.cpp" />
@@ -29,5 +33,9 @@
     <ClCompile Include="src\instance_representation\csp_instance.cpp" />
     <ClCompile Include="src\instance_representation\color_pair.cpp" />
     <ClCompile Include="src\csp\csp_solver.cpp" />
+    <ClCompile Include="src\brute_force\brute_force.cpp" />
+    <ClCompile Include="src\coloring\coloring.cpp" />
+    <ClCompile Include="src\forests\bushy_forests.cpp" />
+    <ClCompile Include="src\instance_representation\instance.cpp" />
   </ItemGroup>
 </Project>

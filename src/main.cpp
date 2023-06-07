@@ -9,16 +9,18 @@
 #include "coloring/coloring.hpp"
 #include <chrono>
 
+
 using namespace std;
 using namespace std::chrono;
 
 void K() {
 	G6Parser parser;
 
+
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\bruteCheck.g6");
 	vector<string> files;
 	vector<int> edges;
-	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n5e7.g6");
+	/*files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n5e7.g6");
 	edges.push_back(7);
 	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n7e16_not3.g6");
 	edges.push_back(16);
@@ -27,7 +29,13 @@ void K() {
 	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n21e59.g6");
 	edges.push_back(56);
 	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n31e62.g6");
-	edges.push_back(62);
+	edges.push_back(62);*/
+	/*files.push_back("n11e32.g6");
+	edges.push_back(32);
+	files.push_back("clique4.g6");
+	edges.push_back(6);*/
+	files.push_back("n64e672c4.g6");
+	edges.push_back(672);
 	/*files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n32e80.g6");
 	edges.push_back(80);*/
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\n21e59.g6");
@@ -54,7 +62,7 @@ void K() {
 		if (duration.count() < 5)
 		{
 			auto durationMs = duration_cast<microseconds>(stop - start);
-			cout << "Our in " << durationMs.count() << " microseconds\n";
+			cout << "Our in " << durationMs.count() / 1000000.0 << " seconds\n";
 		}
 		else
 		{
@@ -121,6 +129,6 @@ void M() {
 }
 
 int main() {
-	//K();
-	M();
+	K();
+	//M();
 }

@@ -92,7 +92,7 @@ void BushyForest::generateInstances()
 	{
 		if (inForest[i])
 		{
-			instance->innerTree.push_back(instance->indexes[i]);
+			if (insideNode[i]) instance->innerTree.push_back(instance->indexes[i]);
 			instance->removeVertex(i);
 		}
 	}

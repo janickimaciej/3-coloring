@@ -83,7 +83,7 @@ void G6Parser::createGraph()
 				n += curr - 63;
 				if (i != 2)
 				{
-					n <<= 8;
+					n <<= 6;
 					file >> curr;
 				}
 			}
