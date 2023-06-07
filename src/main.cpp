@@ -80,16 +80,43 @@ void K() {
 }
 
 void M() {
-	Graph* G1 = Graph::create(4);
-	G1->addEdge(0, 1);
-	G1->addEdge(0, 2);
-	G1->addEdge(0, 3);
-	
-	cout << (bool)CSPSolver::solve(dynamic_cast<CSPInstance*>(G1)) << endl;
-	delete G1;
+	G6Parser parser;
+
+	vector<string> files;
+	vector<int> edges;
+	files.push_back("D:\\Downloads\\n31e62.g6");
+	edges.push_back(62);
+
+	Graph* g;
+	Graph* copy;
+	for (int i = 0; i < files.size(); i++)
+	{
+		parser.openFile(files[i]);
+		Graph* g = parser.parse();
+
+		cout << "n" << g->getVertexCount() << " e" << edges[i] << "\n";
+
+		cout << (bool)CSPSolver::solve(dynamic_cast<CSPInstance*>(g)) << endl;
+		return;
+
+		Coloring coloring(Graph::copy(g));
+		auto start = high_resolution_clock::now();
+		cout << coloring.Solve() << "\n";
+		auto stop = high_resolution_clock::now();
+		auto duration = duration_cast<seconds>(stop - start);
+		if (duration.count() < 5)
+		{
+			auto durationMs = duration_cast<microseconds>(stop - start);
+			cout << "Our in " << durationMs.count() << " microseconds\n";
+		}
+		else
+		{
+			cout << "Our in " << duration.count() << " s\n";
+		}
+	}
 }
 
 int main() {
-	K();
-	//M();
+	//K();
+	M();
 }

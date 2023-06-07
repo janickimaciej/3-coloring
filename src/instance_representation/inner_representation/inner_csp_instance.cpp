@@ -106,7 +106,7 @@ namespace InnerRepresentation {
 			error("addConstraint: Color index of bounds");
 		}
 		if(hasConstraint(startVariable, startColor, endVariable, endColor)) {
-			error("addConstraint: Constraint already exists");
+			//error("addConstraint: Constraint already exists");
 		}
 		variables[startVariable]->addConstraint(startColor, *variables[endVariable], endColor);
 	}
