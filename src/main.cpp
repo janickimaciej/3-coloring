@@ -9,7 +9,6 @@
 #include "coloring/coloring.hpp"
 #include <chrono>
 
-
 using namespace std;
 using namespace std::chrono;
 
@@ -116,8 +115,7 @@ void M() {
 
 	Graph* g;
 	Graph* copy;
-	for (int i = 0; i < files.size(); i++)
-	{
+	for(int i = 0; i < files.size(); i++) {
 		parser.openFile(files[i]);
 		Graph* g = parser.parse();
 
