@@ -17,6 +17,7 @@ void G6Parser::openFile()
 }
 
 void G6Parser::openFile(string path) {
+	if (file.is_open()) file.close();
 	file.open(path, ios::in);
 	if(!file) {
 		throw "G6Parser::openFile: Incorrect file path";
