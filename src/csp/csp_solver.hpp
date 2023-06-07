@@ -10,7 +10,7 @@ class CSPSolver;
 typedef Result(* Lemma)(CSPInstance*);
 
 class CSPSolver {
-	static const int lemmasCount = 16;
+	static const int lemmasCount = 18;
 	static const Lemma lemmas[lemmasCount];
 
 	static void chooseColorReduce(CSPInstance* reduced, const ColorPair& varCol);
@@ -154,7 +154,14 @@ class CSPSolver {
 	static void lemma16Branch1Reduce(CSPInstance* reduced, const ColorPair& vR);
 	static void lemma16Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
 	static void lemma16Branch2Reduce(CSPInstance* reduced, const ColorPair& vR);
-	static void lemma16Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced);
+	static void lemma16Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
+
+	static Result lemma18(CSPInstance* cspInstance);
+	static void lemma18Match(const CSPInstance* cspInstance, ColorPair& vR);
+	static void lemma18Branch1Reduce(CSPInstance* reduced, const ColorPair& vR);
+	static void lemma18Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
+	static void lemma18Branch2Reduce(CSPInstance* reduced, const ColorPair& vR);
+	static void lemma18Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced);
 public:
 	CSPSolver() = delete;
 	~CSPSolver() = delete;
