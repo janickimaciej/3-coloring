@@ -13,6 +13,14 @@
 using namespace std;
 using namespace std::chrono;
 
+void K();
+void M();
+
+int main() {
+	//K();
+	M();
+}
+
 void K() {
 	G6Parser parser;
 
@@ -126,9 +134,4 @@ void M() {
 
 		cout << endl;
 	}
-}
-
-int main() {
-	//K();
-	M();
 }
