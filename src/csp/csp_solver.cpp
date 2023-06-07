@@ -1430,14 +1430,14 @@ Result CSPSolver::lemma14(CSPInstance* cspInstance) {
 }
 
 void CSPSolver::lemma14Match(const CSPInstance* cspInstance, ColorPair& vR, ColorPair& wR, ColorPair& xR, ColorPair& yR) {
-	ColorPair varCol[5] {
+	ColorPair sequence[5] {
 		ColorPair(-1, -1),
 		ColorPair(-1, -1),
 		ColorPair(-1, -1),
 		ColorPair(-1, -1),
 		ColorPair(-1, -1)
 	};
-
+	
 	int n = cspInstance->getVariableCount();
 	bool** visited = new bool*[n];
 	for(int v = 0; v < n; v++) {
@@ -1450,55 +1450,89 @@ void CSPSolver::lemma14Match(const CSPInstance* cspInstance, ColorPair& vR, Colo
 	for(int v = 0; v < cspInstance->getVariableCount(); v++) {
 		std::vector<int> availableColors = cspInstance->getAvailableColors(v);
 		for(auto R = availableColors.begin(); R != availableColors.end(); R++) {
-			if(cspInstance->getConstraints(v, *R).size() != 2) {
+			std::vector<ColorPair> vConstraints = cspInstance->getConstraints(v, *R);
+			if(vConstraints.size() != 2 || visited[v][*R]) {
 				continue;
 			}
-			ColorPair current(v, *R);
-			std::stack<ColorPair> stack;
-			stack.push(current);
-			while(!stack.empty()) {
-				current = stack.top();
-				stack.pop();
-				if(!visited[current.variable][current.color]) {
-					visited[current.variable][current.color] = true;
-					for(int i = 0; i < 5; i++) {
-						if(current.variable == varCol[i].variable) {
-							int k = 0;
-							for(int j = i + 1; j < 5; j++) {
-								varCol[k] = varCol[j];
-								k++;
-							}
-							varCol[k] = current;
-							for(k++; k < 5; k++) {
-								varCol[k].variable = -1;
-								varCol[k].color = -1;
-							}
-							break;
-						} else if(varCol[i].variable == -1) {
-							varCol[i] = current;
-							if(i == 4) {
-								if(cspInstance->getAvailableColors(varCol[4].variable).size() == 4) {
-									vR = varCol[4];
-									wR = varCol[3];
-									xR = varCol[2];
-									yR = varCol[1];
-								} else {
-									vR = varCol[0];
-									wR = varCol[1];
-									xR = varCol[2];
-									yR = varCol[3];
-								}
-								return;
-							}
-							break;
+			ColorPair start(v, *R);
+
+			sequence[4] = start;
+			sequence[3] = cspInstance->getConstraints(sequence[4].variable, sequence[4].color)[0];
+			for(int i = 2; i >= 0; i--) {
+				std::vector<ColorPair> constraints = cspInstance->getConstraints(sequence[i + 1].variable,
+					sequence[i + 1].color);
+				sequence[i] = constraints[0] != sequence[i + 2] ? constraints[0] : constraints[1];
+			}
+			do {
+				bool areDistinct = true;
+				for(int j = 0; j < 4; j++) {
+					for(int k = j + 1; k < 4; k++) {
+						if(sequence[j].variable == sequence[k].variable) {
+							areDistinct = false;
 						}
 					}
-					std::vector<ColorPair> constraints = cspInstance->getConstraints(current.variable, current.color);
-					for(auto constraint = constraints.begin(); constraint != constraints.end(); constraint++) {
-						stack.push(*constraint);
+				}
+				if(areDistinct) {
+					if(cspInstance->getAvailableColors(sequence[4].variable).size() == 4) {
+						vR = sequence[4];
+						wR = sequence[3];
+						xR = sequence[2];
+						yR = sequence[1];
+					} else {
+						vR = sequence[0];
+						wR = sequence[1];
+						xR = sequence[2];
+						yR = sequence[3];
+					}
+					return;
+				}
+
+				for(int i = 4; i >= 1; i--) {
+					sequence[i] = sequence[i - 1];
+				}
+				std::vector<ColorPair> constraints = cspInstance->getConstraints(sequence[0].variable, sequence[0].color);
+				sequence[0] = constraints[0] != sequence[2] ? constraints[0] : constraints[1];
+				visited[sequence[0].variable][sequence[0].color] = true;
+			} while(sequence[4] != start);
+
+			
+			sequence[4] = start;
+			sequence[3] = cspInstance->getConstraints(sequence[4].variable, sequence[4].color)[1];
+			for(int i = 2; i >= 0; i--) {
+				std::vector<ColorPair> constraints = cspInstance->getConstraints(sequence[i + 1].variable,
+					sequence[i + 1].color);
+				sequence[i] = constraints[0] != sequence[i + 2] ? constraints[0] : constraints[1];
+			}
+			do {
+				bool areDistinct = true;
+				for(int j = 0; j < 4; j++) {
+					for(int k = j + 1; k < 4; k++) {
+						if(sequence[j].variable == sequence[k].variable) {
+							areDistinct = false;
+						}
 					}
 				}
-			}
+				if(areDistinct) {
+					if(cspInstance->getAvailableColors(sequence[4].variable).size() == 4) {
+						vR = sequence[4];
+						wR = sequence[3];
+						xR = sequence[2];
+						yR = sequence[1];
+					} else {
+						vR = sequence[0];
+						wR = sequence[1];
+						xR = sequence[2];
+						yR = sequence[3];
+					}
+					return;
+				}
+
+				for(int i = 4; i >= 1; i--) {
+					sequence[i] = sequence[i - 1];
+				}
+				std::vector<ColorPair> constraints = cspInstance->getConstraints(sequence[0].variable, sequence[0].color);
+				sequence[0] = constraints[0] != sequence[2] ? constraints[0] : constraints[1];
+			} while(sequence[4] != start);
 		}
 	}
 }

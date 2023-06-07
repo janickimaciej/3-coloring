@@ -9,6 +9,7 @@ struct ColorPair {
 
 	ColorPair(int variable, int color);
 	bool operator==(const ColorPair& colorPair) const;
+	bool operator!=(const ColorPair& colorPair) const;
 };
 
 namespace std {
