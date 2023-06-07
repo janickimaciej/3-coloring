@@ -14,14 +14,14 @@ void K() {
 	G6Parser parser;
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\cycleTest.g6");
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\lowTest.g6");
-	parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\testDeleteAll.g6");
+	parser.openFile("D:\\Downloads\\n31e62.g6");
 	
 	Graph* g = parser.parse();
 	cout << g->getVertexCount() << "\n";
 	
 	cout << "\nBrute\n";
 
-	BruteForce brute(g);
+	/*BruteForce brute(g);
 	if (brute.Solve())
 	{
 		cout << "solved\n";
@@ -35,7 +35,7 @@ void K() {
 		cout << "not solved\n";
 	}
 	
-	cout << "\nOur\n";
+	cout << "\nOur\n";*/
 
 	Coloring coloring(g);
 	if (coloring.Solve())
@@ -63,6 +63,6 @@ void M() {
 }
 
 int main() {
-	//K();
-	M();
+	K();
+	//M();
 }

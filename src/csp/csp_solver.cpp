@@ -21,7 +21,8 @@ const Lemma CSPSolver::lemmas[lemmasCount] = {
 	&lemma11,
 	&lemma12,
 	&lemma13,
-	&lemma14
+	&lemma14,
+	&lemma16
 };
 
 Result CSPSolver::solve(CSPInstance* cspInstance) {
@@ -138,7 +139,7 @@ void CSPSolver::lemma1Color(CSPInstance* cspInstance, const CSPInstance* reduced
 	std::vector<int> removedVariables;
 	removedVariables.push_back(v);
 	cspInstance->copyColoring(reduced, removedVariables);
-	if(reduced->getConstraints(v, R).size() == 0) {
+	if(cspInstance->getConstraints(v, R).size() == 0) {
 		cspInstance->setColor(v, R);
 	} else {
 		cspInstance->setColor(v, G);
@@ -218,7 +219,7 @@ void CSPSolver::lemma2Color(CSPInstance* cspInstance, const CSPInstance* reduced
 	std::vector<int> removedVariables;
 	removedVariables.push_back(vX.variable);
 	removedVariables.push_back(wY.variable);
-	cspInstance->copyColoring(cspInstance, removedVariables);
+	cspInstance->copyColoring(reduced, removedVariables);
 	cspInstance->setColor(vX.variable, vX.color);
 	cspInstance->setColor(wY.variable, wY.color);
 }
@@ -586,6 +587,7 @@ Result CSPSolver::lemma8(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
+	std::cerr << "Lemma8" << std::endl;
 
 	if(isImplication) {
 		return lemma8Case1(cspInstance, vR, wR);
@@ -725,6 +727,7 @@ Result CSPSolver::lemma9(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
+	std::cerr << "Lemma9" << std::endl;
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma9Branch1Reduce(reduced, vR);
@@ -786,6 +789,7 @@ Result CSPSolver::lemma10(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
+	std::cerr << "Lemma10" << std::endl;
 
 	if(xR.variable == -1) {
 		return lemma10Case1(cspInstance, vR);
@@ -915,6 +919,7 @@ Result CSPSolver::lemma11(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
+	std::cerr << "Lemma11" << std::endl;
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma11Branch1Reduce(reduced, vR);
@@ -985,6 +990,7 @@ Result CSPSolver::lemma12(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
+	std::cerr << "Lemma12" << std::endl;
 
 	if(lemmaCase == 1) {
 		return lemma12Case1(cspInstance, vR);
@@ -1272,6 +1278,7 @@ Result CSPSolver::lemma13(CSPInstance* cspInstance) {
 	if(zR.variable == -1) {
 		return Result::NoMatch;
 	}
+	std::cerr << "Lemma13" << std::endl;
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma13Branch1Reduce(reduced, zR);
@@ -1381,47 +1388,205 @@ void CSPSolver::lemma13Branch2Color(CSPInstance* cspInstance, const CSPInstance*
 
 Result CSPSolver::lemma14(CSPInstance* cspInstance) {
 	ColorPair vR(-1, -1);
-	lemma14Match(cspInstance, vR);
-	
+	ColorPair wR(-1, -1);
+	ColorPair xR(-1, -1);
+	ColorPair yR(-1, -1);
+	lemma14Match(cspInstance, vR, wR, xR, yR);
+	if(vR.variable == -1) {
+		return Result::NoMatch;
+	}
+	std::cerr << "Lemma14" << std::endl;
+
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
-	lemma14Branch1Reduce(reduced, vR);
+	lemma14Branch1Reduce(reduced, wR);
 
 	Result result = solve(reduced);
 	if(result == Result::Success) {
-		lemma14Branch1Color(cspInstance, reduced, vR);
+		lemma14Branch1Color(cspInstance, reduced, wR);
+		delete reduced;
+		return Result::Success;
+	}
+	delete reduced;
+
+	reduced = CSPInstance::copy(cspInstance);
+	lemma14Branch2Reduce(reduced, xR);
+
+	result = solve(reduced);
+	if(result == Result::Success) {
+		lemma14Branch2Color(cspInstance, reduced, xR);
+		delete reduced;
+		return Result::Success;
+	}
+	delete reduced;
+
+	reduced = CSPInstance::copy(cspInstance);
+	lemma14Branch3Reduce(reduced, vR, yR);
+
+	result = solve(reduced);
+	if(result == Result::Success) {
+		lemma14Branch3Color(cspInstance, reduced, vR, yR);
+	}
+	delete reduced;
+	return result;
+}
+
+void CSPSolver::lemma14Match(const CSPInstance* cspInstance, ColorPair& vR, ColorPair& wR, ColorPair& xR, ColorPair& yR) {
+	ColorPair varCol[5] {
+		ColorPair(-1, -1),
+		ColorPair(-1, -1),
+		ColorPair(-1, -1),
+		ColorPair(-1, -1),
+		ColorPair(-1, -1)
+	};
+
+	int n = cspInstance->getVariableCount();
+	bool** visited = new bool*[n];
+	for(int v = 0; v < n; v++) {
+		visited[v] = new bool[4];
+		for(int R = 0; R < 4; R++) {
+			visited[v][R] = false;
+		}
+	}
+
+	for(int v = 0; v < cspInstance->getVariableCount(); v++) {
+		std::vector<int> availableColors = cspInstance->getAvailableColors(v);
+		for(auto R = availableColors.begin(); R != availableColors.end(); R++) {
+			if(cspInstance->getConstraints(v, *R).size() != 2) {
+				continue;
+			}
+			ColorPair current(v, *R);
+			std::stack<ColorPair> stack;
+			stack.push(current);
+			while(!stack.empty()) {
+				current = stack.top();
+				stack.pop();
+				if(!visited[current.variable][current.color]) {
+					visited[current.variable][current.color] = true;
+					for(int i = 0; i < 5; i++) {
+						if(current.variable == varCol[i].variable) {
+							int k = 0;
+							for(int j = i + 1; j < 5; j++) {
+								varCol[k] = varCol[j];
+								k++;
+							}
+							varCol[k] = current;
+							for(k++; k < 5; k++) {
+								varCol[k].variable = -1;
+								varCol[k].color = -1;
+							}
+							break;
+						} else if(varCol[i].variable == -1) {
+							varCol[i] = current;
+							if(i == 4) {
+								if(cspInstance->getAvailableColors(varCol[4].variable).size() == 4) {
+									vR = varCol[4];
+									wR = varCol[3];
+									xR = varCol[2];
+									yR = varCol[1];
+								} else {
+									vR = varCol[0];
+									wR = varCol[1];
+									xR = varCol[2];
+									yR = varCol[3];
+								}
+								return;
+							}
+							break;
+						}
+					}
+					std::vector<ColorPair> constraints = cspInstance->getConstraints(current.variable, current.color);
+					for(auto constraint = constraints.begin(); constraint != constraints.end(); constraint++) {
+						stack.push(*constraint);
+					}
+				}
+			}
+		}
+	}
+}
+
+void CSPSolver::lemma14Branch1Reduce(CSPInstance* reduced, const ColorPair& wR) {
+	chooseColorReduce(reduced, wR);
+}
+
+void CSPSolver::lemma14Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& wR) {
+	chooseColorColor(cspInstance, reduced, wR);
+}
+
+void CSPSolver::lemma14Branch2Reduce(CSPInstance* reduced, const ColorPair& xR) {
+	chooseColorReduce(reduced, xR);
+}
+
+void CSPSolver::lemma14Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& xR) {
+	chooseColorColor(cspInstance, reduced, xR);
+}
+
+void CSPSolver::lemma14Branch3Reduce(CSPInstance* reduced, const ColorPair& vR, const ColorPair& yR) {
+	std::vector<ColorPair> xConstraints = reduced->getConstraints(vR.variable, vR.color);
+	for(auto constraint = xConstraints.begin(); constraint != xConstraints.end(); constraint++) {
+		reduced->disableColor(constraint->variable, constraint->color);
+	}
+	std::vector<ColorPair> yConstraints = reduced->getConstraints(yR.variable, yR.color);
+	for(auto constraint = yConstraints.begin(); constraint != yConstraints.end(); constraint++) {
+		reduced->disableColor(constraint->variable, constraint->color);
+	}
+	reduced->removeVariable(vR.variable);
+	reduced->removeVariable(yR.variable);
+}
+
+void CSPSolver::lemma14Branch3Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR,
+	const ColorPair& yR) {
+	std::vector<int> removedVariables;
+	removedVariables.push_back(vR.variable);
+	removedVariables.push_back(yR.variable);
+	cspInstance->copyColoring(reduced, removedVariables);
+	cspInstance->setColor(vR.variable, vR.color);
+	cspInstance->setColor(yR.variable, yR.color);
+}
+
+Result CSPSolver::lemma16(CSPInstance* cspInstance) {
+	ColorPair vR(-1, -1);
+	lemma16Match(cspInstance, vR);
+	std::cerr << "Lemma16" << std::endl;
+	
+	CSPInstance* reduced = CSPInstance::copy(cspInstance);
+	lemma16Branch1Reduce(reduced, vR);
+
+	Result result = solve(reduced);
+	if(result == Result::Success) {
+		lemma16Branch1Color(cspInstance, reduced, vR);
 		delete reduced;
 		return Result::Success;
 	}
 
 	delete reduced;
 	reduced = CSPInstance::copy(cspInstance);
-	lemma14Branch2Reduce(reduced, vR);
+	lemma16Branch2Reduce(reduced, vR);
 
 	result = solve(reduced);
 	if(result == Result::Success) {
-		lemma14Branch2Color(cspInstance, reduced);
+		lemma16Branch2Color(cspInstance, reduced);
 	}
 	delete reduced;
 	return result;
 }
 
-void CSPSolver::lemma14Match(const CSPInstance* cspInstance, ColorPair& vR) {
+void CSPSolver::lemma16Match(const CSPInstance* cspInstance, ColorPair& vR) {
 	vR.variable = 0;
 	vR.color = cspInstance->getAvailableColors(vR.variable)[0];
 }
 
-void CSPSolver::lemma14Branch1Reduce(CSPInstance* reduced, const ColorPair& vR) {
+void CSPSolver::lemma16Branch1Reduce(CSPInstance* reduced, const ColorPair& vR) {
 	chooseColorReduce(reduced, vR);
 }
 
-void CSPSolver::lemma14Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR) {
+void CSPSolver::lemma16Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR) {
 	chooseColorColor(cspInstance, reduced, vR);
 }
 
-void CSPSolver::lemma14Branch2Reduce(CSPInstance* reduced, const ColorPair& vR) {
+void CSPSolver::lemma16Branch2Reduce(CSPInstance* reduced, const ColorPair& vR) {
 	reduced->disableColor(vR.variable, vR.color);
 }
 
-void CSPSolver::lemma14Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced) {
+void CSPSolver::lemma16Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced) {
 	cspInstance->copyColoring(reduced, std::vector<int>());
 }
