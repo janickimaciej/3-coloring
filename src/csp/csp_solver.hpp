@@ -142,6 +142,13 @@ class CSPSolver {
 	static void lemma14Branch3Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR,
 		const ColorPair& yR);
 
+	static Result lemma15(CSPInstance* cspInstance);
+	static void lemma15Match(const CSPInstance* cspInstance, ColorPair& wR, ColorPair& xR);
+	static void lemma15Branch1Reduce(CSPInstance* reduced, const ColorPair& wR);
+	static void lemma15Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& wR);
+	static void lemma15Branch2Reduce(CSPInstance* reduced, const ColorPair& xR);
+	static void lemma15Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& xR);
+
 	static Result lemma16(CSPInstance* cspInstance);
 	static void lemma16Match(const CSPInstance* cspInstance, ColorPair& vR);
 	static void lemma16Branch1Reduce(CSPInstance* reduced, const ColorPair& vR);
