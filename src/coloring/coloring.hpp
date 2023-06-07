@@ -17,7 +17,6 @@ class Coloring
 	bool tryToColor(int inst);
 	bool colorForest(int v, Graph* copy);
 	void copyColoring();
-	void unMerge(int v, std::vector<int>* unmerged);
 	bool checkRest(Graph* copy);
 
 public:

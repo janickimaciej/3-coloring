@@ -1,5 +1,6 @@
 #include "instance.hpp"
 
+
 Instance::Instance(Graph* graph)
 {
 	this->graph = graph;
@@ -43,6 +44,39 @@ void Instance::giveColor(Graph* g, int v, int color)
 		if (g->isColorAvailable(ver, color))
 		{
 			g->disableColor(ver, color);
+		}
+	}
+}
+
+void Instance::giveNaive(Graph* g, int v)
+{
+	Instance::giveColor(g, v, g->getAvailableColors(v).at(0));
+}
+
+std::vector<int>* Instance::unMerge(int v)
+{
+	std::vector<int> unMerged;
+	unMerging(v, &unMerged);
+	return &unMerged;
+}
+
+void Instance::unMerging(int v, std::vector<int>* unmerged)
+{
+	for (std::vector<int> merge : this->superVertices)
+	{
+		if (merge[0] == v)
+		{
+			for (int i = 1; i < merge.size(); i++)
+			{
+				if (merge[i] < n)
+				{
+					unmerged->push_back(merge[i]);
+				}
+				else
+				{
+					unMerging(merge[i], unmerged);
+				}
+			}
 		}
 	}
 }

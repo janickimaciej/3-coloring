@@ -1,6 +1,8 @@
 #include "cycle_reduction.hpp"
 #include <iostream>
 #include "../graph6/G6Parser.hpp"
+#include "../instance_representation/rules/even_rule.hpp"
+#include "../instance_representation/rules/neighbour_rule.hpp"
 
 
 
@@ -118,6 +120,26 @@ void CycleReduction::deleteCycle(int start, int end)
 	// Option: cycle is even
 	if (cycle.size() % 2 == 0)
 	{
+		std::vector<int> ruleCycle;
+		std::vector<int> ruleNeigh;
+		for (int ver : cycle)
+		{
+			ruleCycle.push_back(instance->indexes[ver]);
+			ruleNeigh.push_back(instance->indexes[findNeighbour(ver)]);
+		}
+		EvenRule even(ruleCycle, ruleNeigh);
+		for (int ver : cycle)
+		{
+			if (ver < n) instance->rules[ver] = (Rule*) &even;
+			else
+			{
+				std::vector<int> unMerged = *instance->unMerge(ver);
+				for (int mer : unMerged)
+				{
+					instance->rules[mer] = (Rule*) &even;
+				}
+			}
+		}
 		// Delete All
 		Clear();
 		return;
@@ -130,6 +152,10 @@ void CycleReduction::deleteCycle(int start, int end)
 		w2 = findNeighbour(cycle[i % cycle.size()]);
 		if (instance->graph->hasEdge(w1, w2))
 		{
+			std::vector<int> ruleCycle;
+			for (int ver : cycle) ruleCycle.push_back(instance->indexes[ver]);
+			NeighbourRule neighbour(w1, i % cycle.size(), ruleCycle);
+			
 			// Delete All
 			Clear();
 			return;

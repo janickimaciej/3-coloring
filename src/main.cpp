@@ -34,8 +34,8 @@ void K() {
 	edges.push_back(32);
 	files.push_back("clique4.g6");
 	edges.push_back(6);*/
-	files.push_back("n64e672c4.g6");
-	edges.push_back(672);
+	files.push_back("n250e375.g6");
+	edges.push_back(375);
 	/*files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n32e80.g6");
 	edges.push_back(80);*/
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\n21e59.g6");

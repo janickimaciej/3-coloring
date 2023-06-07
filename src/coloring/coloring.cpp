@@ -59,8 +59,7 @@ bool Coloring::colorForest(int v, Graph* copy)
 		}
 		else
 		{
-			std::vector<int> unMerged;
-			unMerge(ver, &unMerged);
+			std::vector<int> unMerged = *instance->unMerge(ver);
 			for (int color : copy->getAvailableColors(unMerged[0]))
 			{
 				g = Graph::copy(copy);
@@ -87,8 +86,7 @@ void Coloring::copyColoring()
 		}
 		else
 		{
-			std::vector<int> unmerged;
-			unMerge(instance->indexes[i], &unmerged);
+			std::vector<int> unmerged = *instance->unMerge(instance->indexes[i]);
 			for (int ver : unmerged)
 			{
 				Instance::giveColor(graph, ver, color);
@@ -98,26 +96,6 @@ void Coloring::copyColoring()
 	}
 }
 
-void Coloring::unMerge(int v, std::vector<int>* unmerged)
-{
-	for (std::vector<int> merge : instance->superVertices)
-	{
-		if (merge[0] == v)
-		{
-			for (int i = 1; i < merge.size(); i++)
-			{
-				if (merge[i] < n)
-				{
-					unmerged->push_back(merge[i]);
-				}
-				else
-				{
-					unMerge(merge[i], unmerged);
-				}
-			}
-		}
-	}
-}
 
 bool Coloring::checkRest(Graph* copy)
 {
@@ -127,6 +105,10 @@ bool Coloring::checkRest(Graph* copy)
 		ver = instance->deleted[i];
 		if (ver < n)
 		{
+			if (instance->rules[ver]->apply(instance))
+			{
+				continue;
+			}
 			if (copy->getAvailableColors(ver).size() > 0)
 			{
 				Instance::giveColor(copy, ver, copy->getAvailableColors(ver).at(0));
@@ -135,10 +117,13 @@ bool Coloring::checkRest(Graph* copy)
 		}
 		else
 		{
-			std::vector<int> unMerged;
-			unMerge(ver, &unMerged);
+			std::vector<int> unMerged = *instance->unMerge(ver);
 			for (int mer : unMerged)
 			{
+				if (instance->rules[ver]->apply(instance))
+				{
+					continue;
+				}
 				if (copy->getAvailableColors(mer).size() > 0)
 				{
 					Instance::giveColor(copy, mer, copy->getAvailableColors(mer).at(0));
