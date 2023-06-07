@@ -144,6 +144,9 @@
     <ClInclude Include="src\instance_representation\inner_representation\variable.hpp" />
     <ClInclude Include="src\csp\result.hpp" />
     <ClInclude Include="src\instance_representation\instance.hpp" />
+    <ClInclude Include="src\instance_representation\rules\even_rule.hpp" />
+    <ClInclude Include="src\instance_representation\rules\neighbour_rule.hpp" />
+    <ClInclude Include="src\instance_representation\rules\rule.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\brute_force\brute_force.cpp" />
@@ -162,6 +165,8 @@
     <ClCompile Include="src\instance_representation\inner_representation\inner_csp_instance.cpp" />
     <ClCompile Include="src\instance_representation\inner_representation\variable.cpp" />
     <ClCompile Include="src\instance_representation\instance.cpp" />
+    <ClCompile Include="src\instance_representation\rules\even_rule.cpp" />
+    <ClCompile Include="src\instance_representation\rules\neighbour_rule.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

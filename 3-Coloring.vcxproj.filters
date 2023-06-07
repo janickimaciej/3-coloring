@@ -18,6 +18,9 @@
     <ClInclude Include="src\coloring\coloring.hpp" />
     <ClInclude Include="src\forests\bushy_forests.hpp" />
     <ClInclude Include="src\instance_representation\instance.hpp" />
+    <ClInclude Include="src\instance_representation\rules\rule.hpp" />
+    <ClInclude Include="src\instance_representation\rules\even_rule.hpp" />
+    <ClInclude Include="src\instance_representation\rules\neighbour_rule.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\instance_representation\graph.cpp" />
@@ -37,5 +40,7 @@
     <ClCompile Include="src\coloring\coloring.cpp" />
     <ClCompile Include="src\forests\bushy_forests.cpp" />
     <ClCompile Include="src\instance_representation\instance.cpp" />
+    <ClCompile Include="src\instance_representation\rules\even_rule.cpp" />
+    <ClCompile Include="src\instance_representation\rules\neighbour_rule.cpp" />
   </ItemGroup>
 </Project>

@@ -3,17 +3,21 @@
 
 #include "graph.hpp"
 
+class Rule;
+
 class Instance
 {
-
-	int n;
-
+private:
+	void unMerging(int v, int max, std::vector<int>* unmerged);
 public:
+	int n;
 	Graph* graph;
 	std::vector<int> indexes;
 	std::vector<int> innerTree;
 	std::vector<int> deleted;
 	std::vector<std::vector<int>> superVertices;
+
+	Rule** rules;
 
 	Instance(Graph* graph);
 	Instance(const Instance& instance);
@@ -24,6 +28,9 @@ public:
 	void addVertex();
 
 	static void giveColor(Graph* g, int v, int color);
+	static void giveNaive(Graph* g, int v);
+
+	std::vector<int>* unMerge(int v, int max);
 };
 
 #endif // !INST
