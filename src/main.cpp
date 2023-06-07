@@ -14,6 +14,7 @@ using namespace std::chrono;
 
 void K() {
 	G6Parser parser;
+
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\bruteCheck.g6");
 	vector<string> files;
 	vector<int> edges;
@@ -32,6 +33,7 @@ void K() {
 	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\n21e59.g6");
 
 	/*Graph* g = parser.parse();
+
 	cout << g->getVertexCount() << "\n";
 	G6Parser::parseBack(g);*/
 
@@ -58,8 +60,6 @@ void K() {
 		{
 			cout << "Our in " << duration.count() << " s\n";
 		}
-
-
 		/*BruteForce brute(Graph::copy(g));
 		auto startB = high_resolution_clock::now();
 		cout << brute.Solve() << "\n";
