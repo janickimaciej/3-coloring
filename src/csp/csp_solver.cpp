@@ -1,6 +1,7 @@
 #include "csp_solver.hpp"
 #include <map>
 #include <set>
+#include <stack>
 #include <utility>
 #include <iostream>
 #include <stdexcept>
@@ -968,4 +969,289 @@ void CSPSolver::lemma11Branch2Reduce(CSPInstance* reduced, const ColorPair& vR) 
 
 void CSPSolver::lemma11Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR) {
 	cspInstance->copyColoring(reduced, std::vector<int>());
+}
+
+Result CSPSolver::lemma12(CSPInstance* cspInstance) {
+	ColorPair vR(-1, -1);
+	int lemmaCase;
+	std::unordered_set<ColorPair> bipartite;
+	ColorPair xR(-1, -1);
+	ColorPair yR(-1, -1);
+	std::unordered_set<ColorPair> component;
+	lemma12Match(cspInstance, vR, lemmaCase, bipartite, xR, yR, component);
+	if(vR.variable == -1) {
+		return Result::NoMatch;
+	}
+
+	if(lemmaCase == 1) {
+		return lemma12Case1(cspInstance, vR);
+	} else if(lemmaCase == 2) {
+		return lemma12Case2(cspInstance, bipartite);
+	} else {
+		return lemma12Case3(cspInstance, xR, yR, component);
+	}
+}
+
+void CSPSolver::lemma12Match(const CSPInstance* cspInstance, ColorPair& vR, int& lemmaCase,
+	std::unordered_set<ColorPair>& bipartite, ColorPair& xR, ColorPair& yR, std::unordered_set<ColorPair>& component) {
+	int n = cspInstance->getVariableCount();
+	bool** visited = new bool*[n];
+	for(int v = 0; v < n; v++) {
+		visited[v] = new bool[4];
+		for(int R = 0; R < 4; R++) {
+			visited[v][R] = false;
+		}
+	}
+
+	for(int v = 0; v < cspInstance->getVariableCount(); v++) {
+		std::vector<int> availableColors = cspInstance->getAvailableColors(v);
+		for(auto R = availableColors.begin(); R != availableColors.end(); R++) {
+			if(visited[v][*R] || cspInstance->getConstraints(v, *R).size() != 3) {
+				continue;
+			}
+			int k = 0;
+			ColorPair current(v, *R);
+			std::stack<ColorPair> stack;
+			bipartite.clear();
+			component.clear();
+			stack.push(current);
+			bipartite.insert(current);
+			while(!stack.empty()) {
+				current = stack.top();
+				stack.pop();
+				if(!visited[current.variable][current.color]) {
+					visited[current.variable][current.color] = true;
+					component.insert(current);
+					k++;
+					bool isBipartite = bipartite.find(current) != bipartite.end();
+					std::vector<ColorPair> constraints = cspInstance->getConstraints(current.variable, current.color);
+					for(auto constraint = constraints.begin(); constraint != constraints.end(); constraint++) {
+						stack.push(*constraint);
+						if(!isBipartite) {
+							bipartite.insert(*constraint);
+						}
+					}
+				}
+			}
+			if(k != 8 && k != 12) {
+				continue;
+			}
+
+			vR.variable = v;
+			vR.color = *R;
+			if(k == 12) {
+				lemmaCase = 1;
+				return;
+			} else if(bipartite.size() == 4) {
+				lemmaCase = 2;
+				return;
+			} else {
+				lemmaCase = 3;
+				for(auto aR = component.begin(); aR != component.end(); aR++) {
+					for(auto bR = component.begin(); bR != component.end(); bR++) {
+						if(aR->variable == bR->variable ||
+							cspInstance->hasConstraint(aR->variable, aR->color, bR->variable, bR->color)) {
+							continue;
+						}
+						bool haveCommonConstraint = false;
+						std::vector<ColorPair> XConstraints = cspInstance->getConstraints(aR->variable, aR->color);
+						std::vector<ColorPair> YConstraints = cspInstance->getConstraints(bR->variable, bR->color);
+						for(auto XConstraint = XConstraints.begin(); XConstraint != XConstraints.end(); XConstraint++) {
+							for(auto YConstraint = YConstraints.begin(); YConstraint != YConstraints.end(); YConstraint++) {
+								if(XConstraint == YConstraint) {
+									haveCommonConstraint = true;
+								}
+							}
+						}
+						if(!haveCommonConstraint) {
+							xR.variable = aR->variable;
+							xR.color = aR->color;
+							yR.variable = bR->variable;
+							yR.color = bR->color;
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+Result CSPSolver::lemma12Case1(CSPInstance* cspInstance, const ColorPair& vR) {
+	CSPInstance* reduced = CSPInstance::copy(cspInstance);
+	lemma12Case1Branch1Reduce(reduced, vR);
+
+	Result result = solve(reduced);
+	if(result == Result::Success) {
+		lemma12Case1Branch1Color(cspInstance, reduced, vR);
+		delete reduced;
+		return Result::Success;
+	}
+	delete reduced;
+
+	reduced = CSPInstance::copy(cspInstance);
+	lemma12Case1Branch2Reduce(reduced, vR);
+
+	result = solve(reduced);
+	if(result == Result::Success) {
+		lemma12Case1Branch2Color(cspInstance, reduced, vR);
+	}
+	delete reduced;
+	return result;
+}
+
+void CSPSolver::lemma12Case1Branch1Reduce(CSPInstance* reduced, const ColorPair& vR) {
+	chooseColorReduce(reduced, vR);
+}
+
+void CSPSolver::lemma12Case1Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR) {
+	chooseColorColor(cspInstance, reduced, vR);
+}
+
+void CSPSolver::lemma12Case1Branch2Reduce(CSPInstance* reduced, const ColorPair& vR) {
+	reduced->disableColor(vR.variable, vR.color);
+}
+
+void CSPSolver::lemma12Case1Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR) {
+	cspInstance->copyColoring(reduced, std::vector<int>());
+}
+
+Result CSPSolver::lemma12Case2(CSPInstance* cspInstance, std::unordered_set<ColorPair> bipartite) {
+	CSPInstance* reduced = CSPInstance::copy(cspInstance);
+	lemma12Case2Reduce(cspInstance, bipartite);
+
+	Result result = solve(reduced);
+	if(result == Result::Success) {
+		lemma12Case2Color(cspInstance, reduced, bipartite);
+	}
+	delete reduced;
+	return result;
+}
+
+void CSPSolver::lemma12Case2Reduce(CSPInstance* reduced, std::unordered_set<ColorPair> bipartite) {
+	for(auto colorPair = bipartite.begin(); colorPair != bipartite.end(); colorPair++) {
+		reduced->removeVariable(colorPair->variable);
+	}
+}
+
+void CSPSolver::lemma12Case2Color(CSPInstance* cspInstance, const CSPInstance* reduced, std::unordered_set<ColorPair> bipartite) {
+	std::vector<int> removedVariables;
+	for(auto colorPair = bipartite.begin(); colorPair != bipartite.end(); colorPair++) {
+		removedVariables.push_back(colorPair->variable);
+	}
+	cspInstance->copyColoring(reduced, removedVariables);
+	for(auto colorPair = bipartite.begin(); colorPair != bipartite.end(); colorPair++) {
+		cspInstance->setColor(colorPair->variable, colorPair->color);
+	}
+}
+
+Result CSPSolver::lemma12Case3(CSPInstance* cspInstance, const ColorPair& xR, const ColorPair& yR,
+	std::unordered_set<ColorPair> component) {
+	CSPInstance* reduced = CSPInstance::copy(cspInstance);
+	lemma12Case3Branch1Reduce(reduced, xR, yR);
+
+	Result result = solve(reduced);
+	if(result == Result::Success) {
+		lemma12Case3Branch1Color(cspInstance, reduced, xR, yR);
+		delete reduced;
+		return Result::Success;
+	}
+	delete reduced;
+
+	ColorPair fR(-1, -1);
+	ColorPair gR(-1, -1);
+	for(auto colorPair = component.begin(); colorPair != component.end(); colorPair++) {
+		if(colorPair->variable != xR.variable && colorPair->variable != yR.variable &&
+			!cspInstance->hasConstraint(xR.variable, xR.color, colorPair->variable, colorPair->color)) {
+			if(fR.variable == -1) {
+				fR.variable = colorPair->variable;
+				fR.color = colorPair->color;
+			} else {
+				gR.variable = colorPair->variable;
+				gR.color = colorPair->color;
+			}
+		}
+	}
+	reduced = CSPInstance::copy(cspInstance);
+	lemma12Case3Branch2And3Reduce(reduced, xR, fR, gR);
+
+	result = solve(reduced);
+	if(result == Result::Success) {
+		lemma12Case3Branch2And3Color(cspInstance, reduced, xR, fR, gR);
+		delete reduced;
+		return Result::Success;
+	}
+	delete reduced;
+
+	for(auto colorPair = component.begin(); colorPair != component.end(); colorPair++) {
+		if(colorPair->variable == fR.variable && colorPair->color != fR.color) {
+			fR.color = colorPair->color;
+		}
+		if(colorPair->variable == gR.variable && colorPair->color != gR.color) {
+			gR.color = colorPair->color;
+		}
+	}
+	reduced = CSPInstance::copy(cspInstance);
+	lemma12Case3Branch2And3Reduce(reduced, yR, fR, gR);
+
+	result = solve(reduced);
+	if(result == Result::Success) {
+		lemma12Case3Branch2And3Color(cspInstance, reduced, yR, fR, gR);
+	}
+	delete reduced;
+	return result;
+}
+
+void CSPSolver::lemma12Case3Branch1Reduce(CSPInstance* reduced, const ColorPair& xR, const ColorPair& yR) {
+	std::vector<ColorPair> xConstraints = reduced->getConstraints(xR.variable, xR.color);
+	for(auto constraint = xConstraints.begin(); constraint != xConstraints.end(); constraint++) {
+		reduced->disableColor(constraint->variable, constraint->color);
+	}
+	std::vector<ColorPair> yConstraints = reduced->getConstraints(yR.variable, yR.color);
+	for(auto constraint = yConstraints.begin(); constraint != yConstraints.end(); constraint++) {
+		reduced->disableColor(constraint->variable, constraint->color);
+	}
+	reduced->removeVariable(xR.variable);
+	reduced->removeVariable(yR.variable);
+}
+
+void CSPSolver::lemma12Case3Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& xR,
+	const ColorPair& yR) {
+	std::vector<int> removedVariables;
+	removedVariables.push_back(xR.variable);
+	removedVariables.push_back(yR.variable);
+	cspInstance->copyColoring(reduced, removedVariables);
+	cspInstance->setColor(xR.variable, xR.color);
+	cspInstance->setColor(yR.variable, yR.color);
+}
+
+void CSPSolver::lemma12Case3Branch2And3Reduce(CSPInstance* reduced, const ColorPair& varR, const ColorPair& fR,
+	const ColorPair& gR) {
+	std::vector<ColorPair> xConstraints = reduced->getConstraints(varR.variable, varR.color);
+	for(auto constraint = xConstraints.begin(); constraint != xConstraints.end(); constraint++) {
+		reduced->disableColor(constraint->variable, constraint->color);
+	}
+	std::vector<ColorPair> fConstraints = reduced->getConstraints(fR.variable, fR.color);
+	for(auto constraint = fConstraints.begin(); constraint != fConstraints.end(); constraint++) {
+		reduced->disableColor(constraint->variable, constraint->color);
+	}
+	std::vector<ColorPair> gConstraints = reduced->getConstraints(gR.variable, gR.color);
+	for(auto constraint = gConstraints.begin(); constraint != gConstraints.end(); constraint++) {
+		reduced->disableColor(constraint->variable, constraint->color);
+	}
+	reduced->removeVariable(varR.variable);
+	reduced->removeVariable(fR.variable);
+	reduced->removeVariable(gR.variable);
+}
+
+void CSPSolver::lemma12Case3Branch2And3Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& varR,
+	const ColorPair& fR, const ColorPair& gR) {
+	std::vector<int> removedVariables;
+	removedVariables.push_back(varR.variable);
+	removedVariables.push_back(fR.variable);
+	removedVariables.push_back(gR.variable);
+	cspInstance->copyColoring(reduced, removedVariables);
+	cspInstance->setColor(varR.variable, varR.color);
+	cspInstance->setColor(fR.variable, fR.color);
+	cspInstance->setColor(gR.variable, gR.color);
 }
