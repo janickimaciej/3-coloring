@@ -120,18 +120,18 @@ void M() {
 	vector<string> files;
 	vector<int> edges;
 	
-	files.push_back("D:\\Downloads\\n5e7.g6");
-	edges.push_back(7);
-	files.push_back("D:\\Downloads\\n11e32.g6");
-	edges.push_back(32);
-	files.push_back("D:\\Downloads\\n21e59.g6");
-	edges.push_back(59);
-	files.push_back("D:\\Downloads\\n31e62.g6");
-	edges.push_back(62);
-	files.push_back("D:\\Downloads\\n12e24F.g6");
-	edges.push_back(24);
-	files.push_back("D:\\Downloads\\n4e6F.g6");
+	files.push_back("clique4.g6");
 	edges.push_back(6);
+	files.push_back("cycleEvil.g6");
+	edges.push_back(0);
+	files.push_back("n31e62.g6");
+	edges.push_back(62);
+	files.push_back("n64e672c4.g6");
+	edges.push_back(672);
+	files.push_back("n103e1133.g6");
+	edges.push_back(1133);
+	files.push_back("n250e375.g6");
+	edges.push_back(375);
 
 	Graph* g;
 	Graph* copy;
