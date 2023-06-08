@@ -1,5 +1,5 @@
-#ifndef PARSER
-#define PARSER
+#ifndef G6PARSER
+#define G6PARSER
 
 #include <fstream>
 #include "../instance_representation/graph.hpp"

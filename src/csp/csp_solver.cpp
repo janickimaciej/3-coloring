@@ -6,8 +6,6 @@
 #include <iostream>
 #include <stdexcept>
 
-bool CSPSolver::beVerbose = false;
-
 const Lemma CSPSolver::lemmas[lemmasCount] = {
 	&lemma0,
 	&lemma1,
@@ -28,18 +26,6 @@ const Lemma CSPSolver::lemmas[lemmasCount] = {
 	&lemma16,
 	&lemma18
 };
-
-Result CSPSolver::solve(CSPInstance* cspInstance) {
-	for(int lemma = 0; lemma < lemmasCount; lemma++) {
-		Result result = (*lemmas[lemma])(cspInstance);
-		if(result != Result::NoMatch) {
-			return result;
-		}
-	}
-	const char* errorMsg = "solve: None of the lemmas matched ";
-	std::cerr << errorMsg << std::endl;
-	throw std::logic_error(errorMsg);
-}
 
 void CSPSolver::chooseColorReduce(CSPInstance* reduced, const ColorPair& varCol) {
 	std::vector<ColorPair> constraints = reduced->getConstraints(varCol.variable, varCol.color);
@@ -2083,4 +2069,18 @@ void CSPSolver::lemma18Branch2Reduce(CSPInstance* reduced, const ColorPair& vR) 
 
 void CSPSolver::lemma18Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced) {
 	cspInstance->copyColoring(reduced, std::vector<int>());
+}
+
+bool CSPSolver::beVerbose = false;
+
+Result CSPSolver::solve(CSPInstance* cspInstance) {
+	for(int lemma = 0; lemma < lemmasCount; lemma++) {
+		Result result = (*lemmas[lemma])(cspInstance);
+		if(result != Result::NoMatch) {
+			return result;
+		}
+	}
+	const char* errorMsg = "solve: None of the lemmas matched ";
+	std::cerr << errorMsg << std::endl;
+	throw std::logic_error(errorMsg);
 }

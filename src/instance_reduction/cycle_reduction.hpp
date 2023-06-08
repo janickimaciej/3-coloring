@@ -1,5 +1,5 @@
-#ifndef CYCLE_RED
-#define CYCLE_RED
+#ifndef CYCLE_REDUCTION
+#define CYCLE_REDUCTION
 
 #include "../instance_representation/graph.hpp"
 #include "../instance_representation//instance.hpp"
@@ -39,4 +39,4 @@ public:
 
 };
 
-#endif // !CYCLE_RED
+#endif

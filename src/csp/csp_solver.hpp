@@ -171,9 +171,10 @@ class CSPSolver {
 	static void lemma18Branch2Reduce(CSPInstance* reduced, const ColorPair& vR);
 	static void lemma18Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced);
 public:
+	static bool beVerbose;
+
 	CSPSolver() = delete;
 	~CSPSolver() = delete;
-	static bool beVerbose;
 	static Result solve(CSPInstance* cspInstance);
 };
 

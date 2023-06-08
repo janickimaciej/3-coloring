@@ -12,4 +12,4 @@ public:
 	virtual Rule* copy() { return new Rule(); }
 };
 
-#endif // !RULE
+#endif
