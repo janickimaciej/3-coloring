@@ -88,6 +88,13 @@ namespace InnerRepresentation {
 		}
 	}
 
+	void InnerCSPInstance::removeVariables(std::vector<int> variables) {
+		std::sort(variables.begin(), variables.end());
+		for(std::vector<int>::reverse_iterator variable = variables.rbegin(); variable != variables.rend(); variable++) {
+			removeVariable(*variable);
+		}
+	}
+
 	bool InnerCSPInstance::hasConstraint(int startVariable, int startColor, int endVariable, int endColor) const {
 		if(startVariable < 0 || startVariable >= variables.size() || endVariable < 0 || endVariable >= variables.size()) {
 			error("hasConstraint: Variable index out of bounds");

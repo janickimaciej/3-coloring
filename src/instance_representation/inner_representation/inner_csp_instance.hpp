@@ -25,6 +25,7 @@ namespace InnerRepresentation {
 		virtual std::vector<ColorPair> getConstraints(int variable, int color) const;
 		virtual void addVariable() override;
 		virtual void removeVariable(int variable) override;
+		virtual void removeVariables(std::vector<int> variables) override;
 	
 		virtual bool hasConstraint(int startVariable, int startColor, int endVariable, int endColor) const override;
 		virtual void addConstraint(int startVariable, int startColor, int endVariable, int endColor) override;

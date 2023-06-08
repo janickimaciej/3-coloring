@@ -14,6 +14,7 @@ public:
 	virtual std::vector<ColorPair> getConstraints(int variable, int color) const = 0;
 	virtual void addVariable() = 0;
 	virtual void removeVariable(int variable) = 0;
+	virtual void removeVariables(std::vector<int> variables) = 0;
 	
 	virtual bool hasConstraint(int startVariable, int startColor, int endVariable, int endColor) const = 0;
 	virtual void addConstraint(int startVariable, int startColor, int endVariable, int endColor) = 0;
