@@ -61,23 +61,20 @@ bool CycleReduction::Reduce()
 	hasReduced = false;
 	Rule* rule = instances->at(0)->rules[0];
 	int b = 3;
+	int i = 0;
 	while (1)
 	{
-		for (int i = 0; i < n; i++)
+		if (threes[i] && !visited[i])
 		{
-			if (threes[i] && !visited[i])
+			if (cycleRec(i, i))
 			{
-				if (cycleRec(i, i))
-				{
-					rule = instances->at(0)->rules[0];
-					Update();
-					rule = instances->at(0)->rules[0];
-					hasReduced = true;
-					continue;
-				}
+				Update();
+				hasReduced = true;
+				continue;
 			}
 		}
-		break;
+		i++;
+		if (i == instance->graph->getVertexCount()) break;
 	}
 	return hasReduced;
 }
@@ -90,7 +87,7 @@ bool CycleReduction::cycleRec(int curr, int parent)
 	int minV;
 	for (int i = 0; i < neighbours[curr].size(); i++)
 	{
-		v = neighbours[curr][i];
+		int v = neighbours[curr][i];
 		if (!threes[v]) continue;
 		if (v == parent) continue;
 		if (visited[v])
@@ -116,7 +113,7 @@ bool CycleReduction::cycleRec(int curr, int parent)
 	}
 	for (int i = 0; i < neighbours[curr].size(); i++)
 	{
-		v = neighbours[curr][i];
+		int v = neighbours[curr][i];
 		if (!threes[v]) continue;
 		if (v == parent) continue;
 		Rule* rule = instances->at(0)->rules[0];
@@ -259,7 +256,7 @@ void CycleReduction::deleteCycle(int start, int end)
 	}
 	for (int ver : neighbours[w2])
 	{
-		if (!instance->graph->hasEdge(n,ver)) newInst->graph->addEdge(n, ver);
+		if (!newInst->graph->hasEdge(n,ver)) newInst->graph->addEdge(n, ver);
 	}
 	newInst->graph->addEdge(n, findNeighbour(cycle[2]));
 	toDeletion[w1] = true;
@@ -292,6 +289,7 @@ void CycleReduction::deleteCycle(int start, int end)
 	merge3.push_back(instance->indexes[n + 1]);
 	merge3.push_back(instance->indexes[cycle[0]]);
 	merge3.push_back(instance->indexes[cycle[2]]);
+	instance->superVertices.push_back(merge3);
 	instance->graph->addEdge(n, n + 1);
 	instance->graph->addEdge(n + 1, cycle[3]);
 	instance->graph->addEdge(n + 1, cycle[cycle.size() - 1]);

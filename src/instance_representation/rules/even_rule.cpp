@@ -14,12 +14,35 @@ EvenRule::EvenRule(std::vector<int> cycle, std::vector<int> neighbours)
 
 bool EvenRule::apply(Instance* instance, Graph* graph)
 {
-	int color = graph->getAvailableColors(neighbours[0]).at(0);
-	int color1;
+	int neigh = neighbours[0];
+	
 	int n = graph->getVertexCount();
+	int color;
+	if (neigh < n)
+	{
+		color = graph->getAvailableColors(neighbours[0]).at(0);
+	} 
+	else
+	{
+		color = graph->getAvailableColors(instance->unMerge(neigh, n)->at(0)).at(0);
+	}
+	int color1;
 	for (int i = 0; i < c; i++)
 	{
-		color1 = graph->getAvailableColors(neighbours[(i + 1) % c]).at(0);
+		neigh = neighbours[(i + 1) % c];
+		if (neigh < n)
+		{
+			color1 = graph->getAvailableColors(neighbours[(i + 1) % c]).at(0);
+		}
+		else
+		{
+			if (neigh == 252)
+			{
+				int x = 5;
+			}
+			int k = instance->unMerge(neigh, n)->at(0);
+			color1 = graph->getAvailableColors(instance->unMerge(neigh, n)->at(0)).at(0);
+		}
 		if (color != color1)
 		{
 			if (cycle[(i + 1) % c] < graph->getVertexCount())

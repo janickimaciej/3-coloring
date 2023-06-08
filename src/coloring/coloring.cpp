@@ -26,9 +26,11 @@ bool Coloring::Solve()
 			instance = instances->at(i);
 			solved = true;
 			if (tryToColor(i)) return true;
+			//if (tryToColor(i)) break;
 		}
 	}
 	return false;
+	//return solved;
 }
 
 bool Coloring::tryToColor(int inst)
@@ -81,14 +83,15 @@ void Coloring::copyColoring()
 {
 	for (int i = 0; i < instance->graph->getVertexCount(); i++)
 	{
-		int color = instance->graph->getAvailableColors(i).at(0);
 		if (instance->indexes[i] < n)
 		{
+			int color = graph->getAvailableColors(instance->indexes[i]).at(0);
 			Instance::giveColor(graph, instance->indexes[i], color);
 		}
 		else
 		{
 			std::vector<int> unmerged = *instance->unMerge(instance->indexes[i],n);
+			int color = graph->getAvailableColors(unmerged[0]).at(0);
 			for (int ver : unmerged)
 			{
 				Instance::giveColor(graph, ver, color);
@@ -125,7 +128,7 @@ bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 			std::vector<int> unMerged = *copyInst->unMerge(ver, n);
 			for (int mer : unMerged)
 			{
-				if (copyInst->rules[ver]->apply(copyInst, graph))
+				if (copyInst->rules[mer]->apply(copyInst, graph))
 				{
 					continue;
 				}

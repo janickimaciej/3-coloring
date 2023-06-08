@@ -23,6 +23,7 @@ std::vector<Instance*>* InitialReduction::Reduce()
 		while (1)
 		{
 			low->Reduce();
+			cycle->Update();
 			if (!cycle->Reduce()) break;
 			low->Update();
 			cycle->Update();

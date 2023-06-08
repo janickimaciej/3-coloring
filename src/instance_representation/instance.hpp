@@ -11,6 +11,7 @@ private:
 	void unMerging(int v, int max, std::vector<int>* unmerged);
 public:
 	int n;
+	int originalN;
 	Graph* graph;
 	std::vector<int> indexes;
 	std::vector<int> innerTree;

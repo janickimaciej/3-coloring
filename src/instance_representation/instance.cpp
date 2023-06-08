@@ -5,8 +5,9 @@ Instance::Instance(Graph* graph)
 {
 	this->graph = graph;
 	this->n = graph->getVertexCount();
-	rules = new Rule*[n];
-	for (int i = 0; i < n; i++)
+	this->originalN = this->n;
+	rules = new Rule*[originalN];
+	for (int i = 0; i < originalN; i++)
 	{
 		rules[i] = new Rule();
 		indexes.push_back(i);
@@ -17,12 +18,13 @@ Instance::Instance(const Instance& instance)
 {
 	graph = Graph::copy(instance.graph);
 	this->n = instance.n;
+	this->originalN = instance.originalN;
 	indexes = std::vector<int>(instance.indexes.begin(), instance.indexes.end());
 	innerTree = std::vector<int>(instance.innerTree.begin(), instance.innerTree.end());
 	deleted = std::vector<int>(instance.deleted.begin(), instance.deleted.end());
 	superVertices = std::vector<std::vector<int>>(instance.superVertices.begin(), instance.superVertices.end());
-	rules = new Rule * [n];
-	for (int i = 0; i < n; i++)
+	rules = new Rule * [originalN];
+	for (int i = 0; i < originalN; i++)
 	{
 		rules[i] = instance.rules[i]->copy();
 	}
@@ -44,6 +46,10 @@ void Instance::addVertex()
 {
 	graph->addVertex();
 	indexes.push_back(n);
+	if (n == 253)
+	{
+		int b = 6;
+	}
 	n++;
 }
 
@@ -66,9 +72,9 @@ void Instance::giveNaive(Graph* g, int v)
 
 std::vector<int>* Instance::unMerge(int v, int max)
 {
-	std::vector<int> unMerged;
-	unMerging(v, max, &unMerged);
-	return &unMerged;
+	std::vector<int>* unMerged = new std::vector<int>;
+	unMerging(v, max, unMerged);
+	return unMerged;
 }
 
 void Instance::unMerging(int v, int max, std::vector<int>* unmerged)
