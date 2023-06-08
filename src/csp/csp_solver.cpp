@@ -213,8 +213,10 @@ void CSPSolver::lemma2Match(const CSPInstance* cspInstance, ColorPair& vX, Color
 }
 
 void CSPSolver::lemma2Reduce(CSPInstance* reduced, int v, int w) {
-	reduced->removeVariable(v < w ? w : v);
-	reduced->removeVariable(v < w ? v : w);
+	std::vector<int> removedVariables;
+	removedVariables.push_back(v);
+	removedVariables.push_back(w);
+	reduced->removeVariables(removedVariables);
 }
 
 void CSPSolver::lemma2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vX, const ColorPair& wY) {
@@ -425,9 +427,6 @@ void CSPSolver::lemma6Case1Reduce(CSPInstance* reduced, const ColorPair& vR, con
 	std::vector<ColorPair> wGConstraints = reduced->getConstraints(wG.variable, wG.color);
 	std::vector<ColorPair> wBConstraints = reduced->getConstraints(wB.variable, wB.color);
 
-	reduced->removeVariable(vR.variable < wR.variable ? wR.variable : vR.variable);
-	reduced->removeVariable(vR.variable < wR.variable ? vR.variable : wR.variable);
-
 	reduced->addVariable();
 	int u = reduced->getVariableCount() - 1;
 	for(auto constraint = vGConstraints.begin(); constraint != vGConstraints.end(); constraint++) {
@@ -442,6 +441,11 @@ void CSPSolver::lemma6Case1Reduce(CSPInstance* reduced, const ColorPair& vR, con
 	for(auto constraint = wBConstraints.begin(); constraint != wBConstraints.end(); constraint++) {
 		reduced->addConstraint(u, 3, constraint->variable, constraint->color);
 	}
+
+	std::vector<int> removedVariables;
+	removedVariables.push_back(vR.variable);
+	removedVariables.push_back(wR.variable);
+	reduced->removeVariables(removedVariables);
 }
 
 void CSPSolver::lemma6Case1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR,
@@ -1152,9 +1156,11 @@ Result CSPSolver::lemma12Case2(CSPInstance* cspInstance, std::unordered_set<Colo
 }
 
 void CSPSolver::lemma12Case2Reduce(CSPInstance* reduced, std::unordered_set<ColorPair> bipartite) {
+	std::vector<int> removedVariables;
 	for(auto colorPair = bipartite.begin(); colorPair != bipartite.end(); colorPair++) {
-		reduced->removeVariable(colorPair->variable);
+		removedVariables.push_back(colorPair->variable);
 	}
+	reduced->removeVariables(removedVariables);
 }
 
 void CSPSolver::lemma12Case2Color(CSPInstance* cspInstance, const CSPInstance* reduced, std::unordered_set<ColorPair> bipartite) {
@@ -1234,8 +1240,10 @@ void CSPSolver::lemma12Case3Branch1Reduce(CSPInstance* reduced, const ColorPair&
 	for(auto constraint = yConstraints.begin(); constraint != yConstraints.end(); constraint++) {
 		reduced->disableColor(constraint->variable, constraint->color);
 	}
-	reduced->removeVariable(xR.variable);
-	reduced->removeVariable(yR.variable);
+	std::vector<int> removedVariables;
+	removedVariables.push_back(xR.variable);
+	removedVariables.push_back(yR.variable);
+	reduced->removeVariables(removedVariables);
 }
 
 void CSPSolver::lemma12Case3Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& xR,
@@ -1262,9 +1270,11 @@ void CSPSolver::lemma12Case3Branch2And3Reduce(CSPInstance* reduced, const ColorP
 	for(auto constraint = gConstraints.begin(); constraint != gConstraints.end(); constraint++) {
 		reduced->disableColor(constraint->variable, constraint->color);
 	}
-	reduced->removeVariable(varR.variable);
-	reduced->removeVariable(fR.variable);
-	reduced->removeVariable(gR.variable);
+	std::vector<int> removedVariables;
+	removedVariables.push_back(varR.variable);
+	removedVariables.push_back(fR.variable);
+	removedVariables.push_back(gR.variable);
+	reduced->removeVariables(removedVariables);
 }
 
 void CSPSolver::lemma12Case3Branch2And3Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& varR,
@@ -1543,8 +1553,10 @@ void CSPSolver::lemma14Branch3Reduce(CSPInstance* reduced, const ColorPair& vR, 
 	for(auto constraint = yConstraints.begin(); constraint != yConstraints.end(); constraint++) {
 		reduced->disableColor(constraint->variable, constraint->color);
 	}
-	reduced->removeVariable(vR.variable);
-	reduced->removeVariable(yR.variable);
+	std::vector<int> removedVariables;
+	removedVariables.push_back(vR.variable);
+	removedVariables.push_back(yR.variable);
+	reduced->removeVariables(removedVariables);
 }
 
 void CSPSolver::lemma14Branch3Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR,
