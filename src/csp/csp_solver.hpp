@@ -47,9 +47,10 @@ class CSPSolver {
 	static Result lemma6(CSPInstance* cspInstance);
 	static void lemma6Match(const CSPInstance* cspInstance, ColorPair& vR, ColorPair& wR);
 	static Result lemma6Case1(CSPInstance* cspInstance, const ColorPair& vR, const ColorPair& wR);
-	static void lemma6Case1Reduce(CSPInstance* reduced, const ColorPair& vR, const ColorPair& wR);
+	static void lemma6Case1Reduce(CSPInstance* reduced, const ColorPair& vR, const ColorPair& wR, ColorPair& vG,
+		ColorPair& vB, ColorPair& wG, ColorPair& wB);
 	static void lemma6Case1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR,
-		const ColorPair& wR);
+		const ColorPair& wR, const ColorPair& vG, const ColorPair& vB, const ColorPair& wG, const ColorPair& wB);
 	static Result lemma6Case2(CSPInstance* cspInstance, const ColorPair& vR, const ColorPair& wR);
 	static void lemma6Case2Branch1Reduce(CSPInstance* reduced, const ColorPair& vR, const ColorPair& wR);
 	static void lemma6Case2Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR,
@@ -160,7 +161,7 @@ class CSPSolver {
 	static Result lemma17(CSPInstance* cspInstance);
 	static void lemma17Match(const CSPInstance* cspInstance, Graph** bipartiteGraph, int** variableColorComponent);
 	static Result lemma17Solve(Graph* bipartiteGraph, int variableCount, std::vector<std::pair<int, int>>& variableComponent);
-	static std::vector<int> lemma17SolvePath(Graph* bipartiteGraph, int** residual);
+	static std::vector<int> lemma17SolveFindPath(Graph* bipartiteGraph, int** residual);
 	static void lemma17Color(CSPInstance* cspInstance, const Graph* bipartiteGraph, int** variableColorComponent,
 		std::vector<std::pair<int, int>>& variableComponent);
 

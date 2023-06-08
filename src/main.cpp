@@ -86,31 +86,15 @@ void M() {
 	vector<string> files;
 	vector<int> edges;
 	
-	files.push_back("clique4.g6");
-	edges.push_back(-1);
-	files.push_back("cycleEvil.g6");
-	edges.push_back(-1);
-	files.push_back("n31e62.g6");
-	edges.push_back(62);
-	files.push_back("n64e672c4.g6");
-	edges.push_back(672);
-	files.push_back("n103e1133.g6");
-	edges.push_back(1133);
-	files.push_back("n246.g6");
-	edges.push_back(-1);
-	files.push_back("n250e375c3.g6");
-	edges.push_back(375);
-	files.push_back("sierpinski.g6");
-	edges.push_back(-1);
-	files.push_back("D:\\Downloads\\n12e22.g6");
-	edges.push_back(22);
+	files.push_back("D://Downloads//testSucc.g6");
+	files.push_back("D://Downloads//testFail.g6");
 
 	CSPSolver::beVerbose = true;
 	for(int i = 0; i < files.size(); i++) {
 		parser.openFile(files[i]);
 		Graph* g = parser.parse();
 
-		cout << "n" << g->getVertexCount() << " e" << edges[i] << "\n";
+		cout << "n" << g->getVertexCount() << "\n";
 
 		switch(CSPSolver::solve(dynamic_cast<CSPInstance*>(g))) {
 		case Result::Success:
