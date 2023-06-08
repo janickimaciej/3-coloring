@@ -6,6 +6,8 @@
 #include <iostream>
 #include <stdexcept>
 
+bool CSPSolver::beVerbose = false;
+
 const Lemma CSPSolver::lemmas[lemmasCount] = {
 	&lemma0,
 	&lemma1,
@@ -24,7 +26,6 @@ const Lemma CSPSolver::lemmas[lemmasCount] = {
 	&lemma14,
 	&lemma15,
 	&lemma16,
-	&lemma17,
 	&lemma18
 };
 
@@ -36,7 +37,7 @@ Result CSPSolver::solve(CSPInstance* cspInstance) {
 		}
 	}
 	const char* errorMsg = "solve: None of the lemmas matched ";
-	//std::cerr << errorMsg << std::endl;
+	std::cerr << errorMsg << std::endl;
 	throw std::logic_error(errorMsg);
 }
 
@@ -58,17 +59,23 @@ void CSPSolver::chooseColorColor(CSPInstance* cspInstance, const CSPInstance* re
 Result CSPSolver::lemma0(CSPInstance* cspInstance) {
 	int variableCount = cspInstance->getVariableCount();
 	if(variableCount == 0) {
-		//std::cerr << "L0 ";
+		if(beVerbose) {
+			std::cerr << "L0 ";
+		}
 		return Result::Success;
 	}
 
 	for(int variable = 0; variable < variableCount; variable++) {
 		std::vector<int> availableColors = cspInstance->getAvailableColors(variable);
 		if(availableColors.size() == 0) {
-			//std::cerr << "L0 ";
+			if(beVerbose) {
+				std::cerr << "L0 ";
+			}
 			return Result::Failure;
 		} else if(availableColors.size() == 1) {
-			//std::cerr << "L0 ";
+			if(beVerbose) {
+				std::cerr << "L0 ";
+			}
 			ColorPair vR(variable, availableColors[0]);
 			CSPInstance* reduced = CSPInstance::copy(cspInstance);
 			lemma0Reduce(reduced, vR);
@@ -101,7 +108,9 @@ Result CSPSolver::lemma1(CSPInstance* cspInstance) {
 	if(v == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L1 ";
+	if(beVerbose) {
+		std::cerr << "L1 ";
+	}
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma1Reduce(reduced, v, R, G);
@@ -155,7 +164,9 @@ Result CSPSolver::lemma2(CSPInstance* cspInstance) {
 	if(vX.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L2 ";
+	if(beVerbose) {
+		std::cerr << "L2 ";
+	}
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma2Reduce(reduced, vX.variable, wY.variable);
@@ -234,7 +245,9 @@ Result CSPSolver::lemma3(CSPInstance* cspInstance) {
 	if(vB.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L3 ";
+	if(beVerbose) {
+		std::cerr << "L3 ";
+	}
 
 	lemma3Reduce(cspInstance, vB);
 	
@@ -287,7 +300,9 @@ Result CSPSolver::lemma4(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L4 ";
+	if(beVerbose) {
+		std::cerr << "L4 ";
+	}
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma4Reduce(reduced, vR.variable);
@@ -330,7 +345,9 @@ Result CSPSolver::lemma5(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L5 ";
+	if(beVerbose) {
+		std::cerr << "L5 ";
+	}
 
 	lemma5Reduce(cspInstance, vR);
 
@@ -371,7 +388,9 @@ Result CSPSolver::lemma6(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L6 ";
+	if(beVerbose) {
+		std::cerr << "L6 ";
+	}
 
 	int vSize = (int)cspInstance->getAvailableColors(vR.variable).size();
 	int wSize = (int)cspInstance->getAvailableColors(wR.variable).size();
@@ -521,7 +540,9 @@ Result CSPSolver::lemma7(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L7 ";
+	if(beVerbose) {
+		std::cerr << "L7 ";
+	}
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma7Branch1Reduce(reduced, vR, wR);
@@ -593,7 +614,9 @@ Result CSPSolver::lemma8(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L8 ";
+	if(beVerbose) {
+		std::cerr << "L8 ";
+	}
 
 	if(isImplication) {
 		return lemma8Case1(cspInstance, vR, wR);
@@ -733,7 +756,9 @@ Result CSPSolver::lemma9(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L9 ";
+	if(beVerbose) {
+		std::cerr << "L9 ";
+	}
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma9Branch1Reduce(reduced, vR);
@@ -795,7 +820,9 @@ Result CSPSolver::lemma10(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L10 ";
+	if(beVerbose) {
+		std::cerr << "L10 ";
+	}
 
 	if(xR.variable == -1) {
 		return lemma10Case1(cspInstance, vR);
@@ -925,7 +952,9 @@ Result CSPSolver::lemma11(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L11 ";
+	if(beVerbose) {
+		std::cerr << "L11 ";
+	}
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma11Branch1Reduce(reduced, vR);
@@ -996,7 +1025,9 @@ Result CSPSolver::lemma12(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L12 ";
+	if(beVerbose) {
+		std::cerr << "L12 ";
+	}
 
 	if(lemmaCase == 1) {
 		return lemma12Case1(cspInstance, vR);
@@ -1295,7 +1326,9 @@ Result CSPSolver::lemma13(CSPInstance* cspInstance) {
 	if(zR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L13 ";
+	if(beVerbose) {
+		std::cerr << "L13 ";
+	}
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma13Branch1Reduce(reduced, zR);
@@ -1414,7 +1447,9 @@ Result CSPSolver::lemma14(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L14 ";
+	if(beVerbose) {
+		std::cerr << "L14 ";
+	}
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma14Branch1Reduce(reduced, wR);
@@ -1576,7 +1611,9 @@ Result CSPSolver::lemma15(CSPInstance* cspInstance) {
 	if(wR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L15 ";
+	if(beVerbose) {
+		std::cerr << "L15 ";
+	}
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma15Branch1Reduce(reduced, wR);
@@ -1694,7 +1731,9 @@ Result CSPSolver::lemma16(CSPInstance* cspInstance) {
 	if(vR.variable == -1) {
 		return Result::NoMatch;
 	}
-	//std::cerr << "L16 ";
+	if(beVerbose) {
+		std::cerr << "L16 ";
+	}
 
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma16Branch1Reduce(reduced, vR);
@@ -1781,7 +1820,9 @@ Result CSPSolver::lemma17(CSPInstance* cspInstance) {
 		delete [] variableColorComponent;
 		return Result::NoMatch;
 	}
-	std::cerr << "L17 ";
+	if(beVerbose) {
+		std::cerr << "L17 ";
+	}
 
 	std::vector<std::pair<int, int>> variableComponent;
 	Result result = lemma17Solve(bipartiteGraph, cspInstance->getVariableCount(), variableComponent);
@@ -1888,7 +1929,7 @@ Result CSPSolver::lemma17Solve(Graph* bipartiteGraph, int variableCount, std::ve
 	}
 
 	std::vector<int> residualPath;
-	while(!(residualPath = lemma17SolvePath(bipartiteGraph, residual)).size() >= 2) {
+	while(false && (residualPath = lemma17SolvePath(bipartiteGraph, residual)).size() >= 2) {
 		for(int vertex = 1; vertex < residualPath.size(); vertex++) {
 			if(flow[vertex][vertex - 1] == 0) {
 				flow[vertex - 1][vertex] = 1;
@@ -1997,7 +2038,9 @@ void CSPSolver::lemma17Color(CSPInstance* cspInstance, const Graph* bipartiteGra
 Result CSPSolver::lemma18(CSPInstance* cspInstance) {
 	ColorPair vR(-1, -1);
 	lemma18Match(cspInstance, vR);
-	//std::cerr << "L18 ";
+	if(beVerbose) {
+		std::cerr << "L18 ";
+	}
 	
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
 	lemma18Branch1Reduce(reduced, vR);
