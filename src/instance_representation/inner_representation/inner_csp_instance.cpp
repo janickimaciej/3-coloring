@@ -4,8 +4,6 @@
 #include <stdexcept>
 
 namespace InnerRepresentation {
-	bool InnerCSPInstance::debug = false;
-
 	InnerCSPInstance::InnerCSPInstance(int variableCount) : variables(variableCount) {
 		for(int variable = 0; variable < variables.size(); variable++) {
 			variables[variable] = new Variable(variable, InitialType::Vertex);
@@ -207,19 +205,16 @@ namespace InnerRepresentation {
 		}
 		variables[variable]->setColor(color);
 
-		if(debug) {
-			std::cerr << std::endl << variable << " " << color << " ";
-			std::vector<ColorPair> constraints = getConstraints(variable, color);
-			if(constraints.size() == 0) {
-				return;
+		std::vector<ColorPair> constraints = getConstraints(variable, color);
+		if(constraints.size() == 0) {
+			return;
+		}
+		for(std::vector<ColorPair>::iterator constraint = constraints.begin(); constraint != constraints.end();
+			constraint++) {
+			if(variables[constraint->variable]->getAvailableColors().size() > 1) {
+				continue;
 			}
-			for(std::vector<ColorPair>::iterator constraint = constraints.begin(); constraint != constraints.end();
-				constraint++) {
-				if(variables[constraint->variable]->getAvailableColors().size() > 1) {
-					continue;
-				}
-				std::cerr << std::endl << "setColor: Wrong coloring";
-			}
+			error("setColor: Wrong coloring");
 		}
 	}
 }
