@@ -16,8 +16,9 @@ void K();
 void M();
 
 int main() {
-	//K();
-	M();
+	
+	K();
+	//M();
 }
 
 void K() {
