@@ -11,7 +11,7 @@ class CSPSolver;
 typedef Result(* Lemma)(CSPInstance*);
 
 class CSPSolver {
-	static const int lemmasCount = 18;
+	static const int lemmasCount = 19;
 	static const Lemma lemmas[lemmasCount];
 
 	static void chooseColorReduce(CSPInstance* reduced, const ColorPair& varCol);

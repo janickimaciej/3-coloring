@@ -16,8 +16,8 @@ void K();
 void M();
 
 int main() {
-	//K();
-	M();
+	K();
+	//M();
 }
 
 void K() {
@@ -86,15 +86,14 @@ void M() {
 	vector<string> files;
 	vector<int> edges;
 	
-	files.push_back("D://Downloads//testSucc.g6");
-	files.push_back("D://Downloads//testFail.g6");
+	files.push_back("D://Downloads//test17.g6");
 
 	CSPSolver::beVerbose = true;
 	for(int i = 0; i < files.size(); i++) {
 		parser.openFile(files[i]);
 		Graph* g = parser.parse();
 
-		cout << "n" << g->getVertexCount() << "\n";
+		cout << "n" << g->getVertexCount() << endl;
 
 		switch(CSPSolver::solve(dynamic_cast<CSPInstance*>(g))) {
 		case Result::Success:
