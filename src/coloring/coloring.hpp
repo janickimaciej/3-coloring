@@ -1,5 +1,5 @@
-#ifndef COLOR
-#define COLOR
+#ifndef COLORING
+#define COLORING
 
 #include "../instance_reduction/initial_reduction.hpp"
 #include "../instance_representation/graph.hpp"
@@ -27,5 +27,4 @@ public:
 
 };
 
-#endif // !COLOR
-
+#endif

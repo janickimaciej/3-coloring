@@ -51,7 +51,7 @@ namespace InnerRepresentation {
 	}
 
 	void InnerCSPInstance::error(const char* errorMsg) const {
-		std::cerr << errorMsg << std::endl;
+		std::cerr << std::endl << errorMsg << std::endl;
 		throw std::invalid_argument(errorMsg);
 	}
 
@@ -204,5 +204,17 @@ namespace InnerRepresentation {
 			error("setColor: Color is unavailable");
 		}
 		variables[variable]->setColor(color);
+
+		std::vector<ColorPair> constraints = getConstraints(variable, color);
+		if(constraints.size() == 0) {
+			return;
+		}
+		for(std::vector<ColorPair>::iterator constraint = constraints.begin(); constraint != constraints.end();
+			constraint++) {
+			if(variables[constraint->variable]->getAvailableColors().size() > 1) {
+				continue;
+			}
+			error("setColor: Wrong coloring");
+		}
 	}
 }

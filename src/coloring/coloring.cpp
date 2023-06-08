@@ -23,8 +23,8 @@ bool Coloring::Solve()
 	{
 		if (tryToColor(i)) return true;
 	}
-	return false;
-	//return solved;
+	//return false;
+	return solved;
 }
 
 bool Coloring::tryToColor(int inst)

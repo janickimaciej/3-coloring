@@ -34,6 +34,9 @@ namespace InnerRepresentation {
 			disable();
 			return;
 		}
+		if(color->parent == parent) {
+			return;
+		}
 		constraints.insert(color);
 		color->constraints.insert(this);
 	}

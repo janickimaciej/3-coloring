@@ -1,5 +1,5 @@
-#ifndef INST
-#define INST
+#ifndef INSTANCE
+#define INSTANCE
 
 #include "graph.hpp"
 
@@ -34,4 +34,4 @@ public:
 	std::vector<int>* unMerge(int v, int max);
 };
 
-#endif // !INST
+#endif

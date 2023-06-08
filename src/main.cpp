@@ -24,15 +24,6 @@ int main() {
 void K() {
 	G6Parser parser;
 
-	/*parser.openFile("cycleEvil.g6");
-	Graph* h = parser.parse();
-	std::vector<Instance*> instances;
-	instances.push_back(new Instance(h));
-	CycleReduction cyc(&instances);
-	cyc.Reduce();*/
-
-
-	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\bruteCheck.g6");
 	vector<string> files;
 	vector<int> edges;
 	/*files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n5e7.g6");
@@ -65,16 +56,10 @@ void K() {
 	edges.push_back(375);*/
 
 
-	/*files.push_back("n246.g6");
-	edges.push_back(375);*/
-	/*files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n32e80.g6");
-	edges.push_back(80);*/
-	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\n21e59.g6");
+	files.push_back("n250e375c3.g6");
+	edges.push_back(672);
 
-	/*Graph* g = parser.parse();
 
-	cout << g->getVertexCount() << "\n";
-	G6Parser::parseBack(g);*/
 
 	Graph* g;
 	Graph* copy;
@@ -99,6 +84,7 @@ void K() {
 		{
 			cout << "Our in " << duration.count() << " s\n";
 		}
+		cout << "\n";
 		/*BruteForce brute(Graph::copy(g));
 		auto startB = high_resolution_clock::now();
 		cout << brute.Solve() << "\n";
@@ -124,7 +110,7 @@ void M() {
 	vector<string> files;
 	vector<int> edges;
 	
-	/*files.push_back("clique4.g6");
+	files.push_back("clique4.g6");
 	edges.push_back(-1);
 	files.push_back("cycleEvil.g6");
 	edges.push_back(-1);
@@ -133,15 +119,16 @@ void M() {
 	files.push_back("n64e672c4.g6");
 	edges.push_back(672);
 	files.push_back("n103e1133.g6");
-	edges.push_back(1133);*/
+	edges.push_back(1133);
 	files.push_back("n246.g6");
 	edges.push_back(-1);
 	files.push_back("n250e375c3.g6");
 	edges.push_back(375);
 	files.push_back("sierpinski.g6");
 	edges.push_back(-1);
+	files.push_back("D:\\Downloads\\n12e22.g6");
+	edges.push_back(22);
 
-	Graph* g;
 	CSPSolver::beVerbose = true;
 	for(int i = 0; i < files.size(); i++) {
 		parser.openFile(files[i]);

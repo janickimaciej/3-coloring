@@ -1,5 +1,5 @@
-#ifndef B_FOREST
-#define B_FOREST
+#ifndef BUSHY_FOREST
+#define BUSHY_FOREST
 
 #include <vector>
 
@@ -29,5 +29,4 @@ public:
 	void PrepareAll();
 };
 
-#endif // !B_FOREST
-
+#endif

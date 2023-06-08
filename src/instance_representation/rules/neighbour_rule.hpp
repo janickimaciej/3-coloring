@@ -1,5 +1,5 @@
-#ifndef  NEIGH_RULE
-#define NEIGH_RULE
+#ifndef NEIGHBOUR_RULE
+#define NEIGHBOUR_RULE
 
 #include "rule.hpp"
 
@@ -20,4 +20,4 @@ public:
 	virtual Rule* copy() override { return (Rule*) new NeighbourRule(neighbour, target, cycle); }
 };
 
-#endif // ! NEIGH_RULE
+#endif
