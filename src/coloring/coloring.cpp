@@ -25,12 +25,12 @@ bool Coloring::Solve()
 		{
 			instance = instances->at(i);
 			solved = true;
-			if (tryToColor(i)) return true;
-			//if (tryToColor(i)) break;
+			//if (tryToColor(i)) return true;
+			if (tryToColor(i)) break;
 		}
 	}
-	return false;
-	//return solved;
+	//return false;
+	return solved;
 }
 
 bool Coloring::tryToColor(int inst)

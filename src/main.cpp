@@ -13,64 +13,27 @@ using namespace std;
 using namespace std::chrono;
 
 void K();
-void M();
 
 int main() {
-	//K();
-	M();
+	K();
 }
 
 void K() {
 	G6Parser parser;
 
-	/*parser.openFile("cycleEvil.g6");
-	Graph* h = parser.parse();
-	std::vector<Instance*> instances;
-	instances.push_back(new Instance(h));
-	CycleReduction cyc(&instances);
-	cyc.Reduce();*/
-
-
-	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\bruteCheck.g6");
 	vector<string> files;
 	vector<int> edges;
-	/*files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n5e7.g6");
-	edges.push_back(7);
-	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n7e16_not3.g6");
-	edges.push_back(16);
-	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n11e32.g6");
-	edges.push_back(32);
-	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n21e59.g6");
-	edges.push_back(56);
-	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n31e62.g6");
-	edges.push_back(62);*/
-	/*files.push_back("n31e62.g6");
-	edges.push_back(62);
-	files.push_back("n103e1133.g6");
-	edges.push_back(1133);
-	files.push_back("n64e672c4.g6");
-	edges.push_back(672);*/
-
-	/*files.push_back("n250e375c3.g6");
-	edges.push_back(375);*/
-
 
 	files.push_back("n11e19.g6");
 	edges.push_back(19);
 
-	files.push_back("sierpinski.g6");
-	edges.push_back(375);
+	files.push_back("n31e62.g6");
+	edges.push_back(62);
 
-	/*files.push_back("n246.g6");
-	edges.push_back(375);*/
-	/*files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n32e80.g6");
-	edges.push_back(80);*/
-	//parser.openFile("C:\\Users\\User\\Desktop\\Graphs\\n21e59.g6");
+	files.push_back("n250e375c3.g6");
+	edges.push_back(672);
 
-	/*Graph* g = parser.parse();
 
-	cout << g->getVertexCount() << "\n";
-	G6Parser::parseBack(g);*/
 
 	Graph* g;
 	Graph* copy;
@@ -95,6 +58,7 @@ void K() {
 		{
 			cout << "Our in " << duration.count() << " s\n";
 		}
+		cout << "\n";
 		/*BruteForce brute(Graph::copy(g));
 		auto startB = high_resolution_clock::now();
 		cout << brute.Solve() << "\n";
@@ -111,49 +75,5 @@ void K() {
 		}
 
 		cout << "\n\n";*/
-	}
-}
-
-void M() {
-	G6Parser parser;
-
-	vector<string> files;
-	vector<int> edges;
-	
-	/*files.push_back("clique4.g6");
-	edges.push_back(-1);
-	files.push_back("cycleEvil.g6");
-	edges.push_back(-1);
-	files.push_back("n31e62.g6");
-	edges.push_back(62);
-	files.push_back("n64e672c4.g6");
-	edges.push_back(672);
-	files.push_back("n103e1133.g6");
-	edges.push_back(1133);*/
-	files.push_back("n246.g6");
-	edges.push_back(-1);
-	files.push_back("n250e375c3.g6");
-	edges.push_back(375);
-	files.push_back("sierpinski.g6");
-	edges.push_back(-1);
-
-	Graph* g;
-	CSPSolver::beVerbose = true;
-	for(int i = 0; i < files.size(); i++) {
-		parser.openFile(files[i]);
-		Graph* g = parser.parse();
-
-		cout << "n" << g->getVertexCount() << " e" << edges[i] << "\n";
-
-		switch(CSPSolver::solve(dynamic_cast<CSPInstance*>(g))) {
-		case Result::Success:
-			cout << "Success" << endl;
-			break;
-		case Result::Failure:
-			cout << "Failure" << endl;
-			break;
-		}
-
-		cout << endl;
 	}
 }
