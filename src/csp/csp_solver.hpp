@@ -2,6 +2,7 @@
 #define CSP_SOLVER
 
 #include "../instance_representation/csp_instance.hpp"
+#include "../instance_representation/graph.hpp"
 #include <unordered_set>
 #include "result.hpp"
 
@@ -10,7 +11,7 @@ class CSPSolver;
 typedef Result(* Lemma)(CSPInstance*);
 
 class CSPSolver {
-	static const int lemmasCount = 18;
+	static const int lemmasCount = 19;
 	static const Lemma lemmas[lemmasCount];
 
 	static void chooseColorReduce(CSPInstance* reduced, const ColorPair& varCol);
@@ -155,6 +156,13 @@ class CSPSolver {
 	static void lemma16Branch1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
 	static void lemma16Branch2Reduce(CSPInstance* reduced, const ColorPair& vR);
 	static void lemma16Branch2Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR);
+
+	static Result lemma17(CSPInstance* cspInstance);
+	static void lemma17Match(const CSPInstance* cspInstance, Graph** bipartiteGraph, int** variableColorComponent);
+	static Result lemma17Solve(Graph* bipartiteGraph, int variableCount, std::vector<std::pair<int, int>>& variableComponent);
+	static std::vector<int> lemma17SolvePath(Graph* bipartiteGraph, int** residual);
+	static void lemma17Color(CSPInstance* cspInstance, const Graph* bipartiteGraph, int** variableColorComponent,
+		std::vector<std::pair<int, int>>& variableComponent);
 
 	static Result lemma18(CSPInstance* cspInstance);
 	static void lemma18Match(const CSPInstance* cspInstance, ColorPair& vR);
