@@ -10,6 +10,8 @@ namespace InnerRepresentation {
 	class InnerCSPInstance : public Graph, public CSPInstance {
 		std::vector<Variable*> variables;
 	public:
+		static bool debug;
+
 		InnerCSPInstance(int vertices);
 		InnerCSPInstance(const InnerCSPInstance& cspInstance);
 

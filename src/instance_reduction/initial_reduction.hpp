@@ -1,5 +1,5 @@
-#ifndef INIT_RED
-#define INIT_RED
+#ifndef INITIAL_REDUCTION
+#define INITIAL_REDUCTION
 
 #include <vector>
 
@@ -20,4 +20,4 @@ public:
 	std::vector<Instance*>* Reduce();
 };
 
-#endif // !INIT_RED
+#endif

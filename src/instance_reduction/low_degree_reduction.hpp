@@ -1,5 +1,5 @@
-#ifndef LOW_RED
-#define LOW_RED
+#ifndef LOW_DEGREE_REDUCTION
+#define LOW_DEGREE_REDUCTION
 
 #include "../instance_representation/graph.hpp"
 #include "../instance_representation/instance.hpp"
@@ -25,4 +25,4 @@ public:
 	void Update();
 	void Set(Instance* g);
 };
-#endif // !LOW_RED
+#endif

@@ -1,5 +1,5 @@
-#ifndef BRUTE
-#define BRUTE
+#ifndef BRUTE_FORCE
+#define BRUTE_FORCE
 
 #include "../instance_representation/graph.hpp"
 
@@ -18,4 +18,4 @@ public:
 	Graph* graph;
 };
 
-#endif // !BRUTE
+#endif
