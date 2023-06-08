@@ -54,6 +54,10 @@ void K() {
 	/*files.push_back("n250e375c3.g6");
 	edges.push_back(375);*/
 
+
+	files.push_back("n11e19.g6");
+	edges.push_back(19);
+
 	files.push_back("sierpinski.g6");
 	edges.push_back(375);
 
