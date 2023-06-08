@@ -1,4 +1,5 @@
 #include "coloring.hpp"
+#include <iostream>
 
 
 Coloring::Coloring(Graph* graph)
@@ -20,14 +21,7 @@ bool Coloring::Solve()
 	Result result;
 	for (int i = 0; i < instances->size(); i++)
 	{
-		result = CSPSolver::solve(dynamic_cast<CSPInstance*>(instances->at(i)->graph));
-		if (result == Result::Success)
-		{
-			instance = instances->at(i);
-			solved = true;
-			if (tryToColor(i)) return true;
-			//if (tryToColor(i)) break;
-		}
+		if (tryToColor(i)) return true;
 	}
 	return false;
 	//return solved;
@@ -37,42 +31,41 @@ bool Coloring::tryToColor(int inst)
 {
 	n = graph->getVertexCount();
 	instance = instances->at(inst);
-	copyColoring();
-	return colorForest(0, Graph::copy(graph));
+	return colorForest(0,instance);
 }
 
-bool Coloring::colorForest(int v, Graph* copy)
+bool Coloring::colorForest(int v, Instance* copy)
 {
-	if (v == instance->innerTree.size())
+	if (v == copy->innerTree.size())
 	{
-		Instance* cp = Instance::copy(instance);
-		return (checkRest(copy, Instance::copy(instance)));
+		Instance* inst = Instance::copy(copy);
+		/*for (int bark : inst->innerTree)
+		{
+			inst->removeVertex(bark);
+		}*/
+		Result result = CSPSolver::solve(dynamic_cast<CSPInstance*>(inst->graph));
+		if (result == Result::Success)
+		{
+			instance = inst;
+			for (int i = 0; i < n; i++)
+			{
+				std::cout << i << ": " << instance->graph->getAvailableColors(i).at(0) << "\n";
+			}
+			copyColoring();
+			checkRest(graph, copy);
+			return true;
+		}
+		else return false;
 	}
 	else
 	{
-		Graph* g;
-		int ver = instance->innerTree[v];
-		if (ver < n)
+		Instance* inst;
+		int ver = copy->innerTree[v];
+		for (int color : copy->graph->getAvailableColors(ver))
 		{
-			for (int color : copy->getAvailableColors(ver))
-			{
-				g = Graph::copy(copy);
-				Instance::giveColor(g, ver, color);
-				if (colorForest(v + 1, g)) return true;
-			}
-		}
-		else
-		{
-			std::vector<int> unMerged = *instance->unMerge(ver, n);
-			for (int color : copy->getAvailableColors(unMerged[0]))
-			{
-				g = Graph::copy(copy);
-				for (int mer : unMerged)
-				{
-					Instance::giveColor(g, mer, color);
-				}
-				if (colorForest(v + 1, g)) return true;
-			}
+			inst = Instance::copy(copy);
+			Instance::giveColor(inst->graph, ver, color);
+			if (colorForest(v + 1, inst)) return true;
 		}
 		return false;
 		
@@ -85,7 +78,8 @@ void Coloring::copyColoring()
 	{
 		if (instance->indexes[i] < n)
 		{
-			int color = graph->getAvailableColors(instance->indexes[i]).at(0);
+			int amount = instance->graph->getAvailableColors(instance->indexes[i]).size();
+			int color = instance->graph->getAvailableColors(instance->indexes[i]).at(0);
 			Instance::giveColor(graph, instance->indexes[i], color);
 		}
 		else

@@ -54,12 +54,15 @@ void K() {
 	/*files.push_back("n250e375c3.g6");
 	edges.push_back(375);*/
 
+	files.push_back("n12e22.g6");
+	edges.push_back(22);
 
-	files.push_back("n11e19.g6");
+	/*files.push_back("n11e19.g6");
 	edges.push_back(19);
 
 	files.push_back("sierpinski.g6");
-	edges.push_back(375);
+	edges.push_back(375);*/
+
 
 	/*files.push_back("n246.g6");
 	edges.push_back(375);*/

@@ -16,7 +16,7 @@ class Coloring
 	bool solved;
 
 	bool tryToColor(int inst);
-	bool colorForest(int v, Graph* copy);
+	bool colorForest(int v, Instance* copy);
 	void copyColoring();
 	bool checkRest(Graph* copy, Instance* copyInst);
 
