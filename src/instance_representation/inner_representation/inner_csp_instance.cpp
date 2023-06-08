@@ -53,7 +53,7 @@ namespace InnerRepresentation {
 	}
 
 	void InnerCSPInstance::error(const char* errorMsg) const {
-		std::cerr << errorMsg << std::endl;
+		std::cerr << std::endl << errorMsg << std::endl;
 		throw std::invalid_argument(errorMsg);
 	}
 
@@ -218,7 +218,7 @@ namespace InnerRepresentation {
 				if(variables[constraint->variable]->getAvailableColors().size() > 1) {
 					continue;
 				}
-				std::cerr << "HERE " << getVariableCount();
+				std::cerr << std::endl << "setColor: Wrong coloring";
 			}
 		}
 	}

@@ -86,12 +86,12 @@ void M() {
 
 	vector<string> files;
 	vector<int> edges;
-	/*
-	files.push_back("clique4.g6");
-	edges.push_back(-1);*/
+	
+	/*files.push_back("clique4.g6");
+	edges.push_back(-1);
 	files.push_back("cycleEvil.g6");
 	edges.push_back(-1);
-	/*files.push_back("n31e62.g6");
+	files.push_back("n31e62.g6");
 	edges.push_back(62);
 	files.push_back("n64e672c4.g6");
 	edges.push_back(672);
@@ -102,13 +102,12 @@ void M() {
 	files.push_back("n250e375c3.g6");
 	edges.push_back(375);
 	files.push_back("sierpinski.g6");
-	edges.push_back(-1);
+	edges.push_back(-1);*/
 	files.push_back("D:\\Downloads\\n12e22.g6");
-	edges.push_back(22);*/
+	edges.push_back(22);
 
-	Graph* g;
 	CSPSolver::beVerbose = true;
-	//InnerRepresentation::InnerCSPInstance::debug = true;
+	InnerRepresentation::InnerCSPInstance::debug = true;
 	for(int i = 0; i < files.size(); i++) {
 		parser.openFile(files[i]);
 		Graph* g = parser.parse();

@@ -122,11 +122,11 @@ void CSPSolver::lemma1Match(const CSPInstance* cspInstance, int& v, int& R, int&
 }
 
 void CSPSolver::lemma1Reduce(CSPInstance* reduced, int v, int R, int G) {
-	std::vector<ColorPair> conflictR = reduced->getConstraints(v, R);
-	std::vector<ColorPair> conflictG = reduced->getConstraints(v, G);
-	for(int r = 0; r < conflictR.size(); r++) {
-		for(int g = 0; g < conflictG.size(); g++) {
-			reduced->addConstraint(conflictR[r].variable, conflictR[r].color, conflictG[g].variable, conflictG[g].color);
+	std::vector<ColorPair> RConflicts = reduced->getConstraints(v, R);
+	std::vector<ColorPair> GConflicts = reduced->getConstraints(v, G);
+	for(auto RConflict = RConflicts.begin(); RConflict != RConflicts.end(); RConflict++) {
+		for(auto GConflict = GConflicts.begin(); GConflict != GConflicts.end(); GConflict++) {
+			reduced->addConstraint(RConflict->variable, RConflict->color, GConflict->variable, GConflict->color);
 		}
 	}
 	reduced->removeVariable(v);
