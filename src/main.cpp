@@ -24,8 +24,8 @@ std::string wstrToStr(std::wstring wstr);
 
 int main() {
 	
-	K();
-	//M();
+	//K();
+	M();
 }
 
 void K() {
@@ -108,5 +108,5 @@ void K() {
 }
 
 void M() {
-	Test::run("D:/Downloads/chr_3/", Result::Success, "D:/Desktop/CSP_TEST.txt", true);
+	Test::run("D:/Downloads/chr_4/", Result::Failure, "D:/Desktop/CSP_TEST.txt", true);
 }
