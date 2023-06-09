@@ -8,8 +8,8 @@ class Test {
 public:
 	Test() = delete;
 	~Test() = delete;
-	static void run(std::string path, Result expectedResult, bool beVerbose, std::string resultPath = "",
-		bool solveAsCSP = false);
+	static void run(std::string directoryPath, Result expectedResult, std::string resultPath = "", bool solveAsCSP = false,
+		bool displayLemmas = false);
 };
 
 #endif

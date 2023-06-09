@@ -84,5 +84,5 @@ void K() {
 }
 
 void M() {
-	Test::run("D:/Downloads/chr_3/", Result::Success, false, "D:/Desktop/CSP_TEST.txt", true);
+	Test::run("D:/Downloads/chr_3/", Result::Success, "D:/Desktop/CSP_TEST.txt", true);
 }
