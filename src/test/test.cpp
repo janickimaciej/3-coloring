@@ -29,9 +29,9 @@ static string wstrToStr(wstring wstr) {
 	return str;
 }
 
-void Test::run(string directoryPath, Result expectedResult, bool beVerbose, string resultPath,
-	bool solveAsCSP) {
-	CSPSolver::beVerbose = beVerbose;
+void Test::run(std::string directoryPath, Result expectedResult, std::string resultPath, bool solveAsCSP,
+	bool displayLemmas) {
+	CSPSolver::beVerbose = displayLemmas;
 	G6Parser parser;
 
 	ofstream outFile;
@@ -64,8 +64,9 @@ void Test::run(string directoryPath, Result expectedResult, bool beVerbose, stri
 		parser.openFile(directoryPath + fileName);
 		Graph* graph = parser.parse();
 
-		cout << progress << "/" << count << " n" << graph->getVertexCount() << " m" << graph->getEdgeCount() <<
-			" " << fileName << endl;
+		int n = graph->getVertexCount();
+		int m = graph->getEdgeCount();
+		cout << progress << "/" << count << " n" << n << " m" << m << " " << fileName << endl;
 
 		auto start = high_resolution_clock::now();
 		bool result;
@@ -86,7 +87,11 @@ void Test::run(string directoryPath, Result expectedResult, bool beVerbose, stri
 			throw errorMsg;
 		}
 		auto durationMs = duration_cast<microseconds>(stop - start);
-		outFile << graph->getVertexCount() << "\t" << graph->getEdgeCount() << "\t" << durationMs.count() << endl;
+		outFile << n << "\t" << m << "\t" << durationMs.count() << endl;
+		if(displayLemmas) {
+			cout << endl;
+		}
+		cout << durationMs.count() << " ms" << endl;
 
 		progress++;
 		cout << endl << endl;
