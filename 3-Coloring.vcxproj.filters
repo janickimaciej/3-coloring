@@ -21,6 +21,7 @@
     <ClInclude Include="src\instance_representation\rules\rule.hpp" />
     <ClInclude Include="src\instance_representation\rules\even_rule.hpp" />
     <ClInclude Include="src\instance_representation\rules\neighbour_rule.hpp" />
+    <ClInclude Include="src\test\test.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\instance_representation\graph.cpp" />
@@ -42,5 +43,6 @@
     <ClCompile Include="src\instance_representation\instance.cpp" />
     <ClCompile Include="src\instance_representation\rules\even_rule.cpp" />
     <ClCompile Include="src\instance_representation\rules\neighbour_rule.cpp" />
+    <ClCompile Include="src\test\test.cpp" />
   </ItemGroup>
 </Project>

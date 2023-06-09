@@ -147,6 +147,7 @@
     <ClInclude Include="src\instance_representation\rules\even_rule.hpp" />
     <ClInclude Include="src\instance_representation\rules\neighbour_rule.hpp" />
     <ClInclude Include="src\instance_representation\rules\rule.hpp" />
+    <ClInclude Include="src\test\test.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\brute_force\brute_force.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="src\instance_representation\rules\even_rule.cpp" />
     <ClCompile Include="src\instance_representation\rules\neighbour_rule.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\test\test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
