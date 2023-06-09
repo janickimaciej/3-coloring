@@ -106,9 +106,7 @@ bool CycleReduction::cycleRec(int curr, int parent)
 	}
 	if (min != -1)
 	{
-		Rule* rule = instances->at(0)->rules[0];
 		deleteCycle(curr, minV);
-		rule = instances->at(0)->rules[0];
 		return true;
 	}
 	for (int i = 0; i < neighbours[curr].size(); i++)
@@ -180,7 +178,7 @@ void CycleReduction::deleteCycle(int start, int end)
 		{
 			std::vector<int> ruleCycle;
 			for (int ver : cycle) ruleCycle.push_back(instance->indexes[ver]);
-			NeighbourRule* neighbour = new NeighbourRule(w1, i % cycle.size(), ruleCycle);
+			NeighbourRule* neighbour = new NeighbourRule(instance->indexes[w1], i % cycle.size(), ruleCycle);
 			for (int ver : cycle)
 			{
 				if (ver < instance->originalN) instance->rules[ver] = (Rule*)neighbour;
@@ -219,6 +217,7 @@ void CycleReduction::deleteCycle(int start, int end)
 		instance->addVertex();
 		std::vector<int> merge;
 		merge.push_back(instance->indexes[n]);
+		merge.push_back(instance->indexes[cycle[2]]);
 		merge.push_back(instance->indexes[w1]);
 		merge.push_back(instance->indexes[w2]);
 		instance->superVertices.push_back(merge);
@@ -229,6 +228,10 @@ void CycleReduction::deleteCycle(int start, int end)
 		for (int ver : neighbours[w2])
 		{
 			if (!instance->graph->hasEdge(n,ver)) instance->graph->addEdge(n, ver);
+		}
+		for (int ver : neighbours[cycle[2]])
+		{
+			if (!instance->graph->hasEdge(n, ver)) instance->graph->addEdge(n, ver);
 		}
 		instance->graph->addEdge(n, findNeighbour(cycle[2]));
 		toDeletion[w1] = true;

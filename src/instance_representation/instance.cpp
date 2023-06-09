@@ -38,7 +38,7 @@ Instance* Instance::copy(const Instance* instance)
 void Instance::removeVertex(int vertex)
 {
 	deleted.push_back(indexes[vertex]);
-	if (indexes[vertex] == 81)
+	if (indexes[vertex] == 237)
 	{
 		int vb = 3;
 	}
@@ -72,6 +72,29 @@ void Instance::giveColor(Graph* g, int v, int color)
 void Instance::giveNaive(Graph* g, int v)
 {
 	Instance::giveColor(g, v, g->getAvailableColors(v).at(0));
+}
+
+int Instance::getMergedColor(Graph* g, std::vector<int> unMerged)
+{
+	int color = -1;
+	int colors[3] = { 0 };
+	for (int mer : unMerged)
+	{
+		std::vector<int> c = g->getAvailableColors(mer);
+		for (int col : c)
+		{
+			colors[col]++;
+		}
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		if (colors[i] == unMerged.size())
+		{
+			color = i;
+			break;
+		}
+	}
+	return color;
 }
 
 std::vector<int>* Instance::unMerge(int v, int max)

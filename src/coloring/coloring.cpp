@@ -98,38 +98,28 @@ bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 {
 	int ver;
 	Rule* rule1 = copyInst->rules[81];
+	std::vector<int> ne = graph->getNeighbors(136);
 	int b = 3;
 	for (int i = copyInst->deleted.size() - 1; i >= 0; i--)
 	{
-		Rule* rule = copyInst->rules[81];
 		ver = copyInst->deleted[i];
-		int a = 4;
 		if (ver < n)
 		{
-			if (copyInst->rules[ver]->apply(copyInst, copy))
-			{
-				continue;
-			}
-			if (copy->getAvailableColors(ver).size() > 0)
+			if (!copyInst->rules[ver]->apply(copyInst, copy))
 			{
 				Instance::giveColor(copy, ver, copy->getAvailableColors(ver).at(0));
 			}
-			else return false;
 		}
 		else
 		{
 			std::vector<int> unMerged = *copyInst->unMerge(ver, n);
+			int color = copyInst->getMergedColor(copy, unMerged);
 			for (int mer : unMerged)
 			{
-				if (copyInst->rules[mer]->apply(copyInst, copy))
+				if (!copyInst->rules[mer]->apply(copyInst, copy))
 				{
-					continue;
+					Instance::giveColor(copy, mer, color);
 				}
-				if (copy->getAvailableColors(mer).size() > 0)
-				{
-					Instance::giveColor(copy, mer, copy->getAvailableColors(mer).at(0));
-				}
-				else return false;
 			}
 		}
 	}

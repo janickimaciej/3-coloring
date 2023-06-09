@@ -30,6 +30,7 @@ public:
 
 	static void giveColor(Graph* g, int v, int color);
 	static void giveNaive(Graph* g, int v);
+	static int getMergedColor(Graph* g, std::vector<int> unMerged);
 
 	std::vector<int>* unMerge(int v, int max);
 };
