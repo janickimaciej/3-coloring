@@ -24,6 +24,7 @@ const Lemma CSPSolver::lemmas[lemmasCount] = {
 	&lemma14,
 	&lemma15,
 	&lemma16,
+	&lemma17,
 	&lemma18
 };
 
@@ -378,9 +379,9 @@ Result CSPSolver::lemma6(CSPInstance* cspInstance) {
 		std::cerr << "L6 ";
 	}
 
-	int vSize = (int)cspInstance->getAvailableColors(vR.variable).size();
-	int wSize = (int)cspInstance->getAvailableColors(wR.variable).size();
-	if(vSize == 3 && wSize == 3) {
+	int vDegree = (int)cspInstance->getAvailableColors(vR.variable).size();
+	int wDegree = (int)cspInstance->getAvailableColors(wR.variable).size();
+	if(vDegree == 3 && wDegree == 3) {
 		return lemma6Case1(cspInstance, vR, wR);
 	} else {
 		return lemma6Case2(cspInstance, vR, wR);
@@ -411,29 +412,54 @@ void CSPSolver::lemma6Match(const CSPInstance* cspInstance, ColorPair& vR, Color
 
 Result CSPSolver::lemma6Case1(CSPInstance* cspInstance, const ColorPair& vR, const ColorPair& wR) {
 	CSPInstance* reduced = CSPInstance::copy(cspInstance);
-	lemma6Case1Reduce(reduced, vR, wR);
+	ColorPair vG(vR.variable, -1);
+	ColorPair vB(vR.variable, -1);
+	ColorPair wG(wR.variable, -1);
+	ColorPair wB(wR.variable, -1);
+	lemma6Case1Reduce(reduced, vR, wR, vG, vB, wG, wB);
 
 	Result result = solve(reduced);
 	if(result == Result::Success) {
-		lemma6Case1Color(cspInstance, reduced, vR, wR);
+		lemma6Case1Color(cspInstance, reduced, vR, wR, vG, vB, wG, wB);
 	}
 	delete reduced;
 	return result;
 }
 
-void CSPSolver::lemma6Case1Reduce(CSPInstance* reduced, const ColorPair& vR, const ColorPair& wR) {
-	ColorPair vG(vR.variable, (vR.color + 1)%3);
-	ColorPair vB(vR.variable, (vR.color + 2)%3);
-	ColorPair wG(wR.variable, (wR.color + 1)%3);
-	ColorPair wB(wR.variable, (wR.color + 2)%3);
+void CSPSolver::lemma6Case1Reduce(CSPInstance* reduced, const ColorPair& vR, const ColorPair& wR, ColorPair& vG,
+	ColorPair& vB, ColorPair& wG, ColorPair& wB) {
+	std::vector<int> vColors = reduced->getAvailableColors(vR.variable);
+	for(auto vColor = vColors.begin(); vColor != vColors.end(); vColor++) {
+		if(*vColor == vR.color) {
+			continue;
+		}
+		if(vG.color == -1) {
+			vG.color = *vColor;
+			continue;
+		}
+		vB.color = *vColor;
+		break;
+	}
+	std::vector<int> wColors = reduced->getAvailableColors(wR.variable);
+	for(auto wColor = wColors.begin(); wColor != wColors.end(); wColor++) {
+		if(*wColor == wR.color) {
+			continue;
+		}
+		if(wG.color == -1) {
+			wG.color = *wColor;
+			continue;
+		}
+		wB.color = *wColor;
+		break;
+	}
 
 	std::vector<ColorPair> vGConstraints = reduced->getConstraints(vG.variable, vG.color);
 	std::vector<ColorPair> vBConstraints = reduced->getConstraints(vB.variable, vB.color);
 	std::vector<ColorPair> wGConstraints = reduced->getConstraints(wG.variable, wG.color);
 	std::vector<ColorPair> wBConstraints = reduced->getConstraints(wB.variable, wB.color);
 
+	int u = reduced->getVariableCount();
 	reduced->addVariable();
-	int u = reduced->getVariableCount() - 1;
 	for(auto constraint = vGConstraints.begin(); constraint != vGConstraints.end(); constraint++) {
 		reduced->addConstraint(u, 0, constraint->variable, constraint->color);
 	}
@@ -454,19 +480,30 @@ void CSPSolver::lemma6Case1Reduce(CSPInstance* reduced, const ColorPair& vR, con
 }
 
 void CSPSolver::lemma6Case1Color(CSPInstance* cspInstance, const CSPInstance* reduced, const ColorPair& vR,
-	const ColorPair& wR) {
+	const ColorPair& wR, const ColorPair& vG, const ColorPair& vB, const ColorPair& wG, const ColorPair& wB) {
 	std::vector<int> removedVariables;
 	removedVariables.push_back(vR.variable);
 	removedVariables.push_back(wR.variable);
 	cspInstance->copyColoring(reduced, removedVariables);
 	int u = reduced->getVariableCount() - 1;
 	int uColor = reduced->getAvailableColors(u)[0];
-	if(uColor == 0 || uColor == 1) {
-		cspInstance->setColor(vR.variable, uColor);
+	switch(uColor) {
+	case 0:
+		cspInstance->setColor(vG.variable, vG.color);
 		cspInstance->setColor(wR.variable, wR.color);
-	} else {
-		cspInstance->setColor(wR.variable, uColor);
+		break;
+	case 1:
+		cspInstance->setColor(vB.variable, vB.color);
+		cspInstance->setColor(wR.variable, wR.color);
+		break;
+	case 2:
 		cspInstance->setColor(vR.variable, vR.color);
+		cspInstance->setColor(wG.variable, wG.color);
+		break;
+	case 3:
+		cspInstance->setColor(vR.variable, vR.color);
+		cspInstance->setColor(wB.variable, wB.color);
+		break;
 	}
 }
 
@@ -1789,13 +1826,14 @@ void CSPSolver::lemma16Branch2Color(CSPInstance* cspInstance, const CSPInstance*
 
 Result CSPSolver::lemma17(CSPInstance* cspInstance) {
 	Graph* bipartiteGraph = nullptr;
-	std::vector<int> variables;
-	std::vector<int> components;
 
 	int n = cspInstance->getVariableCount();
 	int** variableColorComponent = new int*[n];
 	for(int v = 0; v < n; v++) {
 		variableColorComponent[v] = new int[4];
+		for(int R = 0; R < 4; R++) {
+			variableColorComponent[v][R] = -1;
+		}
 	}
 
 	lemma17Match(cspInstance, &bipartiteGraph, variableColorComponent);
@@ -1811,22 +1849,23 @@ Result CSPSolver::lemma17(CSPInstance* cspInstance) {
 	}
 
 	std::vector<std::pair<int, int>> variableComponent;
-	Result result = lemma17Solve(bipartiteGraph, cspInstance->getVariableCount(), variableComponent);
+	Result result = lemma17Solve(bipartiteGraph, n, variableComponent);
 	if(result == Result::Success) {
 		lemma17Color(cspInstance, bipartiteGraph, variableColorComponent, variableComponent);
 	}
-	delete bipartiteGraph;
+
 	for(int v = 0; v < n; v++) {
 		delete [] variableColorComponent[v];
 	}
 	delete [] variableColorComponent;
+	delete bipartiteGraph;
 	return result;
 }
 
 void CSPSolver::lemma17Match(const CSPInstance* cspInstance, Graph** bipartiteGraph, int** variableColorComponent) {
-	Graph* graph = Graph::create(cspInstance->getVariableCount());
-
 	int n = cspInstance->getVariableCount();
+	Graph* graph = Graph::create(n);
+
 	bool** visited = new bool*[n];
 	for(int v = 0; v < n; v++) {
 		visited[v] = new bool[4];
@@ -1835,7 +1874,7 @@ void CSPSolver::lemma17Match(const CSPInstance* cspInstance, Graph** bipartiteGr
 		}
 	}
 
-	for(int v = 0; v < cspInstance->getVariableCount(); v++) {
+	for(int v = 0; v < n; v++) {
 		std::vector<int> availableColors = cspInstance->getAvailableColors(v);
 		for(auto R = availableColors.begin(); R != availableColors.end(); R++) {
 			if(visited[v][*R]) {
@@ -1851,12 +1890,20 @@ void CSPSolver::lemma17Match(const CSPInstance* cspInstance, Graph** bipartiteGr
 			while(!stack.empty()) {
 				current = stack.top();
 				stack.pop();
-				variableColorComponent[current.variable][current.color] = newVertex;
 				if(!visited[current.variable][current.color]) {
 					visited[current.variable][current.color] = true;
+					variableColorComponent[current.variable][current.color] = newVertex;
 					graph->addEdge(newVertex, current.variable);
 					count++;
 					std::vector<ColorPair> constraints = cspInstance->getConstraints(current.variable, current.color);
+					if(constraints.size() != degree) {
+						for(int v = 0; v < n; v++) {
+							delete [] visited[v];
+						}
+						delete [] visited;
+						delete graph;
+						return;
+					}
 					for(auto constraint = constraints.begin(); constraint != constraints.end(); constraint++) {
 						stack.push(*constraint);
 					}
@@ -1881,10 +1928,10 @@ void CSPSolver::lemma17Match(const CSPInstance* cspInstance, Graph** bipartiteGr
 }
 
 Result CSPSolver::lemma17Solve(Graph* bipartiteGraph, int variableCount, std::vector<std::pair<int, int>>& variableComponent) {
+	int source = bipartiteGraph->getVertexCount();
 	bipartiteGraph->addVertex();
-	int source = bipartiteGraph->getVertexCount() - 1;
+	int sink = bipartiteGraph->getVertexCount();
 	bipartiteGraph->addVertex();
-	int sink = bipartiteGraph->getVertexCount() - 1;
 	int n = bipartiteGraph->getVertexCount();
 
 	for(int i = 0; i < variableCount; i++) {
@@ -1906,30 +1953,35 @@ Result CSPSolver::lemma17Solve(Graph* bipartiteGraph, int variableCount, std::ve
 	for(int i = 0; i < n; i++) {
 		residual[i] = new int[n];
 		for(int j = 0; j < n; j++) {
-			if(bipartiteGraph->hasEdge(i, j)) {
-				residual[i][j] = 1;
-			} else {
-				residual[i][j] = 0;
-			}
+			residual[i][j] = 0;
 		}
+	}
+	for(int variable = 0; variable < variableCount; variable++) {
+		residual[source][variable] = 1;
+		for(int component = variableCount; component < source; component++) {
+			residual[variable][component] = 1;
+		}
+	}
+	for(int component = variableCount; component < source; component++) {
+		residual[component][sink] = 1;
 	}
 
 	std::vector<int> residualPath;
-	while(false && (residualPath = lemma17SolvePath(bipartiteGraph, residual)).size() >= 2) {
-		for(int vertex = 1; vertex < residualPath.size(); vertex++) {
-			if(flow[vertex][vertex - 1] == 0) {
-				flow[vertex - 1][vertex] = 1;
+	while((residualPath = lemma17SolveFindPath(bipartiteGraph, residual)).size() >= 2) {
+		for(auto vertex = residualPath.begin(); vertex + 1 != residualPath.end(); vertex++) {
+			if(flow[*(vertex + 1)][*vertex] == 0) {
+				flow[*vertex][*(vertex + 1)] = 1;
 			} else {
-				flow[vertex][vertex - 1] = 0;
+				flow[*(vertex + 1)][*vertex] = 0;
 			}
-			residual[vertex - 1][vertex] = 0;
-			residual[vertex][vertex - 1] = 1;
+			residual[*vertex][*(vertex + 1)] = 0;
+			residual[*(vertex + 1)][*vertex] = 1;
 		}
 	}
 
 	int flowValue = 0;
-	for(int i = 0; i < n; i++) {
-		flowValue += flow[i][sink];
+	for(int component = variableCount; component < source; component++) {
+		flowValue += flow[component][sink];
 	}
 	if(flowValue == variableCount) {
 		for(int variable = 0; variable < variableCount; variable++) {
@@ -1955,7 +2007,7 @@ Result CSPSolver::lemma17Solve(Graph* bipartiteGraph, int variableCount, std::ve
 	return flowValue == variableCount ? Result::Success : Result::Failure;
 }
 
-std::vector<int> CSPSolver::lemma17SolvePath(Graph* bipartiteGraph, int** residual) {
+std::vector<int> CSPSolver::lemma17SolveFindPath(Graph* bipartiteGraph, int** residual) {
 	int n = bipartiteGraph->getVertexCount();
 	int source = n - 2;
 	int sink = n - 1;
@@ -1969,19 +2021,19 @@ std::vector<int> CSPSolver::lemma17SolvePath(Graph* bipartiteGraph, int** residu
 	std::stack<int> stack;
 	std::stack<int> parentStack;
 	std::stack<int> pathStack;
-	pathStack.push(parent);
 	stack.push(current);
 	parentStack.push(parent);
+	pathStack.push(parent);
 	while(!stack.empty()) {
 		current = stack.top();
 		stack.pop();
 		parent = parentStack.top();
 		parentStack.pop();
-		while(pathStack.top() != parent) {
-			pathStack.pop();
-		}
 		if(!visited[current]) {
 			visited[current] = true;
+			while(pathStack.top() != parent) {
+				pathStack.pop();
+			}
 			pathStack.push(current);
 			if(current == sink) {
 				std::vector<int> path;
@@ -1991,6 +2043,7 @@ std::vector<int> CSPSolver::lemma17SolvePath(Graph* bipartiteGraph, int** residu
 				}
 
 				delete [] visited;
+				std::reverse(path.begin(), path.end());
 				return path;
 			}
 			std::vector<int> neighbors = bipartiteGraph->getNeighbors(current);
@@ -2010,14 +2063,12 @@ std::vector<int> CSPSolver::lemma17SolvePath(Graph* bipartiteGraph, int** residu
 void CSPSolver::lemma17Color(CSPInstance* cspInstance, const Graph* bipartiteGraph, int** variableColorComponent,
 	std::vector<std::pair<int, int>>& variableComponent) {
 	for(auto vC = variableComponent.begin(); vC != variableComponent.end(); vC++) {
-		int color = -1;
 		for(int i = 0; i < 4; i++) {
 			if(variableColorComponent[vC->first][i] == vC->second) {
-				color = i;
+				cspInstance->setColor(vC->first, i);
 				break;
 			}
 		}
-		cspInstance->setColor(vC->first, color);
 	}
 }
 
