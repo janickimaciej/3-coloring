@@ -86,15 +86,14 @@ void Test::run(std::string directoryPath, Result expectedResult, std::string res
 			cerr << errorMsg;
 			throw errorMsg;
 		}
-		auto durationMs = duration_cast<microseconds>(stop - start);
+		auto durationMs = duration_cast<milliseconds>(stop - start);
 		outFile << n << "\t" << m << "\t" << durationMs.count() << endl;
 		if(displayLemmas) {
 			cout << endl;
 		}
-		cout << durationMs.count() << " ms" << endl;
+		cout << durationMs.count() << " ms" << endl << endl;
 
 		progress++;
-		cout << endl << endl;
 	} while(FindNextFile(findHandle, &findData));
 	FindClose(findHandle);
 	if(outFile.is_open()) {
