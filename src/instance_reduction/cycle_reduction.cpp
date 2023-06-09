@@ -143,22 +143,29 @@ void CycleReduction::deleteCycle(int start, int end)
 		std::vector<int> ruleNeigh;
 		for (int ver : cycle)
 		{
+			if (instance->indexes[ver] == 68)
+			{
+				int c = 4;
+			}
 			ruleCycle.push_back(instance->indexes[ver]);
 			ruleNeigh.push_back(instance->indexes[findNeighbour(ver)]);
 		}
 		EvenRule* even = new EvenRule(ruleCycle, ruleNeigh);
 		for (int ver : cycle)
 		{
-			if (ver < n) instance->rules[ver] = (Rule*) even;
+			Rule* rule = instance->rules[172];
+			int verI = instance->indexes[ver];
+			if (verI < instance->originalN) instance->rules[verI] = (Rule*) even;
 			else
 			{
-				std::vector<int> unMerged = *instance->unMerge(ver, n);
+				std::vector<int> unMerged = *instance->unMerge(verI, n);
 				for (int mer : unMerged)
 				{
 					instance->rules[mer] = (Rule*) even;
 				}
 			}
 		}
+		Rule* rule = instance->rules[172];
 		// Delete All
 		Clear();
 		return;
@@ -176,7 +183,7 @@ void CycleReduction::deleteCycle(int start, int end)
 			NeighbourRule* neighbour = new NeighbourRule(w1, i % cycle.size(), ruleCycle);
 			for (int ver : cycle)
 			{
-				if (ver < n) instance->rules[ver] = (Rule*)neighbour;
+				if (ver < instance->originalN) instance->rules[ver] = (Rule*)neighbour;
 				else
 				{
 					std::vector<int> unMerged = *instance->unMerge(ver,n);

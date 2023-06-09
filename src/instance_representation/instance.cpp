@@ -38,6 +38,10 @@ Instance* Instance::copy(const Instance* instance)
 void Instance::removeVertex(int vertex)
 {
 	deleted.push_back(indexes[vertex]);
+	if (indexes[vertex] == 81)
+	{
+		int vb = 3;
+	}
 	graph->removeVertex(vertex);
 	indexes.erase(indexes.begin() + vertex);
 }
@@ -46,15 +50,15 @@ void Instance::addVertex()
 {
 	graph->addVertex();
 	indexes.push_back(n);
-	if (n == 253)
-	{
-		int b = 6;
-	}
 	n++;
 }
 
 void Instance::giveColor(Graph* g, int v, int color)
 {
+	if (v == 81)
+	{
+		int vb = 3;
+	}
 	g->setColor(v, color);
 	for (int ver : g->getNeighbors(v))
 	{

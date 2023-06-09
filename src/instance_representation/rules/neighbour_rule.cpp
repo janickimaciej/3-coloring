@@ -28,7 +28,7 @@ bool NeighbourRule::apply(Instance* instance, Graph* graph)
 			Instance::giveColor(graph, ver, graph->getAvailableColors(neighbour).at(0));
 		}
 	}
-	for (int i = (target + 1) % c; i < target; i = (i + 1) % c)
+	for (int i = (target + 1) % c; i != target; i = (i + 1) % c)
 	{
 		if (cycle[i] < n)
 		{
