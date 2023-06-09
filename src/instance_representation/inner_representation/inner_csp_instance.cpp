@@ -4,14 +4,14 @@
 #include <stdexcept>
 
 namespace InnerRepresentation {
-	InnerCSPInstance::InnerCSPInstance(int variableCount) : variables(variableCount) {
+	InnerCSPInstance::InnerCSPInstance(int variableCount, InitialType initialType) : variables(variableCount) {
 		for(int variable = 0; variable < variables.size(); variable++) {
-			variables[variable] = new Variable(variable, InitialType::Vertex);
+			variables[variable] = new Variable(variable, initialType);
 		}
 	}
 
-	InnerCSPInstance::InnerCSPInstance(const InnerCSPInstance& cspInstance) :
-		InnerCSPInstance(cspInstance.getVariableCount()) {
+	InnerCSPInstance::InnerCSPInstance(const InnerCSPInstance& cspInstance, InitialType initialType) :
+		InnerCSPInstance(cspInstance.getVariableCount(), initialType) {
 		for(int variable = 0; variable < variables.size(); variable++) {
 			std::vector<ConstraintInfo> constraints = cspInstance.variables[variable]->getConstraints();
 			for(auto constraint = constraints.begin(); constraint != constraints.end(); constraint++) {
@@ -70,6 +70,12 @@ namespace InnerRepresentation {
 	}
 
 	std::vector<ColorPair> InnerCSPInstance::getConstraints(int variable, int color) const {
+		if(variable < 0 || variable >= variables.size()) {
+			error("getConstraints: Vertex index out of bounds");
+		}
+		if(color < 0 || color >= 4) {
+			error("getConstraints: Color index out of bounds");
+		}
 		return variables[variable]->getConstraints(color);
 	}
 
@@ -100,7 +106,7 @@ namespace InnerRepresentation {
 			error("hasConstraint: Variable index out of bounds");
 		}
 		if(startColor < 0 || startColor >= 4 || endColor < 0 || endColor >= 4) {
-			error("hasConstraint: Color index of bounds");
+			error("hasConstraint: Color index out of bounds");
 		}
 		return variables[startVariable]->hasConstraint(startColor, *variables[endVariable], endColor);
 	}
@@ -110,7 +116,7 @@ namespace InnerRepresentation {
 			error("addConstraint: Variable index out of bounds");
 		}
 		if(startColor < 0 || startColor >= 4 || endColor < 0 || endColor >= 4) {
-			error("addConstraint: Color index of bounds");
+			error("addConstraint: Color index out of bounds");
 		}
 		variables[startVariable]->addConstraint(startColor, *variables[endVariable], endColor);
 	}
@@ -120,7 +126,7 @@ namespace InnerRepresentation {
 			error("removeConstraint: Variable index out of bounds");
 		}
 		if(startColor < 0 || startColor >= 4 || endColor < 0 || endColor >= 4) {
-			error("removeConstraint: Color index of bounds");
+			error("removeConstraint: Color index out of bounds");
 		}
 		variables[startVariable]->removeConstraint(startColor, *variables[endVariable], endColor);
 	}
@@ -146,6 +152,14 @@ namespace InnerRepresentation {
 
 	void InnerCSPInstance::removeVertex(int vertex) {
 		removeVariable(vertex);
+	}
+
+	int InnerCSPInstance::getEdgeCount() const {
+		int degreeSum = 0;
+		for(int vertex = 0; vertex < variables.size(); vertex++) {
+			degreeSum += getNeighbors(vertex).size();
+		}
+		return degreeSum/2;
 	}
 
 	bool InnerCSPInstance::hasEdge(int start, int end) const {
@@ -174,7 +188,7 @@ namespace InnerRepresentation {
 			error("isColorAvailable: Vertex index out of bounds");
 		}
 		if(color < 0 || color >= 4) {
-			error("isColorAvailable: Color index of bounds");
+			error("isColorAvailable: Color index out of bounds");
 		}
 		return variables[variable]->isColorAvailable(color);
 	}
@@ -188,7 +202,7 @@ namespace InnerRepresentation {
 			error("disableColor: Vertex index out of bounds");
 		}
 		if(color < 0 || color >= 4) {
-			error("disableColor: Color index of bounds");
+			error("disableColor: Color index out of bounds");
 		}
 		variables[variable]->disableColor(color);
 	}
@@ -198,7 +212,7 @@ namespace InnerRepresentation {
 			error("setColor: Vertex index out of bounds");
 		}
 		if(color < 0 || color >= 4) {
-			error("setColor: Color index of bounds");
+			error("setColor: Color index out of bounds");
 		}
 		if(!isColorAvailable(variable, color)) {
 			error("setColor: Color is unavailable");

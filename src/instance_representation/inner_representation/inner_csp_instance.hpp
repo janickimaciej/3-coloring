@@ -10,8 +10,9 @@ namespace InnerRepresentation {
 	class InnerCSPInstance : public Graph, public CSPInstance {
 		std::vector<Variable*> variables;
 	public:
-		InnerCSPInstance(int vertices);
-		InnerCSPInstance(const InnerCSPInstance& cspInstance);
+		InnerCSPInstance(const InnerCSPInstance&) = delete;
+		InnerCSPInstance(int vertices, InitialType initialType);
+		InnerCSPInstance(const InnerCSPInstance& cspInstance, InitialType initialType);
 
 		void copyColoring(const InnerCSPInstance* reducedCSPInstance, std::vector<int> removedVariables);
 		void error(const char* errorMsg) const;
@@ -38,7 +39,8 @@ namespace InnerRepresentation {
 		virtual std::vector<int> getNeighbors(int vertex) const override;
 		virtual void addVertex() override;
 		virtual void removeVertex(int vertex) override;
-	
+
+		virtual int getEdgeCount() const override;
 		virtual bool hasEdge(int start, int end) const override;
 		virtual void addEdge(int start, int end) override;
 		virtual void removeEdge(int start, int end) override;

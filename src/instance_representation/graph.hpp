@@ -14,6 +14,7 @@ public:
 	virtual void addVertex() = 0;
 	virtual void removeVertex(int vertex) = 0;
 	
+	virtual int getEdgeCount() const = 0;
 	virtual bool hasEdge(int start, int end) const = 0;
 	virtual void addEdge(int start, int end) = 0;
 	virtual void removeEdge(int start, int end) = 0;
