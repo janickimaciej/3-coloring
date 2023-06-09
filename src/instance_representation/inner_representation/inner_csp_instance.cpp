@@ -51,7 +51,7 @@ namespace InnerRepresentation {
 	}
 
 	void InnerCSPInstance::error(const char* errorMsg) const {
-		std::cerr << std::endl << errorMsg << std::endl;
+		//std::cerr << std::endl << errorMsg << std::endl;
 		throw std::invalid_argument(errorMsg);
 	}
 
