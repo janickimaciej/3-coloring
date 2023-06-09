@@ -23,8 +23,9 @@ std::wstring strToWstr(std::string str);
 std::string wstrToStr(std::wstring wstr);
 
 int main() {
-	//K();
-	M();
+	
+	K();
+	//M();
 }
 
 void K() {
@@ -32,12 +33,35 @@ void K() {
 
 	vector<string> files;
 	vector<int> edges;
+	/*files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n5e7.g6");
+	edges.push_back(7);
+	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n7e16_not3.g6");
+	edges.push_back(16);
+	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n11e32.g6");
+	edges.push_back(32);
+	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n21e59.g6");
+	edges.push_back(56);
+	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n31e62.g6");
+	edges.push_back(62);*/
+	files.push_back("n31e62.g6");
+	edges.push_back(62);
+	files.push_back("n103e1133.g6");
+	edges.push_back(1133);
+	files.push_back("n64e672c4.g6");
+	edges.push_back(672);
+
+	/*files.push_back("n250e375c3.g6");
+	edges.push_back(375);*/
+
+	files.push_back("n12e22.g6");
+	edges.push_back(22);
 
 	files.push_back("n11e19.g6");
 	edges.push_back(19);
 
-	files.push_back("n31e62.g6");
-	edges.push_back(62);
+	//.push_back("sierpinski.g6");
+	//edges.push_back(375);
+
 
 	files.push_back("n250e375c3.g6");
 	edges.push_back(672);

@@ -2,7 +2,18 @@
 
 void EvenRule::ClearRule(Instance* instance)
 {
-	for (int ver : cycle) instance->rules[ver] = new Rule();
+	for (int ver : cycle)
+	{
+		if (ver < instance->originalN)	instance->rules[ver] = new Rule();
+		else
+		{
+			std::vector<int> unMerged = *instance->unMerge(ver, instance->originalN);
+			for (int mer : unMerged)
+			{
+				instance->rules[mer] = new Rule();
+			}
+		}
+	}
 }
 
 EvenRule::EvenRule(std::vector<int> cycle, std::vector<int> neighbours)
@@ -47,6 +58,12 @@ bool EvenRule::apply(Instance* instance, Graph* graph)
 		{
 			if (cycle[(i + 1) % c] < graph->getVertexCount())
 			{
+				std::vector<int> ni = graph->getNeighbors(68);
+				std::vector<int> co = graph->getNeighbors(68);
+				if (cycle[(i + 1) % c] == 68)
+				{
+					int b = 3;
+				}
 				Instance::giveColor(graph, cycle[(i + 1) % c], color);
 			}
 			else
@@ -57,10 +74,15 @@ bool EvenRule::apply(Instance* instance, Graph* graph)
 					Instance::giveColor(graph, ver, color);
 				}
 			}
-			for (int j = (i + 2) % c; j < i + 1; j = (j + 1) % c)
+			for (int j = (i + 2) % c; j != i + 1; j = (j + 1) % c)
 			{
+				int b = 3;
 				if (cycle[j] < n)
 				{
+					if (cycle[j] == 68)
+					{
+						int c = 3;
+					}
 					Instance::giveNaive(graph, cycle[j]);
 				}
 				else
@@ -72,6 +94,7 @@ bool EvenRule::apply(Instance* instance, Graph* graph)
 					}
 				}
 			}
+			ClearRule(instance);
 			return true;
 		}
 		color = color1;
@@ -96,5 +119,6 @@ bool EvenRule::apply(Instance* instance, Graph* graph)
 	{
 		Instance::giveColor(graph, cycle[i], i % 2 == 0 ? c1 : c2);
 	}
+	ClearRule(instance);
 	return true;
 }
