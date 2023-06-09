@@ -39,10 +39,6 @@ bool Coloring::colorForest(int v, Instance* copy)
 	if (v == copy->innerTree.size())
 	{
 		Instance* inst = Instance::copy(copy);
-		/*for (int bark : inst->innerTree)
-		{
-			inst->removeVertex(bark);
-		}*/
 		Result result = CSPSolver::solve(dynamic_cast<CSPInstance*>(inst->graph));
 		if (result == Result::Success)
 		{
