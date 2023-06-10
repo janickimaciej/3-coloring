@@ -24,8 +24,8 @@ std::string wstrToStr(std::wstring wstr);
 
 int main() {
 	
-	//K();
-	M();
+	K();
+	//M();
 }
 
 void K() {

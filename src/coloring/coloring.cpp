@@ -74,16 +74,14 @@ void Coloring::copyColoring()
 {
 	for (int i = 0; i < instance->graph->getVertexCount(); i++)
 	{
+		int color = instance->graph->getAvailableColors(i).at(0);
 		if (instance->indexes[i] < n)
 		{
-			int amount = instance->graph->getAvailableColors(i).size();
-			int color = instance->graph->getAvailableColors(i).at(0);
 			Instance::giveColor(graph, instance->indexes[i], color);
 		}
 		else
 		{
 			std::vector<int> unmerged = *instance->unMerge(instance->indexes[i], n);
-			int color = graph->getAvailableColors(unmerged[0]).at(0);
 			for (int ver : unmerged)
 			{
 				Instance::giveColor(graph, ver, color);

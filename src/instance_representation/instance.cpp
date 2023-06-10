@@ -48,6 +48,10 @@ void Instance::removeVertex(int vertex)
 
 void Instance::addVertex()
 {
+	if (n == 264 || n == 263)
+	{
+		int a = 4;
+	}
 	graph->addVertex();
 	indexes.push_back(n);
 	n++;

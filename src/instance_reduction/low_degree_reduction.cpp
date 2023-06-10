@@ -73,7 +73,6 @@ void LowReduction::Update()
 void LowReduction::ReduceRec(int v)
 {
 	toDeletion[v] = true;
-	//std::cout << v << " ";
 	
 	for (int i = 0; i < degrees[v]; i++)
 	{

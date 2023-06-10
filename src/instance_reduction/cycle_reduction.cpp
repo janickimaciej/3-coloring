@@ -64,6 +64,7 @@ bool CycleReduction::Reduce()
 	int i = 0;
 	while (1)
 	{
+		// do zmiany ?
 		if (threes[i] && !visited[i])
 		{
 			if (cycleRec(i, i))
@@ -170,34 +171,34 @@ void CycleReduction::deleteCycle(int start, int end)
 	}
 
 	// Option: two neighbours of the cycle are connected
-	w1 = findNeighbour(cycle[0]);
-	for (int i = 1; i <= cycle.size(); i++)
-	{
-		w2 = findNeighbour(cycle[i % cycle.size()]);
-		if (instance->graph->hasEdge(w1, w2))
-		{
-			std::vector<int> ruleCycle;
-			for (int ver : cycle) ruleCycle.push_back(instance->indexes[ver]);
-			NeighbourRule* neighbour = new NeighbourRule(instance->indexes[w1], i % cycle.size(), ruleCycle);
-			for (int ver : cycle)
-			{
-				if (ver < instance->originalN) instance->rules[ver] = (Rule*)neighbour;
-				else
-				{
-					std::vector<int> unMerged = *instance->unMerge(ver,n);
-					for (int mer : unMerged)
-					{
-						instance->rules[mer] = (Rule*)neighbour;
-					}
-				}
-			}
-			
-			// Delete All
-			Clear();
-			return;
-		}
-		w1 = w2;
-	}
+	//w1 = findNeighbour(cycle[0]);
+	//for (int i = 1; i <= cycle.size(); i++)
+	//{
+	//	w2 = findNeighbour(cycle[i % cycle.size()]);
+	//	if (instance->graph->hasEdge(w1, w2))
+	//	{
+	//		std::vector<int> ruleCycle;
+	//		for (int ver : cycle) ruleCycle.push_back(instance->indexes[ver]);
+	//		NeighbourRule* neighbour = new NeighbourRule(instance->indexes[w1], i % cycle.size(), ruleCycle);
+	//		for (int ver : cycle)
+	//		{
+	//			if (ver < instance->originalN) instance->rules[ver] = (Rule*)neighbour;
+	//			else
+	//			{
+	//				std::vector<int> unMerged = *instance->unMerge(ver,n);
+	//				for (int mer : unMerged)
+	//				{
+	//					instance->rules[mer] = (Rule*)neighbour;
+	//				}
+	//			}
+	//		}
+	//		
+	//		// Delete All
+	//		Clear();
+	//		return;
+	//	}
+	//	w1 = w2;
+	//}
 
 	Instance* newInst;
 
@@ -233,6 +234,7 @@ void CycleReduction::deleteCycle(int start, int end)
 		{
 			if (!instance->graph->hasEdge(n, ver)) instance->graph->addEdge(n, ver);
 		}
+		int neigh = findNeighbour(cycle[2]);
 		instance->graph->addEdge(n, findNeighbour(cycle[2]));
 		toDeletion[w1] = true;
 		toDeletion[w2] = true;
