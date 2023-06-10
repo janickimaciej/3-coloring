@@ -44,24 +44,19 @@ void K() {
 	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n31e62.g6");
 	edges.push_back(62);*/
 	//files.push_back("n31e62.g6");
-	//edges.push_back(62);
 	//files.push_back("n103e1133.g6");
-	//edges.push_back(1133);
 	//files.push_back("n64e672c4.g6");
-	//edges.push_back(672);
 
-	/*files.push_back("n250e375c3.g6");
-	edges.push_back(375);*/
+	files.push_back("n250e375c3.g6");
 
-	//files.push_back("n12e22.g6");
-	//edges.push_back(22);
+	files.push_back("n12e22.g6");
 
-	//files.push_back("n11e19.g6");
+	files.push_back("n11e19.g6");
 
 	files.push_back("sierpinski.g6");
 
 
-	//files.push_back("n250e375c3.g6");
+	files.push_back("n250e375c3.g6");
 
 	for (int i = 0; i < files.size(); i++)
 	{

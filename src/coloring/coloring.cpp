@@ -96,7 +96,6 @@ bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 {
 	int ver;
 	Rule* rule1 = copyInst->rules[81];
-	std::vector<int> ne = graph->getNeighbors(136);
 	int b = 3;
 	for (int i = copyInst->deleted.size() - 1; i >= 0; i--)
 	{
@@ -105,7 +104,7 @@ bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 		{
 			if (!copyInst->rules[ver]->apply(copyInst, copy))
 			{
-				Instance::giveColor(copy, ver, copy->getAvailableColors(ver).at(0));
+				Instance::giveNaive(copy, ver);
 			}
 		}
 		else

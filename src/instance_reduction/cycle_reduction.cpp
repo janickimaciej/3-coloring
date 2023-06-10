@@ -70,8 +70,9 @@ bool CycleReduction::Reduce()
 			if (cycleRec(i, i))
 			{
 				Update();
-				hasReduced = true;
-				continue;
+				//hasReduced = true;
+				//continue;
+				return true;
 			}
 		}
 		i++;
@@ -171,34 +172,34 @@ void CycleReduction::deleteCycle(int start, int end)
 	}
 
 	// Option: two neighbours of the cycle are connected
-	//w1 = findNeighbour(cycle[0]);
-	//for (int i = 1; i <= cycle.size(); i++)
-	//{
-	//	w2 = findNeighbour(cycle[i % cycle.size()]);
-	//	if (instance->graph->hasEdge(w1, w2))
-	//	{
-	//		std::vector<int> ruleCycle;
-	//		for (int ver : cycle) ruleCycle.push_back(instance->indexes[ver]);
-	//		NeighbourRule* neighbour = new NeighbourRule(instance->indexes[w1], i % cycle.size(), ruleCycle);
-	//		for (int ver : cycle)
-	//		{
-	//			if (ver < instance->originalN) instance->rules[ver] = (Rule*)neighbour;
-	//			else
-	//			{
-	//				std::vector<int> unMerged = *instance->unMerge(ver,n);
-	//				for (int mer : unMerged)
-	//				{
-	//					instance->rules[mer] = (Rule*)neighbour;
-	//				}
-	//			}
-	//		}
-	//		
-	//		// Delete All
-	//		Clear();
-	//		return;
-	//	}
-	//	w1 = w2;
-	//}
+	w1 = findNeighbour(cycle[0]);
+	for (int i = 1; i <= cycle.size(); i++)
+	{
+		w2 = findNeighbour(cycle[i % cycle.size()]);
+		if (instance->graph->hasEdge(w1, w2))
+		{
+			std::vector<int> ruleCycle;
+			for (int ver : cycle) ruleCycle.push_back(instance->indexes[ver]);
+			NeighbourRule* neighbour = new NeighbourRule(instance->indexes[w1], i % cycle.size(), ruleCycle);
+			for (int ver : cycle)
+			{
+				if (ver < instance->originalN) instance->rules[ver] = (Rule*)neighbour;
+				else
+				{
+					std::vector<int> unMerged = *instance->unMerge(ver,n);
+					for (int mer : unMerged)
+					{
+						instance->rules[mer] = (Rule*)neighbour;
+					}
+				}
+			}
+			
+			// Delete All
+			Clear();
+			return;
+		}
+		w1 = w2;
+	}
 
 	Instance* newInst;
 
