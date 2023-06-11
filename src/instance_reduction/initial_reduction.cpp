@@ -24,7 +24,7 @@ std::vector<Instance*>* InitialReduction::Reduce()
 		{
 			low->Reduce();
 			cycle->Update();
-			if (!cycle->Reduce()) break;
+			if (!cycle->Reduce() || cycle->ended) break;
 			low->Update();
 			cycle->Update();
 		}

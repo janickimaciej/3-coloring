@@ -20,6 +20,7 @@ private:
 
 	bool hasReduced;
 	int v;
+	int target;
 
 	bool cycleRec(int curr, int parent);
 	void deleteCycle(int start, int end);
@@ -27,6 +28,7 @@ private:
 	void Clear(Instance* g);
 	int findNeighbour(int cycleVer);
 	int cycleLength(int start, int end);
+	void addNeighbourCycle(Instance* inst, int w1, int target);
 public:
 
 	CycleReduction(std::vector<Instance*>* instances);
@@ -35,6 +37,7 @@ public:
 	void Update();
 	bool Reduce();
 
+	bool ended;
 
 
 };

@@ -4,6 +4,7 @@
 Instance::Instance(Graph* graph)
 {
 	this->graph = graph;
+	this->original = Graph::copy(graph);
 	this->n = graph->getVertexCount();
 	this->originalN = this->n;
 	rules = new Rule*[originalN];
@@ -17,6 +18,7 @@ Instance::Instance(Graph* graph)
 Instance::Instance(const Instance& instance)
 {
 	graph = Graph::copy(instance.graph);
+	original = Graph::copy(instance.original);
 	this->n = instance.n;
 	this->originalN = instance.originalN;
 	indexes = std::vector<int>(instance.indexes.begin(), instance.indexes.end());
@@ -46,11 +48,28 @@ void Instance::removeVertex(int vertex)
 	indexes.erase(indexes.begin() + vertex);
 }
 
+void Instance::justRemove(int vertex)
+{
+	graph->removeVertex(vertex);
+	indexes.erase(indexes.begin() + vertex);
+}
+
 void Instance::addVertex()
 {
+	if (n == 36)
+	{
+		int a = 4;
+	}
 	graph->addVertex();
+	original->addVertex();
 	indexes.push_back(n);
 	n++;
+}
+
+void Instance::addEdge(int u, int v)
+{
+	graph->addEdge(u, v);
+	original->addEdge(indexes[u], indexes[v]);
 }
 
 void Instance::giveColor(Graph* g, int v, int color)

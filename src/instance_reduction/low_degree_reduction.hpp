@@ -10,6 +10,7 @@ private:
 
 	Instance* g;
 	bool* toDeletion;
+	bool* visited;
 	int* degrees;
 	std::vector<int>* neighbours;
 	int n;

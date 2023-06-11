@@ -13,6 +13,7 @@ public:
 	int n;
 	int originalN;
 	Graph* graph;
+	Graph* original;
 	std::vector<int> indexes;
 	std::vector<int> innerTree;
 	std::vector<int> deleted;
@@ -26,7 +27,9 @@ public:
 	static Instance* copy(const Instance* instance);
 
 	void removeVertex(int vertex);
+	void justRemove(int vertex);
 	void addVertex();
+	void addEdge(int u, int v);
 
 	static void giveColor(Graph* g, int v, int color);
 	static void giveNaive(Graph* g, int v);

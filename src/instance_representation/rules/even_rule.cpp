@@ -27,7 +27,7 @@ bool EvenRule::apply(Instance* instance, Graph* graph)
 {
 	int neigh = neighbours[0];
 	
-	int n = graph->getVertexCount();
+	int n = instance->originalN;
 	int color;
 	if (neigh < n)
 	{
@@ -35,7 +35,7 @@ bool EvenRule::apply(Instance* instance, Graph* graph)
 	} 
 	else
 	{
-		color = graph->getAvailableColors(instance->unMerge(neigh, n)->at(0)).at(0);
+		color = instance->getMergedColor(graph, *instance->unMerge(neigh, n));
 	}
 	int color1;
 	for (int i = 0; i < c; i++)

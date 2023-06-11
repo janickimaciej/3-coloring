@@ -44,21 +44,41 @@ void K() {
 	files.push_back("C:\\Users\\User\\Desktop\\Graphs\\n31e62.g6");
 	edges.push_back(62);*/
 	//files.push_back("n31e62.g6");
-	//edges.push_back(62);
 	//files.push_back("n103e1133.g6");
-	//edges.push_back(1133);
 	//files.push_back("n64e672c4.g6");
-	//edges.push_back(672);
 
-	/*files.push_back("n250e375c3.g6");
-	edges.push_back(375);*/
+	//files.push_back("n250e375c3.g6");
 
 	//files.push_back("n12e22.g6");
-	//edges.push_back(22);
 
 	//files.push_back("n11e19.g6");
 
-	files.push_back("sierpinski.g6");
+	//files.push_back("sierpinski.g6");
+
+	//files.push_back("graph_746.g6");
+	//files.push_back("graph_958.g6");
+
+	// 34 VERTICES, DOABLE!!
+	files.push_back("graph_36026.g6");
+	 
+	/*parser.openFile("testNewCycleLinked.g6");
+	Graph* g = parser.parse();
+	Instance* inst = new Instance(g);
+	std::vector<Instance*> instances;
+	instances.push_back(inst);
+	CycleReduction cycle(&instances);
+	cycle.Reduce();
+	for (int i = 0; i < instances.size(); i++)
+	{
+		G6Parser::parseBack(instances[i]->graph);
+	}*/
+	 
+	
+	//files.push_back("graph_30567.g6");
+	
+	
+	// 124 ver
+	//files.push_back("graph_1136.g6");
 
 
 	//files.push_back("n250e375c3.g6");
@@ -105,5 +125,6 @@ void K() {
 }
 
 void M() {
-	Test::run("D:/Downloads/chr_4/", Result::Failure, "D:/Desktop/CSP_TEST.txt", true);
+	Test::run("chr_e3/", Result::Success);
+	//Test::run("chr_ge4/", Result::Failure);
 }
