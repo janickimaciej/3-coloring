@@ -43,7 +43,7 @@ bool Coloring::colorForest(int v, Instance* copy)
 		{
 			instance = inst;
 			copyColoring();
-			checkRest(graph, copy);
+			checkRest(copy->original, copy);
 			return true;
 		}
 		else return false;
