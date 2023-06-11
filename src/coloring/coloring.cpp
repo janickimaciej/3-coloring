@@ -116,6 +116,12 @@ bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 		{
 			std::vector<int> unMerged = *copyInst->unMerge(ver, n);
 			int color = copyInst->getMergedColor(copy, unMerged);
+			int color2 = copy->getAvailableColors(ver).at(0);
+			if (color != color2)
+			{
+				int o = 9;
+			}
+			Instance::giveColor(copy, ver, color);
 			for (int mer : unMerged)
 			{
 				if (!copyInst->rules[mer]->apply(copyInst, copy))
