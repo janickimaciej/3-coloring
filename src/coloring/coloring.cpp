@@ -95,11 +95,16 @@ void Coloring::copyColoring()
 bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 {
 	int ver;
-	Rule* rule1 = copyInst->rules[81];
 	int b = 3;
+	for (int i = 0; i < copy->getVertexCount(); i++)
+	{
+		Rule* rule = copyInst->rules[i];
+		int a = 6;
+	}
 	for (int i = copyInst->deleted.size() - 1; i >= 0; i--)
 	{
 		ver = copyInst->deleted[i];
+		int l = 5;
 		if (ver < n)
 		{
 			if (!copyInst->rules[ver]->apply(copyInst, copy))

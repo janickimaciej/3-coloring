@@ -27,6 +27,7 @@ private:
 	void Clear(Instance* g);
 	int findNeighbour(int cycleVer);
 	int cycleLength(int start, int end);
+	void addNeighbourCycle(Instance* inst, int w1, int target);
 public:
 
 	CycleReduction(std::vector<Instance*>* instances);
