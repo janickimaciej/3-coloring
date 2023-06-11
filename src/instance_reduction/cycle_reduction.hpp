@@ -20,6 +20,7 @@ private:
 
 	bool hasReduced;
 	int v;
+	int target;
 
 	bool cycleRec(int curr, int parent);
 	void deleteCycle(int start, int end);
@@ -36,6 +37,7 @@ public:
 	void Update();
 	bool Reduce();
 
+	bool ended;
 
 
 };

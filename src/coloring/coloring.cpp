@@ -15,6 +15,7 @@ bool Coloring::Solve()
 {
 	InitialReduction initial(Graph::copy(graph));
 	instances = initial.Reduce();
+	if (instances->size() == 0) return false;
 	BushyForest forest(instances);
 	forest.PrepareAll();
 	Result result;
@@ -64,6 +65,7 @@ bool Coloring::colorForest(int v, Instance* copy)
 				return false;
 			}
 			if (colorForest(v + 1, inst)) return true;
+			delete inst;
 		}
 		return false;
 

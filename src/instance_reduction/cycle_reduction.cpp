@@ -10,6 +10,8 @@ CycleReduction::CycleReduction(std::vector<Instance*>* instances)
 {
 	this->instances = instances;
 	this->instance = instances->at(0);
+	target = 0;
+	ended = false;
 	n = instance->graph->getVertexCount();
 	visited = new bool[n];
 	parents = new int[n];
@@ -42,6 +44,8 @@ void CycleReduction::setTarget(int g)
 	delete[] threes;
 	delete[] toDeletion;
 	cycle.clear();
+	target = g;
+	ended = false;
 	this->instance = instances->at(g);
 	n = instance->graph->getVertexCount();
 	visited = new bool[n];
@@ -79,6 +83,7 @@ bool CycleReduction::Reduce()
 		{
 			if (cycleRec(i, i))
 			{
+				if (ended) return false;
 				Update();
 				//hasReduced = true;
 				//continue;
@@ -126,7 +131,6 @@ bool CycleReduction::cycleRec(int curr, int parent)
 		int v = neighbours[curr][i];
 		if (!threes[v]) continue;
 		if (v == parent) continue;
-		Rule* rule = instances->at(0)->rules[0];
 		if (cycleRec(v, curr)) return true;
 	}
 	return false;
@@ -199,46 +203,58 @@ void CycleReduction::deleteCycle(int start, int end)
 	{
 
 		// link two neighbours
-		newInst = Instance::copy(instance);
-		instances->push_back(newInst);
 		w1 = findNeighbour(cycle[0]);
 		w2 = findNeighbour(cycle[1]);
-		newInst->addEdge(w1, w2);
-		addNeighbourCycle(newInst, w1, 1);
-		Clear(newInst);
+		if (w1 != w2)
+		{
+			newInst = Instance::copy(instance);
+			newInst->addEdge(w1, w2);
+			instances->push_back(newInst);
+			addNeighbourCycle(newInst, w1, 1);
+			Clear(newInst);
+		}
 
 		// merge neighbours
-		instance->addVertex();
-		std::vector<int> merge;
-		merge.push_back(instance->indexes[n]);
-		merge.push_back(instance->indexes[cycle[2]]);
-		merge.push_back(instance->indexes[w1]);
-		merge.push_back(instance->indexes[w2]);
-		instance->superVertices.push_back(merge);
-		for (int ver : neighbours[w1])
+		w3 = findNeighbour(cycle[2]);
+		if (w1 != w3 && w2 != w3)
 		{
-			instance->addEdge(n, ver);
+			instance->addVertex();
+			std::vector<int> merge;
+			merge.push_back(instance->indexes[n]);
+			merge.push_back(instance->indexes[cycle[2]]);
+			merge.push_back(instance->indexes[w1]);
+			merge.push_back(instance->indexes[w2]);
+			instance->superVertices.push_back(merge);
+			for (int ver : neighbours[w1])
+			{
+				instance->addEdge(n, ver);
+			}
+			for (int ver : neighbours[w2])
+			{
+				if (!instance->graph->hasEdge(n, ver)) instance->addEdge(n, ver);
+			}
+			for (int ver : neighbours[cycle[2]])
+			{
+				if (!instance->graph->hasEdge(n, ver)) instance->addEdge(n, ver);
+			}
+			int neigh = findNeighbour(cycle[2]);
+			std::vector<int> trueCycle;
+			for (int ver : cycle)
+			{
+				trueCycle.push_back(instance->indexes[ver]);
+			}
+			trueCycle.push_back(instance->indexes[w1]);
+			trueCycle.push_back(instance->indexes[w2]);
+			instance->addEdge(n, findNeighbour(cycle[2]));
+			toDeletion[w1] = true;
+			toDeletion[w2] = true;
+			Clear();
 		}
-		for (int ver : neighbours[w2])
+		else
 		{
-			if (!instance->graph->hasEdge(n,ver)) instance->addEdge(n, ver);
+			ended = true;
+			instances->erase(instances->begin() + target);
 		}
-		for (int ver : neighbours[cycle[2]])
-		{
-			if (!instance->graph->hasEdge(n, ver)) instance->addEdge(n, ver);
-		}
-		int neigh = findNeighbour(cycle[2]);
-		std::vector<int> trueCycle;
-		for (int ver : cycle)
-		{
-			trueCycle.push_back(instance->indexes[ver]);
-		}
-		trueCycle.push_back(instance->indexes[w1]);
-		trueCycle.push_back(instance->indexes[w2]);
-		instance->addEdge(n, findNeighbour(cycle[2]));
-		toDeletion[w1] = true;
-		toDeletion[w2] = true;
-		Clear();
 		return;
 	}
 

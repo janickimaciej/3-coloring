@@ -24,8 +24,8 @@ std::string wstrToStr(std::wstring wstr);
 
 int main() {
 	
-	K();
-	//M();
+	//K();
+	M();
 }
 
 void K() {
@@ -59,7 +59,7 @@ void K() {
 	//files.push_back("graph_958.g6");
 
 	// 34 VERTICES, DOABLE!!
-	files.push_back("graph_17189.g6");
+	files.push_back("graph_36026.g6");
 	 
 	/*parser.openFile("testNewCycleLinked.g6");
 	Graph* g = parser.parse();
@@ -126,4 +126,5 @@ void K() {
 
 void M() {
 	Test::run("chr_e3/", Result::Success);
+	//Test::run("chr_ge4/", Result::Failure);
 }

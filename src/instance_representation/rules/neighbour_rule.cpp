@@ -18,14 +18,15 @@ bool NeighbourRule::apply(Instance* instance, Graph* graph)
 	c = cycle.size();
 	int n = graph->getVertexCount();
 	int color;
-	if (neighbour < n)
+	color = graph->getAvailableColors(neighbour).at(0);
+	/*if (neighbour < n)
 	{
 		color = graph->getAvailableColors(neighbour).at(0);
 	}
 	else
 	{
 		color = Instance::getMergedColor(graph, *instance->unMerge(neighbour, n));
-	}
+	}*/
 	if (cycle[target] < n)
 	{
 		Instance::giveColor(graph, cycle[target], color);
@@ -33,6 +34,7 @@ bool NeighbourRule::apply(Instance* instance, Graph* graph)
 	else
 	{
 		std::vector<int> unMerged = *instance->unMerge(cycle[target], n);
+		Instance::giveColor(graph, cycle[target], color);
 		for (int ver : unMerged)
 		{
 			Instance::giveColor(graph, ver, color);
@@ -47,7 +49,9 @@ bool NeighbourRule::apply(Instance* instance, Graph* graph)
 		else
 		{
 			std::vector<int> unMerged = *instance->unMerge(cycle[i], n);
-			int color = Instance::getMergedColor(graph, unMerged);
+			//int color = Instance::getMergedColor(graph, unMerged);
+			int color = graph->getAvailableColors(cycle[i]).at(0);
+			Instance::giveColor(graph, cycle[i], color);
 			for (int ver : unMerged)
 			{
 				Instance::giveColor(graph, ver, color);
