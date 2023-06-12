@@ -14,14 +14,6 @@
 #include "coloring/coloring.hpp"
 #include "test/test.hpp"
 
-using namespace std;
-using namespace std::chrono;
-
-void K();
-void M();
-std::wstring strToWstr(std::string str);
-std::string wstrToStr(std::wstring wstr);
-
 int main() {
 	
 	//K();
