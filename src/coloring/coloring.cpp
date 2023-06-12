@@ -2,8 +2,9 @@
 #include <iostream>
 
 
-Coloring::Coloring(Graph* graph)
+Coloring::Coloring(Graph* graph, bool show)
 {
+	this->show = show;
 	this->graph = graph;
 	this->instances = nullptr;
 	this->instance = nullptr;
@@ -21,11 +22,14 @@ bool Coloring::Solve()
 	Result result;
 	for (int i = 0; i < instances->size(); i++)
 	{
-		if (tryToColor(i)) return true;
+		if (tryToColor(i))
+		{
+			return true;
+		}
 	}
-	//return false;
 	return solved;
 }
+
 
 bool Coloring::tryToColor(int inst)
 {
@@ -43,8 +47,9 @@ bool Coloring::colorForest(int v, Instance* copy)
 		if (result == Result::Success)
 		{
 			instance = inst;
-			copyColoring();
-			checkRest(copy->original, copy);
+			Graph* g = inst->original;
+			copyColoring(g);
+			checkRest(g, copy);
 			return true;
 		}
 		else return false;
@@ -72,21 +77,21 @@ bool Coloring::colorForest(int v, Instance* copy)
 	}
 }
 
-void Coloring::copyColoring()
+void Coloring::copyColoring(Graph* g)
 {
 	for (int i = 0; i < instance->graph->getVertexCount(); i++)
 	{
 		int color = instance->graph->getAvailableColors(i).at(0);
 		if (instance->indexes[i] < n)
 		{
-			Instance::giveColor(graph, instance->indexes[i], color);
+			Instance::giveColor(g, instance->indexes[i], color);
 		}
 		else
 		{
 			std::vector<int> unmerged = *instance->unMerge(instance->indexes[i], n);
 			for (int ver : unmerged)
 			{
-				Instance::giveColor(graph, ver, color);
+				Instance::giveColor(g, ver, color);
 			}
 		}
 
@@ -98,11 +103,6 @@ bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 {
 	int ver;
 	int b = 3;
-	for (int i = 0; i < copy->getVertexCount(); i++)
-	{
-		Rule* rule = copyInst->rules[i];
-		int a = 6;
-	}
 	for (int i = copyInst->deleted.size() - 1; i >= 0; i--)
 	{
 		ver = copyInst->deleted[i];
@@ -111,7 +111,10 @@ bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 		{
 			if (!copyInst->rules[ver]->apply(copyInst, copy))
 			{
+				std::vector<int> av = copy->getAvailableColors(ver);
 				Instance::giveNaive(copy, ver);
+				std::vector<int> av2 = copy->getAvailableColors(ver);
+				int b = 3;
 			}
 		}
 		else
@@ -133,6 +136,16 @@ bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 			}
 		}
 	}
+	if (show) showColoring(copy);
 	graph = copy;
 	return true;
+}
+
+void Coloring::showColoring(Graph* g)
+{
+	for (int i = 0; i < instance->originalN; i++)
+	{
+		std::cout << i << ": " << g->getAvailableColors(i).at(0) << "\n";
+	}
+	std::cout << "\n";
 }
