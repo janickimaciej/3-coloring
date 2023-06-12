@@ -29,7 +29,7 @@ static string wstrToStr(wstring wstr) {
 	return str;
 }
 
-void Test::runFile(std::string filePath, bool solveAsCSP, bool displayLemmas) {
+void Test::runFile(std::string filePath, bool solveAsCSP, bool showResult, bool displayLemmas) {
 	CSPSolver::beVerbose = displayLemmas;
 	G6Parser parser;
 
@@ -45,7 +45,7 @@ void Test::runFile(std::string filePath, bool solveAsCSP, bool displayLemmas) {
 	if(solveAsCSP) {
 		result = (bool)CSPSolver::solve(dynamic_cast<CSPInstance*>(graph));
 	} else {
-		Coloring coloring(Graph::copy(graph));
+		Coloring coloring(Graph::copy(graph), showResult);
 		result = coloring.Solve();
 	}
 	auto stop = high_resolution_clock::now();
@@ -62,7 +62,7 @@ void Test::runFile(std::string filePath, bool solveAsCSP, bool displayLemmas) {
 }
 
 void Test::runDirectory(std::string directoryPath, Result expectedResult, std::string resultPath,
-	bool solveAsCSP, bool displayLemmas) {
+	bool solveAsCSP, bool showResult, bool displayLemmas) {
 	CSPSolver::beVerbose = displayLemmas;
 	G6Parser parser;
 
@@ -105,7 +105,7 @@ void Test::runDirectory(std::string directoryPath, Result expectedResult, std::s
 		if(solveAsCSP) {
 			result = (bool)CSPSolver::solve(dynamic_cast<CSPInstance*>(graph));
 		} else {
-			Coloring coloring(Graph::copy(graph));
+			Coloring coloring(Graph::copy(graph), showResult);
 			result = coloring.Solve();
 		}
 		auto stop = high_resolution_clock::now();

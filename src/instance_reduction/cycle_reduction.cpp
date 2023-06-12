@@ -20,11 +20,6 @@ CycleReduction::CycleReduction(std::vector<Instance*>* instances)
 	neighbours = new std::vector<int>[n];
 	for (int i = 0; i < n; i++)
 	{
-		if (n == 28)
-		{
-			std::vector<int> neigh = instance->graph->getNeighbors(i);
-			int b = 7;
-		}
 		visited[i] = false;
 		toDeletion[i] = false;
 		neighbours[i] = instance->graph->getNeighbors(i);
@@ -55,11 +50,6 @@ void CycleReduction::setTarget(int g)
 	neighbours = new std::vector<int>[n];
 	for (int i = 0; i < n; i++)
 	{
-		if (n == 28)
-		{
-			std::vector<int> neigh = instance->graph->getNeighbors(i);
-			int b = 7;
-		}
 		visited[i] = false;
 		toDeletion[i] = false;
 		neighbours[i] = instance->graph->getNeighbors(i);
@@ -73,20 +63,16 @@ void CycleReduction::setTarget(int g)
 bool CycleReduction::Reduce()
 {
 	hasReduced = false;
-	int b = 3;
 	int i = 0;
 	if (instance->graph->getVertexCount() == 0) return false;
 	while (1)
 	{
-		// do zmiany ?
 		if (threes[i] && !visited[i])
 		{
 			if (cycleRec(i, i))
 			{
 				if (ended) return false;
 				Update();
-				//hasReduced = true;
-				//continue;
 				return true;
 			}
 		}
@@ -353,7 +339,6 @@ void CycleReduction::deleteCycle(int start, int end)
 
 void CycleReduction::Clear()
 {
-	int b = 7;
 	for (int i = n - 1; i >= 0; i--)
 	{
 		if (toDeletion[i])
@@ -377,12 +362,10 @@ void CycleReduction::Clear(Instance* inst)
 int CycleReduction::findNeighbour(int cycleVer)
 {
 	std::vector<int> ne = neighbours[cycleVer];
-	int b = 56;
 	for (int ver : neighbours[cycleVer])
 	{
 		if (!toDeletion[ver])
 		{
-			int d = 6;
 			return ver;
 		}
 	}
@@ -439,11 +422,6 @@ void CycleReduction::Update()
 	{
 		visited[i] = false;
 		toDeletion[i] = false;
-		if (n == 25)
-		{
-			std::vector<int> neigh = instance->graph->getNeighbors(i);
-			int n = 0;
-		}
 		neighbours[i] = instance->graph->getNeighbors(i);
 		if (neighbours[i].size() == 3) threes[i] = true;
 		else threes[i] = false;

@@ -102,11 +102,9 @@ void Coloring::copyColoring(Graph* g)
 bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 {
 	int ver;
-	int b = 3;
 	for (int i = copyInst->deleted.size() - 1; i >= 0; i--)
 	{
 		ver = copyInst->deleted[i];
-		int l = 5;
 		if (ver < n)
 		{
 			if (!copyInst->rules[ver]->apply(copyInst, copy))
@@ -114,18 +112,12 @@ bool Coloring::checkRest(Graph* copy, Instance* copyInst)
 				std::vector<int> av = copy->getAvailableColors(ver);
 				Instance::giveNaive(copy, ver);
 				std::vector<int> av2 = copy->getAvailableColors(ver);
-				int b = 3;
 			}
 		}
 		else
 		{
 			std::vector<int> unMerged = *copyInst->unMerge(ver, n);
 			int color = copyInst->getMergedColor(copy, unMerged);
-			int color2 = copy->getAvailableColors(ver).at(0);
-			if (color != color2)
-			{
-				int o = 9;
-			}
 			Instance::giveColor(copy, ver, color);
 			for (int mer : unMerged)
 			{

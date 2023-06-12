@@ -6,7 +6,6 @@
 
 class Rule
 {
-	int n = 5;
 public:
 	virtual bool apply(Instance* instance, Graph* graph) { return false; };
 	virtual Rule* copy() { return new Rule(); }

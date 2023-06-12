@@ -90,15 +90,9 @@ void BushyForest::generateInstances()
 {
 	for (int i = n - 1; i >= 0; i--)
 	{
-		/*if (inForest[i])
-		{
-			if (insideNode[i]) instance->innerTree.push_back(instance->indexes[i]);
-			instance->removeVertex(i);
-		}*/
 		if (insideNode[i])
 		{
 			instance->innerTree.push_back(instance->indexes[i]);
-			//instance->removeVertex(i);
 		}
 	}
 }
