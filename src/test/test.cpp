@@ -29,8 +29,40 @@ static string wstrToStr(wstring wstr) {
 	return str;
 }
 
-void Test::run(std::string directoryPath, Result expectedResult, std::string resultPath, bool solveAsCSP,
-	bool displayLemmas) {
+void Test::runFile(std::string filePath, bool solveAsCSP, bool displayLemmas) {
+	CSPSolver::beVerbose = displayLemmas;
+	G6Parser parser;
+
+	parser.openFile(filePath);
+	Graph* graph = parser.parse();
+
+	int n = graph->getVertexCount();
+	int m = graph->getEdgeCount();
+	cout << "n" << n << " m" << m << " " << filePath << endl;
+
+	auto start = high_resolution_clock::now();
+	bool result;
+	if(solveAsCSP) {
+		result = (bool)CSPSolver::solve(dynamic_cast<CSPInstance*>(graph));
+	} else {
+		Coloring coloring(Graph::copy(graph));
+		result = coloring.Solve();
+	}
+	auto stop = high_resolution_clock::now();
+	auto durationMs = duration_cast<milliseconds>(stop - start);
+	if(displayLemmas) {
+		cout << endl;
+	}
+	if(result) {
+		cout << "Success" << endl;
+	} else {
+		cout << "Failure" << endl;
+	}
+	cout << durationMs.count() << " ms" << endl << endl;
+}
+
+void Test::runDirectory(std::string directoryPath, Result expectedResult, std::string resultPath,
+	bool solveAsCSP, bool displayLemmas) {
 	CSPSolver::beVerbose = displayLemmas;
 	G6Parser parser;
 

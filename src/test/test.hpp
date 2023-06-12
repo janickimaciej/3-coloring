@@ -8,8 +8,9 @@ class Test {
 public:
 	Test() = delete;
 	~Test() = delete;
-	static void run(std::string directoryPath, Result expectedResult, std::string resultPath = "", bool solveAsCSP = false,
-		bool displayLemmas = false);
+	static void runFile(std::string filePath, bool solveAsCSP = false, bool displayLemmas = false);
+	static void runDirectory(std::string directoryPath, Result expectedResult, std::string resultPath = "",
+		bool solveAsCSP = false, bool displayLemmas = false);
 };
 
 #endif
